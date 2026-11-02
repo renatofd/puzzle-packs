@@ -31,6 +31,7 @@ export class TreeScene extends Scene implements TutorialHost {
     this.tree = new TreeView(engine, ctx.tooltip, {
       tree: 'main',
       particles: this.particles,
+      iconTexture: (u) => ctx.textures[`upgrade-${u.id}`],
       extraTooltip: (u) => {
         const stat = u.effects[0]?.stat;
         if (!stat) return [];

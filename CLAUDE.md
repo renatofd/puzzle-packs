@@ -57,6 +57,6 @@ Teste no navegador (`npm run dev`, Chromium via Playwright em `/opt/pw-browsers`
 
 - Textos visíveis passam por `t()` de `games/puzzle-packs/i18n.ts`; adicione a chave nos 5 JSON (EN, RU, PT, ES, TR). O teste de localização falha se faltar alguma.
 - Arte e sons só entram pelo `public/assets/manifest.json` (`"ready": true`; sons na lista `sounds`).
-- GUI e sons vêm do acervo do Renato (`E:\Recursos`, skill game-assets). As ilustrações do álbum, os pacotes e o verso das cartas são gerados com sprite-gen (Grok) só porque o Renato pediu; não gere outra arte com IA sem ele pedir.
+- GUI e sons vêm do acervo do Renato (`E:\Recursos`, skill game-assets). As ilustrações do álbum, os pacotes, o verso das cartas e os ícones da árvore são gerados com sprite-gen (Grok) só porque o Renato pediu; não gere outra arte com IA sem ele pedir.
 - A pele da interface (`src/ui/skin.ts`, montada em `games/puzzle-packs/gui.ts`) usa peças brancas 9-slice que recebem a cor por tint. Registre a origem de cada arquivo novo em `assets_manifest.json` e `CREDITS.md`.
 - Ritmo alvo (perfil Humano do `npm run sim`): série 1 ~3 min, série 2 ~10 min, série 3 ~25 min, série 4 ~40 min, série 5 ~60 min, série 6 ~80 min (tempos acumulados).

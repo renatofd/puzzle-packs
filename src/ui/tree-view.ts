@@ -1,4 +1,4 @@
-import { BitmapText, Container, FederatedPointerEvent, FederatedWheelEvent, Graphics, Rectangle, Text } from 'pixi.js';
+import { BitmapText, Container, FederatedPointerEvent, FederatedWheelEvent, Graphics, Rectangle, Sprite, Text, type Texture } from 'pixi.js';
 import type { Engine } from '../core/engine';
 import { format } from '../core/num';
 import type { UpgradeDef, UpgradeStatus } from '../core/types';
@@ -26,6 +26,8 @@ export interface TreeViewOptions {
   /** Tremida no ângulo do tooltip quando ele abre sobre um nó (padrão true). */
   wobble?: boolean;
   onBuy?: (u: UpgradeDef, level: number) => void;
+  /** Imagem do nó; sem ela, o nó mostra `u.icon` ou as duas primeiras letras do nome. */
+  iconTexture?: (u: UpgradeDef) => Texture | undefined;
 }
 
 interface NodeView {
@@ -34,6 +36,7 @@ interface NodeView {
   shape: Graphics;
   glow: Graphics;
   icon: Text;
+  image: Sprite | null;
   level: BitmapText;
   status: UpgradeStatus | 'teased' | null;
 }
@@ -58,7 +61,7 @@ export class TreeView extends Container {
   private nodesLayer = new Container();
   private hit = new Graphics();
   private views = new Map<string, NodeView>();
-  private opts: Required<Omit<TreeViewOptions, 'particles' | 'onBuy' | 'extraTooltip' | 'colorFor'>> & TreeViewOptions;
+  private opts: Required<Omit<TreeViewOptions, 'particles' | 'onBuy' | 'extraTooltip' | 'colorFor' | 'iconTexture'>> & TreeViewOptions;
   private refreshTimer = 0;
   private time = 0;
   private dragging: { x: number; y: number; wx: number; wy: number; moved: boolean } | null = null;
@@ -161,6 +164,14 @@ export class TreeView extends Container {
     level.anchor.set(0.5, 0);
     level.y = this.opts.nodeSize / 2 + 4;
     root.addChild(glow, shape, icon, level);
+    const tex = this.opts.iconTexture?.(u);
+    let image: Sprite | null = null;
+    if (tex) {
+      image = new Sprite(tex);
+      image.anchor.set(0.5);
+      image.scale.set((this.opts.nodeSize * 0.82) / Math.max(tex.width, tex.height));
+      root.addChildAt(image, root.getChildIndex(icon));
+    }
     const pos = u.pos ?? { x: 0, y: 0 };
     root.position.set(pos.x * this.opts.grid, pos.y * this.opts.grid);
     root.eventMode = 'static';
@@ -191,7 +202,7 @@ export class TreeView extends Container {
     root.on('pointerup', () => (this.holding = null));
     root.on('pointerupoutside', () => (this.holding = null));
     this.nodesLayer.addChild(root);
-    this.views.set(u.id, { def: u, root, shape, glow, icon, level, status: null });
+    this.views.set(u.id, { def: u, root, shape, glow, icon, image, level, status: null });
   }
 
   private tryBuy(id: string, repeating: boolean): void {
@@ -302,6 +313,13 @@ export class TreeView extends Container {
     v.icon.text = status === 'teased' ? '?' : v.def.icon ?? v.def.name.slice(0, 2);
     v.icon.style.fontSize = v.icon.text.length > 3 ? 14 : 18;
     v.icon.alpha = status === 'teased' || status === 'locked' ? 0.4 : 1;
+    if (v.image) {
+      // Com imagem, o texto só aparece como "?" nos nós ainda escondidos.
+      v.image.visible = status !== 'teased';
+      v.icon.visible = status === 'teased';
+      v.image.alpha = status === 'locked' ? 0.45 : 1;
+      v.image.tint = status === 'locked' ? 0x8888aa : 0xffffff;
+    }
   }
 
   private drawEdges(): void {
