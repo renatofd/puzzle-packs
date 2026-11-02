@@ -67,6 +67,8 @@
   "reward.active": "Монеты ×2: {0} с",
   "reward.watch": "Смотреть рекламу",
   "language": "Язык: {0}",
+  "langTitle": "Язык",
+  "close": "Закрыть",
   "current": "Сейчас: {0}",
   "up.collector": "Коллекционер",
   "up.collector.desc": "Повторы стоят на 50% больше.",
