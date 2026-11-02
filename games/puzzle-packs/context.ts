@@ -6,6 +6,7 @@ import type { GameMenu } from '../../src/ui/menu';
 import type { Toasts, Tooltip } from '../../src/ui/widgets';
 import type { SeriesArt } from './art';
 import type { Game } from './game';
+import type { Tutorial } from './tutorial';
 
 /** O que as cenas do jogo compartilham. */
 export interface GameContext {
@@ -17,6 +18,8 @@ export interface GameContext {
   toasts: Toasts;
   menu: GameMenu;
   arts: SeriesArt[];
+  /** Tutorial guiado (lógica em `tutorial.ts`, overlay em `tutorial-view.ts`). */
+  tutorial: Tutorial;
   /** Texturas opcionais do manifest (pacotes, verso da carta). */
   textures: Record<string, Texture>;
   go(scene: 'main' | 'album' | 'tree'): void;
