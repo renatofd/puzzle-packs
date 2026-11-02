@@ -324,6 +324,126 @@
       "tool": "sprite-gen (Grok Imagine)",
       "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
       "sha256": "8aa980da92dea07afc0e6d42f8531b6ee7b29c0e3e27b802dd7810772b6735ab"
+    },
+    {
+      "dest": "public/assets/series/series-7.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "bcd7350475ab0f2633e110e16414622861d3914df156348315eace7f6167f983"
+    },
+    {
+      "dest": "public/assets/series/series-8.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "be1e5b31dbb354642abeb5bb5fa3b5d8290d71c48a6db58053c5fed0964e64ab"
+    },
+    {
+      "dest": "public/assets/series/series-9.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "0bc0d9710de95735af7a31f5ee631558f1e78d150c16accc8527e8dd9f355fdf"
+    },
+    {
+      "dest": "public/assets/series/series-10.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "516d0d1f0b73db27e7cb238984a305271e133f813a7f449ef1988287746e11f2"
+    },
+    {
+      "dest": "public/assets/series/series-11.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "56fee533839fb38f8e1f9e1fb059f669308990bbc4a44527bc4a012a755dcd3d"
+    },
+    {
+      "dest": "public/assets/series/series-12.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "b2f7956f63b3289881e0893ce78fbb2e251ffbfb70b022243d9ff7c3de6529d5"
+    },
+    {
+      "dest": "public/assets/series/series-13.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "73e6d90ea20c242cd3f2b6cefcfa11387993a42fd35510976ce49df2b9155918"
+    },
+    {
+      "dest": "public/assets/series/series-14.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "3c9d369388b14c73bdfacacc99ca5bd475a2e7f72c881eb852f55791ea3db262"
+    },
+    {
+      "dest": "public/assets/series/series-15.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "0ac77322b798287cb638993e0f18f1e0285427e5e2036095ccf9ff4c44465f97"
+    },
+    {
+      "dest": "public/assets/series/series-16.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "d9c38503dc9edabc7c488e596481f372afdc1b020e00ae2d75d881738dd7bbf6"
+    },
+    {
+      "dest": "public/assets/series/series-17.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "90004296619f3f87b22cfcfa4c82305bf54f0a54446e61f2653b62f805f03945"
+    },
+    {
+      "dest": "public/assets/series/series-18.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "1470209a00e6f4e64c15378f3ece58b23e37db602c3aaf2004a0b7f7815fed76"
+    },
+    {
+      "dest": "public/assets/series/series-19.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "9fb4cb74d95ce0ecedc03d71f43cce6451ce64d6bea3cd0b81b2393698115fb0"
+    },
+    {
+      "dest": "public/assets/series/series-20.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "2740edd7b9d041652b85e8c013256e3ed05a17091dec6ceb33ac9029e3dbf541"
+    },
+    {
+      "dest": "public/assets/series/series-21.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "1559b993f5db45afb1df3798cdb33d9839da60f28edaa849e016b49091f5eb2a"
+    },
+    {
+      "dest": "public/assets/series/series-22.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "6c2aa2a3c7ac4292bbfc0fb360695d49b8178560a8256ecdb666c600d821520c"
+    },
+    {
+      "dest": "public/assets/series/series-23.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "4cd39a1b49679211f0386d790bb2e15a51999adb5567d8e4a74ef89e66115a25"
+    },
+    {
+      "dest": "public/assets/series/series-24.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "59396514423ad2330c864133c731ab73fd2913fad6c62edd2c9982e30967d38a"
+    },
+    {
+      "dest": "public/assets/series/series-25.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "5b1720ab10c46628099173d6baa7b1f97edcd07e982eb2091b03774f699d8fa7"
+    },
+    {
+      "dest": "public/assets/series/series-26.jpg",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
+      "sha256": "3ddf7099e4d755c567347f33017ede315fceeec1656237decf63d216b858b9c4"
     }
   ]
 }
