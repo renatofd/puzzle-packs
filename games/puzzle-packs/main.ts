@@ -10,7 +10,7 @@ import { settings } from '../../src/ui/settings';
 import { setTheme } from '../../src/ui/theme';
 import { Toasts, Tooltip } from '../../src/ui/widgets';
 import { AlbumScene } from './album-scene';
-import { buildSeriesArt } from './art';
+import { ArtStore } from './art';
 import { COLORS, SERIES } from './content';
 import { PORTRAIT_BASE, type GameContext } from './context';
 import { createGame } from './game';
@@ -30,15 +30,23 @@ interface ManifestEntry {
   loadInGame?: boolean;
 }
 
-/** Carrega do manifest só os assets marcados como prontos; o resto vira placeholder. */
-async function loadAssets(): Promise<Record<string, Texture>> {
+/** Ids dos assets que são ilustração de série: carregam sob demanda pelo `ArtStore`. */
+const SERIES_ASSETS = new Set(SERIES.map((s) => s.asset));
+
+/**
+ * Carrega do manifest só os assets marcados como prontos; o resto vira placeholder.
+ * As ilustrações das séries não entram aqui: `seriesFiles` guarda o caminho de cada uma.
+ */
+async function loadAssets(seriesFiles: Record<string, string>): Promise<Record<string, Texture>> {
   const out: Record<string, Texture> = {};
   try {
     const res = await fetch('assets/manifest.json');
     if (!res.ok) return out;
     const manifest = (await res.json()) as { assets: ManifestEntry[]; sounds?: SoundEntry[] };
     loadSounds(manifest.sounds);
-    const wanted = manifest.assets.filter((a) => a.ready && a.loadInGame !== false);
+    const ready = manifest.assets.filter((a) => a.ready && a.loadInGame !== false);
+    for (const a of ready) if (SERIES_ASSETS.has(a.id)) seriesFiles[a.id] = a.file;
+    const wanted = ready.filter((a) => !SERIES_ASSETS.has(a.id));
     await Promise.all(
       wanted.map(async (a) => {
         try {
@@ -68,14 +76,17 @@ async function main() {
   localizeContent(engine);
   if (import.meta.env.DEV) (globalThis as any).game = game;
 
-  const textures = await loadAssets();
+  const seriesFiles: Record<string, string> = {};
+  const textures = await loadAssets(seriesFiles);
   applyGuiSkin(textures);
   addBackground(kit, textures['gui-background']);
-  const arts = SERIES.map((s, i) => buildSeriesArt(kit.app.renderer, i, textures[s.asset]));
+  const arts = new ArtStore(kit.app.renderer, seriesFiles);
 
   const saves = new SaveManager(engine);
   const offline = saves.load();
   const offlinePacks = collection.takeOfflineCount();
+  // Baixa já as ilustrações das séries liberadas e da próxima; as outras vêm sob demanda.
+  await arts.loadMany([...collection.unlockedSeries(), collection.currentSeries() + 1]);
   const tutorial = new Tutorial(game);
   tutorial.start();
   if (import.meta.env.DEV) (globalThis as any).tutorial = tutorial;
@@ -144,6 +155,8 @@ async function main() {
     if (i < 0) return;
     toasts.push(t('toastSeries', t(`series.${id}`)), i < SERIES.length - 1 ? t('toastNextSeries') : '', COLORS.coins);
     if (i === 0) toasts.push(t('toastAuto'), t('toastAutoBody'), COLORS.accent);
+    // A série i + 1 virou a atual (já carregada); adianta a seguinte.
+    void arts.load(i + 2);
   });
 
   kit.setScene(scenes.main);

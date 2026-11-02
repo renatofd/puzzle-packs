@@ -19,13 +19,15 @@ export class EndPanel extends Container {
     const { engine, collection } = ctx.game;
     const st = collection.state;
     this.backdrop.eventMode = 'static';
-    // Miniaturas numa linha só e uma linha de estatística por série: a altura acompanha.
+    // Miniaturas em grade (até 9 por linha); a altura do painel acompanha o número de séries.
     const n = SERIES.length;
-    const gap = 12;
-    const size = Math.min(130, Math.floor((this.w - 40 - gap * (n - 1)) / n));
-    const rowsY = 104 + size + 20;
+    const gap = 8;
+    const perRow = Math.min(n, 9);
+    const gridRows = Math.ceil(n / perRow);
+    const size = Math.min(130, Math.floor((this.w - 40 - gap * (perRow - 1)) / perRow));
+    const rowsY = 104 + gridRows * (size + gap) + 16;
     const rowH = 26;
-    this.h = rowsY + (5 + n) * rowH + 86;
+    this.h = rowsY + 5 * rowH + 86;
     this.panel = new Panel({ width: this.w, height: this.h, alpha: 1, border: theme.warning });
     this.panel.eventMode = 'static';
     const title = label(t('end.title'), 30, theme.warning, { fontWeight: '800' });
@@ -37,11 +39,13 @@ export class EndPanel extends Container {
     this.panel.addChild(title, body);
 
     // As ilustrações completas.
-    const total = n * size + (n - 1) * gap;
     SERIES.forEach((_, i) => {
-      const sp = new Sprite(ctx.arts[i].full);
+      const row = Math.floor(i / perRow);
+      const inRow = Math.min(perRow, n - row * perRow);
+      const total = inRow * size + (inRow - 1) * gap;
+      const sp = new Sprite(ctx.arts.get(i).full);
       sp.width = sp.height = size;
-      sp.position.set((this.w - total) / 2 + i * (size + gap), 104);
+      sp.position.set((this.w - total) / 2 + (i % perRow) * (size + gap), 104 + row * (size + gap));
       const frame = new Graphics().roundRect(sp.x - 3, sp.y - 3, size + 6, size + 6, 6).stroke({ width: 2, color: theme.warning, alpha: 0.7 });
       this.panel.addChild(sp, frame);
     });
@@ -52,7 +56,6 @@ export class EndPanel extends Container {
       [t('end.cards'), format(st.cards)],
       [t('end.dupes'), format(st.dupes)],
       [t('end.coins'), format(engine.state.lifetime.coins ?? 0)],
-      ...SERIES.map((s, i): [string, string] => [t('end.seriesAt', i + 1), st.completedAt[s.id] !== undefined ? formatTime(st.completedAt[s.id]) : '-']),
     ];
     rows.forEach(([k, v], i) => {
       const y = rowsY + i * rowH;

@@ -9,8 +9,11 @@ const completeSeries = (game: ReturnType<typeof createGame>, i: number) => {
 };
 
 describe('Puzzle Packs: dados', () => {
-  it('6 séries de 3x3 a 8x8, com raras no miolo e cada vez mais caras', () => {
-    expect(SERIES.map((s) => s.grid)).toEqual([3, 4, 5, 6, 7, 8]);
+  it('26 séries de 3x3 a 10x10, com raras no miolo e cada vez mais caras', () => {
+    expect(SERIES).toHaveLength(26);
+    expect(SERIES.slice(0, 6).map((s) => s.grid)).toEqual([3, 4, 5, 6, 7, 8]);
+    SERIES.forEach((s, i) => i > 0 && expect(s.grid).toBeGreaterThanOrEqual(SERIES[i - 1].grid));
+    expect(SERIES[SERIES.length - 1].grid).toBe(10);
     expect(new Set(SERIES.map((s) => s.id)).size).toBe(SERIES.length);
     expect(SERIES_COST_MULT.length).toBeGreaterThanOrEqual(SERIES.length);
     SERIES.forEach((s, i) => {
@@ -148,6 +151,26 @@ describe('Puzzle Packs: economia', () => {
     completeSeries(game, SERIES.length - 1);
     expect(game.collection.allComplete()).toBe(true);
     expect(game.engine.isUnlocked('victory')).toBe(true);
+  });
+
+  it('save v2 (6 séries, vitória já vista) continua na Série 7', () => {
+    const old = createGame(10);
+    for (let i = 0; i < 6; i++) completeSeries(old, i);
+    const st = old.collection.state;
+    for (const s of SERIES.slice(6)) delete st.owned[s.id];
+    old.engine.state.unlocks.victory = true;
+    old.engine.state.flags.endSeen = true;
+    const storage = memoryStorage();
+    const file = JSON.parse(new SaveManager(old.engine, { storage, key: 'k', now: () => 0 }).toString());
+    file.v = 2;
+    storage.write('k', JSON.stringify(file));
+
+    const game = createGame(10);
+    new SaveManager(game.engine, { storage, key: 'k', now: () => 0 }).load();
+    expect(game.engine.isUnlocked('victory')).toBe(false);
+    expect(game.engine.state.flags.endSeen).toBeFalsy();
+    expect(game.collection.currentSeries()).toBe(6);
+    expect(game.collection.owned(6)).toEqual(new Array(pieceCount(SERIES[6])).fill(0));
   });
 
   it('save v1 (3 séries, vitória já vista) continua na Série 4', () => {

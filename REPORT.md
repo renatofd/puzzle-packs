@@ -1,6 +1,6 @@
 # Puzzle Packs: relatório do MVP
 
-Incremental de rasgar pacotes de cartas. Cada carta é uma peça de jigsaw de uma ilustração; completar a ilustração libera a próxima série (e, na primeira, o auto-abridor). Repetidas viram moedas para comprar pacotes melhores e melhorias. São 6 séries (3x3 a 8x8; as séries 4 a 6 entraram depois do MVP) e o jogo termina com uma tela de conclusão e estatísticas.
+Incremental de rasgar pacotes de cartas. Cada carta é uma peça de jigsaw de uma ilustração; completar a ilustração libera a próxima série (e, na primeira, o auto-abridor). Repetidas viram moedas para comprar pacotes melhores e melhorias. São 26 séries (3x3 a 10x10; as séries 4 a 26 entraram depois do MVP) e o jogo termina com uma tela de conclusão e estatísticas.
 
 Feito sobre o template `incremental-kit` (PixiJS v8, tudo em canvas). O núcleo do kit quase não mudou; o jogo fica em `games/puzzle-packs/`.
 

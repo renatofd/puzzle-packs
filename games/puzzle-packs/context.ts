@@ -4,7 +4,7 @@ import type { SaveManager } from '../../src/core/save';
 import { isPortrait, uiScale, type KitApp } from '../../src/ui/app';
 import type { GameMenu } from '../../src/ui/menu';
 import type { Toasts, Tooltip } from '../../src/ui/widgets';
-import type { SeriesArt } from './art';
+import type { ArtStore } from './art';
 import type { Game } from './game';
 import type { Tutorial } from './tutorial';
 
@@ -17,7 +17,8 @@ export interface GameContext {
   tooltip: Tooltip;
   toasts: Toasts;
   menu: GameMenu;
-  arts: SeriesArt[];
+  /** Arte das séries, carregada e montada sob demanda. */
+  arts: ArtStore;
   /** Tutorial guiado (lógica em `tutorial.ts`, overlay em `tutorial-view.ts`). */
   tutorial: Tutorial;
   /** Texturas opcionais do manifest (pacotes, verso da carta). */

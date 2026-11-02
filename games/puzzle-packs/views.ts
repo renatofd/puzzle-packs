@@ -161,7 +161,7 @@ export class CardView extends Container {
       .fill({ color: 0x15122a })
       .stroke({ width: result.rarity === 'rare' ? 5 : 3, color: r.color });
     fg.roundRect(8, 8, W - 16, W - 16, 8).fill({ color: 0x000000, alpha: 0.35 });
-    const piece = new Sprite(art.pieces[result.piece]);
+    const piece = new Sprite(art.piece(result.piece));
     const box = W - 16;
     const size = art.cell + art.pad * 2;
     piece.scale.set(box / size);
@@ -225,7 +225,8 @@ export class CardView extends Container {
 /** Tabuleiro de uma série: peças que já saíram e buracos no formato das que faltam. */
 export class BoardView extends Container {
   private holes = new Graphics();
-  private sprites: Sprite[] = [];
+  /** Sprite de cada peça, criado só quando a peça aparece (a textura é recortada sob demanda). */
+  private sprites: Array<Sprite | undefined> = [];
   private frame = new Graphics();
   readonly scaleK: number;
 
@@ -235,16 +236,21 @@ export class BoardView extends Container {
     const s = SERIES[art.series];
     this.frame.roundRect(-6, -6, size + 12, size + 12, 10).fill({ color: 0x000000, alpha: 0.35 }).stroke({ width: 2, color: 0xffffff, alpha: 0.15 });
     this.addChild(this.frame, this.holes);
-    for (let p = 0; p < pieceCount(s); p++) {
-      const sp = new Sprite(art.pieces[p]);
+    this.sprites = new Array(pieceCount(s)).fill(undefined);
+  }
+
+  private sprite(p: number): Sprite {
+    let sp = this.sprites[p];
+    if (!sp) {
+      sp = new Sprite(this.art.piece(p));
       sp.anchor.set(0.5);
       sp.scale.set(this.scaleK);
       const c = this.pieceCenter(p);
       sp.position.set(c.x, c.y);
-      sp.visible = false;
-      this.sprites.push(sp);
+      this.sprites[p] = sp;
       this.addChild(sp);
     }
+    return sp;
   }
 
   /** Centro da peça em coordenadas do tabuleiro. */
@@ -261,7 +267,8 @@ export class BoardView extends Container {
     this.holes.clear();
     owned.forEach((c, p) => {
       const show = c > 0 && !hidden.has(p);
-      this.sprites[p].visible = show;
+      if (show) this.sprite(p).visible = true;
+      else if (this.sprites[p]) this.sprites[p]!.visible = false;
       if (!show) {
         const dx = (p % n) * cell;
         const dy = Math.floor(p / n) * cell;
@@ -275,7 +282,7 @@ export class BoardView extends Container {
 
   /** Encaixe animado: a peça cai no lugar com um "pop". */
   snap(p: number): void {
-    const sp = this.sprites[p];
+    const sp = this.sprite(p);
     sp.visible = true;
     const k = this.scaleK;
     Tweens.to(0.35, 1.6, 1, (v) => !sp.destroyed && sp.scale.set(k * v), ease.outBack);

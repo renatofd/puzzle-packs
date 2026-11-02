@@ -423,7 +423,7 @@ export class MainScene extends Scene implements TutorialHost {
     const cur = collection.currentSeries();
     if (rebuild || !this.board || this.boardSeries !== cur) {
       this.board?.destroy({ children: true });
-      this.board = new BoardView(this.ctx.arts[cur], size);
+      this.board = new BoardView(this.ctx.arts.get(cur), size);
       this.boardHolder.addChild(this.board);
       this.boardSeries = cur;
     }
@@ -543,7 +543,7 @@ export class MainScene extends Scene implements TutorialHost {
       this.pack.y = py + k * 120;
       this.pack.alpha = 1 - k;
     }, ease.outQuad, () => (this.pack.visible = false));
-    this.cards = result.cards.map((c) => new CardView(c, this.ctx.arts[c.series], this.ctx.textures));
+    this.cards = result.cards.map((c) => new CardView(c, this.ctx.arts.get(c.series), this.ctx.textures));
     this.cards.forEach((card, i) => {
       const slot = this.cardSlot(i, this.cards.length);
       card.position.set(from.x, from.y);
@@ -614,8 +614,8 @@ export class MainScene extends Scene implements TutorialHost {
       const from = this.hud.toLocal(card.toGlobal({ x: CARD_W / 2, y: CARD_H / 2 }));
       if (r.isNew && r.series === this.boardSeries && this.board) {
         pending++;
-        const art = this.ctx.arts[r.series];
-        const fly = new Sprite(art.pieces[r.piece]);
+        const art = this.ctx.arts.get(r.series);
+        const fly = new Sprite(art.piece(r.piece));
         fly.anchor.set(0.5);
         const startS = ((CARD_W - 16) / (art.cell + art.pad * 2)) * card.scale.x;
         fly.scale.set(startS);

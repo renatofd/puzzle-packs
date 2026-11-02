@@ -5,6 +5,26 @@
     { "id": "s3", "grid": 5, "rare": [6, 18], "coinMult": 8, "rarePity": 6, "asset": "series-3", "palette": [10233776, 16750592, 3355443] },
     { "id": "s4", "grid": 6, "rare": [8, 21, 27], "coinMult": 20, "rarePity": 6, "asset": "series-4", "palette": [15123555, 13395456, 6697728] },
     { "id": "s5", "grid": 7, "rare": [9, 24, 32, 40], "coinMult": 30, "rarePity": 5, "asset": "series-5", "palette": [12312063, 7048739, 16777215] },
-    { "id": "s6", "grid": 8, "rare": [10, 27, 36, 45, 53], "coinMult": 70, "rarePity": 5, "asset": "series-6", "palette": [1710638, 10040268, 16766720] }
+    { "id": "s6", "grid": 8, "rare": [10, 27, 36, 45, 53], "coinMult": 70, "rarePity": 5, "asset": "series-6", "palette": [1710638, 10040268, 16766720] },
+    { "id": "s7", "grid": 8, "rare": [17, 18, 27, 35, 51], "coinMult": 112, "rarePity": 5, "asset": "series-7", "palette": [2756367, 12597531, 16757575] },
+    { "id": "s8", "grid": 8, "rare": [28, 43, 45, 50, 54], "coinMult": 179, "rarePity": 5, "asset": "series-8", "palette": [3065046, 1736616, 16744302] },
+    { "id": "s9", "grid": 8, "rare": [9, 14, 17, 18, 33], "coinMult": 286, "rarePity": 5, "asset": "series-9", "palette": [854826, 3811962, 16763955] },
+    { "id": "s10", "grid": 8, "rare": [9, 26, 35, 45, 50], "coinMult": 458, "rarePity": 5, "asset": "series-10", "palette": [12577023, 8370400, 16777215] },
+    { "id": "s11", "grid": 9, "rare": [30, 38, 40, 41, 50, 68], "coinMult": 733, "rarePity": 4, "asset": "series-11", "palette": [998686, 3050298, 15909198] },
+    { "id": "s12", "grid": 9, "rare": [14, 15, 37, 55, 60, 68], "coinMult": 1173, "rarePity": 4, "asset": "series-12", "palette": [16766695, 15895729, 7032698] },
+    { "id": "s13", "grid": 9, "rare": [21, 32, 47, 52, 61, 69], "coinMult": 1877, "rarePity": 4, "asset": "series-13", "palette": [16757596, 14711594, 7031327] },
+    { "id": "s14", "grid": 9, "rare": [11, 33, 39, 56, 67, 70], "coinMult": 3003, "rarePity": 4, "asset": "series-14", "palette": [3095338, 5599290, 11060844] },
+    { "id": "s15", "grid": 9, "rare": [15, 39, 41, 43, 47, 57], "coinMult": 4805, "rarePity": 4, "asset": "series-15", "palette": [6989544, 9080744, 4020778] },
+    { "id": "s16", "grid": 9, "rare": [19, 43, 49, 50, 55, 58], "coinMult": 7688, "rarePity": 4, "asset": "series-16", "palette": [1708085, 6963135, 6288104] },
+    { "id": "s17", "grid": 9, "rare": [30, 41, 42, 49, 51, 56], "coinMult": 12301, "rarePity": 4, "asset": "series-17", "palette": [9425919, 13233407, 5025616] },
+    { "id": "s18", "grid": 9, "rare": [11, 28, 48, 50, 51, 56], "coinMult": 19682, "rarePity": 4, "asset": "series-18", "palette": [15254138, 11039802, 4156218] },
+    { "id": "s19", "grid": 10, "rare": [14, 31, 52, 63, 66, 75, 81], "coinMult": 31491, "rarePity": 3, "asset": "series-19", "palette": [16764810, 13129259, 8007194] },
+    { "id": "s20", "grid": 10, "rare": [22, 26, 44, 47, 58, 66, 84], "coinMult": 50386, "rarePity": 3, "asset": "series-20", "palette": [16769976, 11569881, 6965918] },
+    { "id": "s21", "grid": 10, "rare": [18, 46, 61, 65, 77, 81, 88], "coinMult": 80618, "rarePity": 3, "asset": "series-21", "palette": [14267276, 9067051, 3877407] },
+    { "id": "s22", "grid": 10, "rare": [31, 42, 53, 54, 66, 84, 85], "coinMult": 128989, "rarePity": 3, "asset": "series-22", "palette": [2759231, 4160090, 16734842] },
+    { "id": "s23", "grid": 10, "rare": [47, 51, 54, 58, 62, 65, 74], "coinMult": 206382, "rarePity": 3, "asset": "series-23", "palette": [2764602, 4872810, 14215423] },
+    { "id": "s24", "grid": 10, "rare": [11, 25, 32, 33, 44, 74, 76], "coinMult": 330211, "rarePity": 3, "asset": "series-24", "palette": [16762081, 16744383, 9429969] },
+    { "id": "s25", "grid": 10, "rare": [15, 22, 46, 57, 62, 74, 81], "coinMult": 528338, "rarePity": 3, "asset": "series-25", "palette": [2767466, 9087193, 16777215] },
+    { "id": "s26", "grid": 10, "rare": [25, 31, 38, 48, 65, 83, 87], "coinMult": 845341, "rarePity": 3, "asset": "series-26", "palette": [16773828, 16760938, 8032232] }
   ]
 }

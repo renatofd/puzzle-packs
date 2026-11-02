@@ -11,6 +11,8 @@ import { t } from './i18n';
 import { BoardView } from './views';
 
 interface SeriesCard {
+  /** Índice da série. */
+  index: number;
   root: Container;
   board: BoardView;
   title: ReturnType<typeof label>;
@@ -51,14 +53,20 @@ export class AlbumScene extends Scene implements TutorialHost {
     this.pageLabel.anchor.set(0.5, 0.5);
     this.hud.addChild(this.header, this.back, this.prev, this.nextPage, this.pageLabel);
     this.root.addChild(this.hud);
-    this.build();
   }
 
+  /** Séries da página atual. */
+  private pageSeries(): number[] {
+    const first = this.page * PER_PAGE;
+    return SERIES.slice(first, first + PER_PAGE).map((_, k) => first + k);
+  }
+
+  /** Monta só os cartões da página atual (a arte das outras séries nem é carregada). */
   private build(): void {
     for (const c of this.cards) c.root.destroy({ children: true });
-    this.cards = SERIES.map((_, i) => {
+    this.cards = this.pageSeries().map((i) => {
       const root = new Container();
-      const board = new BoardView(this.ctx.arts[i], this.size);
+      const board = new BoardView(this.ctx.arts.get(i), this.size);
       board.position.set(0, 34);
       const title = label('', 17, theme.text, { fontWeight: '700' });
       const status = label('', 14, theme.textDim);
@@ -69,7 +77,7 @@ export class AlbumScene extends Scene implements TutorialHost {
       view.place(0, this.size + 90);
       root.addChild(board, title, bar, status, view);
       this.hud.addChild(root);
-      return { root, board, title, status, bar, view };
+      return { index: i, root, board, title, status, bar, view };
     });
   }
 
@@ -78,14 +86,26 @@ export class AlbumScene extends Scene implements TutorialHost {
   }
 
   private setPage(p: number): void {
-    this.page = Math.max(0, Math.min(this.pages - 1, p));
-    this.resize(this.kit.width, this.kit.height);
+    const page = Math.max(0, Math.min(this.pages - 1, p));
+    // Baixa as ilustrações das séries liberadas da página antes de montar (as bloqueadas só mostram buracos).
+    const { collection } = this.ctx.game;
+    const need = SERIES.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE)
+      .map((_, k) => page * PER_PAGE + k)
+      .filter((i) => collection.isSeriesUnlocked(i));
+    void this.ctx.arts.loadMany(need).then(() => {
+      if (this.kit.scene !== this) return;
+      this.page = page;
+      this.build();
+      this.refresh();
+      this.resize(this.kit.width, this.kit.height);
+    });
   }
 
   onEnter(): void {
     window.addEventListener('keydown', this.keyHandler);
-    // Abre na página da série que o jogador está montando.
+    // Abre na página da série que o jogador está montando (já carregada: é a atual).
     this.page = Math.floor(this.ctx.game.collection.currentSeries() / PER_PAGE);
+    this.build();
     this.refresh();
     this.resize(this.kit.width, this.kit.height);
     this.ctx.tutorial.notify('enterAlbum');
@@ -97,7 +117,7 @@ export class AlbumScene extends Scene implements TutorialHost {
 
   tutorialTarget(target: TutorialTarget): Rectangle | null {
     // O primeiro cartão visível da página atual.
-    const view = this.cards[this.page * PER_PAGE]?.view;
+    const view = this.cards[0]?.view;
     return target === 'albumView' && view ? view.getBounds().rectangle : null;
   }
 
@@ -108,7 +128,8 @@ export class AlbumScene extends Scene implements TutorialHost {
 
   private refresh(): void {
     const { collection } = this.ctx.game;
-    this.cards.forEach((c, i) => {
+    this.cards.forEach((c) => {
+      const i = c.index;
       const s = SERIES[i];
       const unlocked = collection.isSeriesUnlocked(i);
       const owned = collection.owned(i);
@@ -148,11 +169,7 @@ export class AlbumScene extends Scene implements TutorialHost {
     this.prev.place(W / 2 - 120, H - 64);
     this.nextPage.place(W / 2 + 68, H - 64);
     this.pageLabel.position.set(W / 2, H - 42);
-    this.cards.forEach((card, idx) => {
-      card.root.visible = Math.floor(idx / PER_PAGE) === this.page;
-    });
-    this.cards.forEach((c, idx) => {
-      const i = idx % PER_PAGE;
+    this.cards.forEach((c, i) => {
       if (portrait) {
         // Retrato: tabuleiro à esquerda, informações à direita, uma série por linha.
         const rowH = (H - 150) / PER_PAGE;
@@ -189,7 +206,7 @@ export class AlbumScene extends Scene implements TutorialHost {
     bg.on('pointertap', () => this.closeViewer());
     v.addChild(bg);
     // Completa: a imagem inteira. Incompleta: o tabuleiro grande com os buracos.
-    const content = collection.isComplete(i) ? new Sprite(this.ctx.arts[i].full) : new BoardView(this.ctx.arts[i], 600);
+    const content = collection.isComplete(i) ? new Sprite(this.ctx.arts.get(i).full) : new BoardView(this.ctx.arts.get(i), 600);
     if (content instanceof BoardView) content.refresh(collection.owned(i));
     v.addChild(content);
     const hint = label(t('tapToContinue'), 14, theme.textDim);
