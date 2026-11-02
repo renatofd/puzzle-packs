@@ -234,5 +234,96 @@
       "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
     }
   ],
-  "generated": []
+  "generated": [
+    {
+      "dest": "public/assets/ui/upgrades/collector.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "d87aff6524d9aec354a34a093dcdfee79056b9372888bcd96ec2c4b1a64d5a85"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/value.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "12fc7ba90bf1a19458bfaf66d486a4c04cd4501bdbfac8b786294e84252e18ca"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/speed.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "fede3fa6476145f71332bb00d36d28090687dbaca7e23787755dc1998f7b09ab"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/luck.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "989d906aeff5eefb2e35f7a4c413fa857856a377c240162d3b7282af5145e376"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/cards.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "ae2fb9fe0ae0c11feb6daece3b221d320279c129e148c28f9845b42b11e7df4d"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/pity.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "72437e6d219d72d24612cdc17c558011ebae08c727ffd9751e2e1bcedea6fbc1"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/discount.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "16430b51c7d66612a95e1abbfdc0ff7e6f0a13bff3fbf5a1bfc62bb39cc10c9c"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/auto.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "ce1a1782e28871627c47fc01ea62c17c854211d0352ad52c7f0d44b4e012073d"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/subscription.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "7ed34f7e25f72f8a199747736b4c25237ff355db6009db47a88b7f66b4287cc1"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/value2.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "dc4b0773a40316a41fe98c1febb056c28d68b40966309119ef823b4d7103c957"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/luck2.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "50b3671fb5e6fdf569a01f826dac7425f3cb5bdb0eb073d6c3719f2028f64308"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/auto2.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "99c90a32f94fc2516b49134cf04b7b7f877de0913a925d9c57089d6f037c109d"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/value3.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "debebf69647e72852615bf032ed67c526dc37242c7bed8d38b697d695c33cef9"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/luck3.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "09c9ab3fc691dd9ca762f92dcc521b88acfa6b676e2b52178c52e2a50f4a2f80"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/cards3.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "8aa980da92dea07afc0e6d42f8531b6ee7b29c0e3e27b802dd7810772b6735ab"
+    }
+  ]
 }

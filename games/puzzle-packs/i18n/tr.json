@@ -86,6 +86,8 @@
   "reward.active": "2× altın: {0} sn",
   "reward.watch": "Reklam izle",
   "language": "Dil: {0}",
+  "langTitle": "Dil",
+  "close": "Kapat",
   "current": "Şu an: {0}",
   "up.collector": "Koleksiyoncu",
   "up.collector.desc": "Tekrarlar %50 daha değerli.",

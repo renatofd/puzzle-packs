@@ -13,5 +13,6 @@
 ## Ilustrações
 
 - Ilustrações do álbum, pacotes e verso das cartas geradas com sprite-gen (Grok Imagine), a pedido do Renato.
+- Ícones da árvore de melhorias (`public/assets/ui/upgrades/`) gerados com sprite-gen (Grok Imagine), a pedido do Renato.
 
 A origem exata de cada arquivo, com hash, fica em `assets_manifest.json`.

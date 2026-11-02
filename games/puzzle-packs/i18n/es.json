@@ -86,6 +86,8 @@
   "reward.active": "2× monedas: {0}s",
   "reward.watch": "Ver anuncio",
   "language": "Idioma: {0}",
+  "langTitle": "Idioma",
+  "close": "Cerrar",
   "current": "Actual: {0}",
   "up.collector": "Coleccionista",
   "up.collector.desc": "Las repetidas valen +50%.",
