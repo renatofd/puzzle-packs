@@ -35,7 +35,7 @@ export class MainScene extends Scene implements TutorialHost {
   private timers: Array<{ t: number; fn: () => void }> = [];
   private drag: { x: number; progress: number; ticks: number } | null = null;
 
-  private coins = new CoinCounter(28);
+  private coins: CoinCounter;
   private seriesTitle = label('', 18, theme.text, { fontWeight: '700' });
   private seriesBar = new ProgressBar(260, 10, COLORS.accent);
   private seriesCount = label('', 14, theme.textDim);
@@ -80,6 +80,7 @@ export class MainScene extends Scene implements TutorialHost {
   constructor(private ctx: GameContext) {
     super();
     const { collection } = ctx.game;
+    this.coins = new CoinCounter(28, ctx.textures['icon-coin']);
     this.particles = new Particles(ctx.kit.app.renderer, 1500);
     this.particles.gravity = 500;
     this.pack = new PackView(ctx.textures);
@@ -101,6 +102,7 @@ export class MainScene extends Scene implements TutorialHost {
         height: 56,
         size: 14,
         color: p.color,
+        icon: ctx.textures[`icon-pack-${p.id}`],
         onClick: () => {
           if (collection.buyPack(p.id)) {
             audio.play('buy');
@@ -142,9 +144,9 @@ export class MainScene extends Scene implements TutorialHost {
     this.rewardDouble = new Button({ text: '', width: 260, height: 38, size: 13, color: theme.warning, onClick: () => watch('double') });
 
     // Navegação
-    this.albumButton = new Button({ text: t('album'), width: 130, height: 44, size: 15, onClick: () => ctx.go('album') });
-    this.treeButton = new Button({ text: t('upgrades'), width: 130, height: 44, size: 15, color: theme.good, onClick: () => ctx.go('tree') });
-    this.menuButton = new Button({ text: t('menu'), width: 100, height: 44, size: 15, color: theme.textDim, onClick: () => ctx.menu.toggle() });
+    this.albumButton = new Button({ text: t('album'), width: 130, height: 44, size: 15, icon: ctx.textures['icon-album'], onClick: () => ctx.go('album') });
+    this.treeButton = new Button({ text: t('upgrades'), width: 130, height: 44, size: 15, color: theme.good, icon: ctx.textures['icon-upgrades'], onClick: () => ctx.go('tree') });
+    this.menuButton = new Button({ text: t('menu'), width: 100, height: 44, size: 15, color: theme.textDim, icon: ctx.textures['icon-menu'], onClick: () => ctx.menu.toggle() });
     this.langButton = new Button({
       text: lang().toUpperCase(),
       width: 60,

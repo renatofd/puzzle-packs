@@ -26,7 +26,8 @@ export class PackView extends Container {
   private shine = new Graphics();
   private title = label('', 22, 0xffffff, { fontWeight: '800', align: 'center', wordWrap: true, wordWrapWidth: PACK_W - 30, stroke: { color: 0x000000, width: 4, alpha: 0.4 } });
   private sub = label('', 14, 0xffffff, { fontWeight: '600' });
-  private art: Sprite | null = null;
+  private art: Container | null = null;
+  private stripArt: Container | null = null;
   id: PackId = 'basic';
 
   constructor(private textures: Record<string, Texture>) {
@@ -63,14 +64,36 @@ export class PackView extends Container {
     this.title.position.set(W / 2, H * 0.48);
     this.sub.position.set(W / 2, H * 0.72);
     this.art?.destroy();
+    this.stripArt?.destroy({ children: true });
     this.art = null;
+    this.stripArt = null;
     const tex = this.textures[`pack-${id}`];
     if (tex) {
-      this.art = new Sprite(tex);
-      this.art.width = W;
-      this.art.height = H;
-      this.body.addChildAt(this.art, 1);
-    }
+      // A imagem cobre o pacote inteiro; a tira de cima é a mesma imagem
+      // recortada pelo zigue-zague, para rasgar junto com o desenho.
+      const below = new Graphics().moveTo(0, 46);
+      zig(below, 46);
+      below.lineTo(W, H).lineTo(0, H).closePath().fill({ color: 0xffffff });
+      const above = new Graphics().moveTo(0, 0).lineTo(W, 0).lineTo(W, 46);
+      for (let x = W; x >= 0; x -= 10) above.lineTo(x, 46 + (x / 10) % 2 * 6);
+      above.closePath().fill({ color: 0xffffff });
+      const body = new Container();
+      const bodyImg = Object.assign(new Sprite(tex), { width: W, height: H });
+      bodyImg.mask = below;
+      body.addChild(bodyImg, below);
+      this.art = body;
+      this.body.addChildAt(body, 1);
+      const strip = new Container();
+      const stripImg = Object.assign(new Sprite(tex), { width: W, height: H });
+      stripImg.mask = above;
+      strip.addChild(stripImg, above);
+      this.stripArt = strip;
+      this.strip.addChild(strip);
+      this.bodyG.visible = this.stripG.visible = false;
+      // O emblema da arte fica no meio; o nome desce para não cobri-lo.
+      this.title.position.set(W / 2, H * 0.76);
+      this.sub.position.set(W / 2, H * 0.86);
+    } else this.bodyG.visible = this.stripG.visible = true;
     this.reset();
   }
 
@@ -120,7 +143,10 @@ export class CardView extends Container {
       const s = new Sprite(backTex);
       s.width = W;
       s.height = H;
-      this.back.addChild(s);
+      const round = new Graphics().roundRect(0, 0, W, H, 12).fill({ color: 0xffffff });
+      s.mask = round;
+      const edge = new Graphics().roundRect(0, 0, W, H, 12).stroke({ width: 3, color: 0x1a1433 });
+      this.back.addChild(s, round, edge);
     } else {
       const g = new Graphics().roundRect(0, 0, W, H, 12).fill({ color: 0x2b2450 }).stroke({ width: 3, color: 0xffffff, alpha: 0.5 });
       for (let i = 0; i < 6; i++) g.circle(W / 2, H / 2, 10 + i * 9).stroke({ width: 2, color: 0x6fd3ff, alpha: 0.15 + i * 0.05 });
@@ -261,15 +287,28 @@ export class BoardView extends Container {
 export class CoinCounter extends Container {
   readonly value: BitmapText;
   private shown = 0;
-  private icon = new Graphics();
 
-  constructor(size = 26) {
+  constructor(size = 26, iconTex?: Texture) {
     super();
-    this.icon.circle(size / 2, size / 2, size / 2).fill({ color: COLORS.coins }).stroke({ width: 2, color: 0x8a6416 });
-    this.icon.circle(size / 2, size / 2, size / 3.4).stroke({ width: 2, color: 0x8a6416, alpha: 0.6 });
-    this.value = new BitmapText({ text: '0', style: { fontFamily: theme.fontFamily, fontSize: size, fill: 0xffffff, fontWeight: 'bold' } });
+    let icon: Container;
+    if (iconTex) {
+      // O ícone do kit é um pouco maior que a moeda desenhada, para pesar no HUD.
+      const big = size * 1.35;
+      icon = Object.assign(new Sprite(iconTex), { width: big, height: big, x: -(big - size) / 2, y: -(big - size) / 2 });
+    } else {
+      icon = new Graphics()
+        .circle(size / 2, size / 2, size / 2)
+        .fill({ color: COLORS.coins })
+        .stroke({ width: 2, color: 0x8a6416 })
+        .circle(size / 2, size / 2, size / 3.4)
+        .stroke({ width: 2, color: 0x8a6416, alpha: 0.6 });
+    }
+    this.value = new BitmapText({
+      text: '0',
+      style: { fontFamily: theme.fontFamily, fontSize: size, fill: 0xffffff, fontWeight: 'bold', stroke: { color: 0x1a1433, width: 5 } },
+    });
     this.value.position.set(size + 10, -2);
-    this.addChild(this.icon, this.value);
+    this.addChild(icon, this.value);
   }
 
   update(dt: number, target: number, fmt: (n: number) => string): void {

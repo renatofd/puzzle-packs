@@ -16,7 +16,7 @@ export class TreeScene extends Scene implements TutorialHost {
   private tree: TreeView;
   private particles: Particles;
   private hud = new Container();
-  private coins = new CoinCounter(26);
+  private coins: CoinCounter;
   private back: Button;
   private title = label('', 22, theme.text, { fontWeight: '800' });
   private keyHandler = (e: KeyboardEvent) => {
@@ -26,6 +26,7 @@ export class TreeScene extends Scene implements TutorialHost {
   constructor(private ctx: GameContext) {
     super();
     const { engine } = ctx.game;
+    this.coins = new CoinCounter(26, ctx.textures['icon-coin']);
     this.particles = new Particles(ctx.kit.app.renderer);
     this.tree = new TreeView(engine, ctx.tooltip, {
       tree: 'main',

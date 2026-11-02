@@ -1,0 +1,238 @@
+{
+  "_comment": "Origem dos assets copiados do acervo (skill game-assets). Arte gerada com sprite-gen fica em \"generated\".",
+  "imported": [
+    {
+      "dest": "public/assets/ui/gui/button-bg.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Button/Button_Border_Rectangle_H35_White_Bg.png",
+      "sha256": "4e1fb4d8bcc89fe211036f6ed7faed199df5c26798786e66f744f5d23ec73328",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/button-border.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Button/Button_Border_Rectangle_H35_White_Border.png",
+      "sha256": "d031226243b6b98a22f5443afb222f4015132fd66983cd1d950a08f64c27d90d",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/panel-bg.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Popup/Popup_Box_Bg.png",
+      "sha256": "c1bd7387f104cb07a135780eaba8c8b56e0bc5e0277a45b9f9dc8266a8f140d4",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/panel-border.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Popup/Popup_Box_Border.png",
+      "sha256": "bdaecdeb8652d6c08dcbc604f765a82d849e94f9525baadd00b102331d3acf7c",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/panel-inner.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Popup/Popup_Box_InnerBorder1.png",
+      "sha256": "89c0cd925901a4e373aafeb4c370ef36091d357490f03e72d5b8c9778d320e24",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/bar-bg.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Slider/Slider_Border_Rectangle_01_Bg.png",
+      "sha256": "5d7c1901b629d25311605b6ca3978f1909dc9db13ab6f63a4fea6aca2aacd0fd",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/bar-border.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Slider/Slider_Border_Rectangle_01_Border.png",
+      "sha256": "521e6a6da01234ac5518d78cee2fb4c29f4688d2c82011e1eed6a0c9d3c19ced",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/bar-fill.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Slider/Slider_Border_Rectangle_01_Fill_White.png",
+      "sha256": "5eae0a04ac6a1ae16ccfd67b48797cbf51a6963ab41f697d12820dde989cdd62",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/icon-coin.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Icon_ItemIcons/128/ItemIcon_Coin_Gold.png",
+      "sha256": "323a3aa1618eb3307a917c3eaaf7741283a211d56575e13a1fc76d7a7953a853",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/icon-album.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Icon_PictoIcons/128/PictoIcon_Book.Png",
+      "sha256": "53d93497fef81ab10e63c7a32080fa1f926a0284ea41d170a279374003407304",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/icon-upgrades.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Icon_PictoIcons/128/PictoIcon_Upgrade.Png",
+      "sha256": "68a3772dcdc03edd5f2aa3d91b9dd1532ed4ffbffeb13488cacc4f9b408bf9b6",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/icon-menu.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Icon_PictoIcons/128/PictoIcon_Menu.Png",
+      "sha256": "c31cd02b1ebfb3093690dc474985ffaa441c6a954121c87ecf69fe6cd7ca6007",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/icon-language.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Icon_PictoIcons/128/PictoIcon_Earth.Png",
+      "sha256": "75492717216044ac09b116b6adddf37f1e563b3f7eb2ac04e9580499263f753a",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/icon-pack-basic.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Icon_ItemIcons/128/ItemIcon_Card_1.png",
+      "sha256": "f78ebd05088ea7332233fa8e82dafd54d790f6db1feac4f0dbef095d00c4d833",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/icon-pack-series.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Icon_ItemIcons/128/ItemIcon_Card_2_Blue.png",
+      "sha256": "2985595f8345ef50380ab12b1ed9f5f2234526d4fb8dea3962ac3f1d8b1848d7",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/icon-pack-premium.png",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Components/Icon_ItemIcons/128/ItemIcon_Card_2_Purple.png",
+      "sha256": "c0daaca33a926704891c9101c3c793304dfb37fcabc6d6a3802b2d34773c416f",
+      "package": "GUI Pro-FantasyHero",
+      "authors": []
+    },
+    {
+      "dest": "public/assets/ui/gui/background.jpg",
+      "source": "E:/Recursos/GUI/GUI Pro-FantasyHero/PNG/Demo/Demo_Background/Background_03.png",
+      "sha256": "5d972e21bdf136009d112f2f43003f3155a844102ddd29c2f5eb447a2a6e45d4",
+      "package": "GUI Pro-FantasyHero",
+      "authors": [],
+      "derived": "Reduzida para 720x1480, desfoque gaussiano 5px e JPEG q80"
+    },
+    {
+      "dest": "public/assets/sfx/click.mp3",
+      "source": "E:/Recursos/efeitos sonoros/sons/Menu Selection Click.wav",
+      "sha256": "aa10d400e97a59aa8fc1f8bc88b24c7d888ede9bd9e457b340ad659a045b440a",
+      "package": "sons",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/deny.mp3",
+      "source": "E:/Recursos/efeitos sonoros/GUI_Sound_Effects_by_Lokif/negative.wav",
+      "sha256": "1b8d94d220905624559a70e2eaca0ec6514a5f536cf58ad411b2906c8180c0ba",
+      "package": "GUI_Sound_Effects_by_Lokif",
+      "authors": [
+        "Lokif"
+      ],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/rip.mp3",
+      "source": "E:/Recursos/efeitos sonoros/inventory_sound_effects/cloth-inventory.wav",
+      "sha256": "1bdcc843cb3b3b5ceea2d55df3580db623e822e85cb1f393b63b480fd8d2e439",
+      "package": "inventory_sound_effects",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/tear.mp3",
+      "source": "E:/Recursos/efeitos sonoros/sons/RPG Sound Pack/inventory/cloth.wav",
+      "sha256": "d829b5ed7a47086771c639495713498e44ce28814f4ea6ddf30cb1f18c085c3f",
+      "package": "sons",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/deal.mp3",
+      "source": "E:/Recursos/efeitos sonoros/swoshes/swosh-10.flac",
+      "sha256": "b475a668c84b3ed78f144793ab328b38d8c4093ceb50df546e91d2af349304f2",
+      "package": "swoshes",
+      "authors": [
+        "Iwan 'qubodup' Gabovitch"
+      ],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/flip.mp3",
+      "source": "E:/Recursos/efeitos sonoros/inventory_sound_effects/turn_page.wav",
+      "sha256": "1d13a9b30e75ddcf3f71f6312e8b5ec194163febe81678db5f909bca857d12d3",
+      "package": "inventory_sound_effects",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/new.mp3",
+      "source": "E:/Recursos/efeitos sonoros/GUI_Sound_Effects_by_Lokif/positive.wav",
+      "sha256": "946a2de4c87dcb6c47edc3564e403944646ee9efa08dea0ce16fe2e78e125e03",
+      "package": "GUI_Sound_Effects_by_Lokif",
+      "authors": [
+        "Lokif"
+      ],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/rare.mp3",
+      "source": "E:/Recursos/efeitos sonoros/Level Up!/glassbell.wav",
+      "sha256": "db3a81467320d8f0ce4e8fb5175bd94db02f7a4ddc1542f4d4a6e925194e8b8b",
+      "package": "Level Up!",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/coin.mp3",
+      "source": "E:/Recursos/efeitos sonoros/Coins/coin1.wav",
+      "sha256": "240e2c6f6979d628859f0bc67e92b3868c40bf09a50bcec530d552b3a2bf8ece",
+      "package": "Coins",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/snap.mp3",
+      "source": "E:/Recursos/efeitos sonoros/GUI_Sound_Effects_by_Lokif/drop.ogg",
+      "sha256": "34dd3fa3f396caab10fe15c28aa5e9bc6a9db9fab366deda974480e647b4d5e0",
+      "package": "GUI_Sound_Effects_by_Lokif",
+      "authors": [
+        "Lokif"
+      ],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/complete.mp3",
+      "source": "E:/Recursos/efeitos sonoros/Level Up!/orchestra.wav",
+      "sha256": "0c990dfc62d8fe31720a8297d3f454775cd5ae53eeab957670eef79653dc341f",
+      "package": "Level Up!",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/buy.mp3",
+      "source": "E:/Recursos/efeitos sonoros/inventory_sound_effects/sell_buy_item.wav",
+      "sha256": "0bc75f52a27bf4f9f1d36353415f07e20aca2ee35cb7beb038cf471fce1ebc52",
+      "package": "inventory_sound_effects",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    },
+    {
+      "dest": "public/assets/sfx/achievement.mp3",
+      "source": "E:/Recursos/efeitos sonoros/Level Up!/piano.wav",
+      "sha256": "de4953032cdc7ae1df8a12afad24408e2126f2a58de6ca2470e4356a89b80185",
+      "package": "Level Up!",
+      "authors": [],
+      "derived": "Silêncio cortado no início e no fim, mono 44.1 kHz, MP3 96 kbps"
+    }
+  ],
+  "generated": []
+}
