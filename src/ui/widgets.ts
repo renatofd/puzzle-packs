@@ -1,6 +1,7 @@
 import { uiScale } from './app';
 import { audio } from './audio';
-import { BitmapText, Container, Graphics, Text, type TextStyleOptions } from 'pixi.js';
+import { BitmapText, Container, Graphics, Sprite, Text, type NineSliceSprite, type Texture, type TextStyleOptions } from 'pixi.js';
+import { makeLayers, shade, sizeLayers, skin } from './skin';
 import { theme } from './theme';
 import { ease, Tweens } from './tween';
 
@@ -36,11 +37,15 @@ export interface PanelOptions {
 export class Panel extends Container {
   readonly bg = new Graphics();
   private opts: Required<PanelOptions>;
+  private layers: NineSliceSprite[] = [];
 
   constructor(opts: PanelOptions) {
     super();
     this.opts = { radius: 10, fill: theme.panel, alpha: 0.95, border: theme.panelBorder, ...opts };
-    this.addChild(this.bg);
+    if (skin.panel) {
+      this.layers = makeLayers(skin.panel);
+      this.addChild(...this.layers);
+    } else this.addChild(this.bg);
     this.redraw();
   }
 
@@ -60,6 +65,16 @@ export class Panel extends Container {
 
   private redraw(): void {
     const o = this.opts;
+    if (skin.panel) {
+      sizeLayers(this.layers, skin.panel, o.width, o.height);
+      // Camadas sem cor fixa: a primeira é o fundo, as outras a borda.
+      this.layers.forEach((l, i) => {
+        if (skin.panel![i].tint !== undefined) return;
+        l.tint = i === 0 ? o.fill : o.border;
+        if (i === 0) l.alpha = o.alpha;
+      });
+      return;
+    }
     this.bg
       .clear()
       .roundRect(0, 0, o.width, o.height, o.radius)
@@ -79,11 +94,15 @@ export interface ButtonOptions {
   onClick?: () => void;
   /** Começa com o selo "!" no canto (ver `Button.badge`). */
   badge?: boolean;
+  /** Ícone à esquerda do texto (ou sozinho, se o texto for vazio). */
+  icon?: Texture;
 }
 
 /** Botão com estados de hover, pressionado e desabilitado, e um "pop" ao clicar. */
 export class Button extends Container {
   private bg = new Graphics();
+  private layers: NineSliceSprite[] = [];
+  private iconView: Sprite | null = null;
   readonly text: Text;
   private hovered = false;
   private pressed = false;
@@ -103,11 +122,22 @@ export class Button extends Container {
     this.h = opts.height ?? 44;
     this.color = opts.color ?? theme.accent;
     this.onClick = opts.onClick;
-    this.text = label(opts.text, opts.size ?? 16, theme.text, { fontWeight: '600' });
+    const skinned = !!skin.button;
+    this.text = label(
+      opts.text,
+      opts.size ?? 16,
+      skinned ? (skin.buttonText ?? 0xffffff) : theme.text,
+      skinned ? { fontWeight: '800', stroke: { color: skin.buttonStroke ?? 0x000000, width: 4, alpha: 0.55 } } : { fontWeight: '600' },
+    );
     this.text.anchor.set(0.5);
-    this.text.position.set(this.w / 2, this.h / 2);
+    this.text.position.set(this.w / 2, this.h / 2 - (skinned ? 1 : 0));
     this.pivot.set(this.w / 2, this.h / 2);
-    this.addChild(this.bg, this.text);
+    if (skin.button) {
+      this.layers = makeLayers(skin.button);
+      sizeLayers(this.layers, skin.button, this.w, this.h);
+      this.addChild(...this.layers, this.text);
+    } else this.addChild(this.bg, this.text);
+    if (opts.icon) this.setIcon(opts.icon);
     this.eventMode = 'static';
     this.cursor = 'pointer';
     this.on('pointerover', () => ((this.hovered = true), this.redraw()));
@@ -165,7 +195,40 @@ export class Button extends Container {
   }
 
   setText(t: string): void {
-    if (this.text.text !== t) this.text.text = t;
+    if (this.text.text === t) return;
+    this.text.text = t;
+    this.layoutIcon();
+  }
+
+  /** Troca o ícone (textura quadrada, desenhada com ~60% da altura do botão). */
+  setIcon(tex: Texture | null): void {
+    this.iconView?.destroy();
+    this.iconView = null;
+    if (tex) {
+      this.iconView = new Sprite(tex);
+      this.iconView.anchor.set(0.5);
+      this.addChildAt(this.iconView, this.getChildIndex(this.text));
+    }
+    this.layoutIcon();
+  }
+
+  private layoutIcon(): void {
+    const ic = this.iconView;
+    if (!ic) {
+      this.text.x = this.w / 2;
+      return;
+    }
+    const size = Math.min(this.h * 0.62, 34);
+    ic.scale.set(size / Math.max(ic.texture.width, ic.texture.height));
+    if (!this.text.text) {
+      ic.position.set(this.w / 2, this.h / 2);
+      return;
+    }
+    const gap = 6;
+    const total = size + gap + this.text.width;
+    const x0 = this.w / 2 - total / 2;
+    ic.position.set(x0 + size / 2, this.h / 2);
+    this.text.x = x0 + size + gap + this.text.width / 2;
   }
 
   setColor(c: number): void {
@@ -175,6 +238,16 @@ export class Button extends Container {
 
   private redraw(): void {
     const c = this._enabled ? this.color : theme.nodeLocked;
+    if (skin.button) {
+      const k = !this._enabled ? 0.75 : this.pressed ? 0.8 : this.hovered ? 1.12 : 1;
+      this.layers.forEach((l, i) => {
+        if (skin.button![i].tint === undefined) l.tint = shade(c, k);
+      });
+      this.text.alpha = this._enabled ? 1 : 0.6;
+      if (this.iconView) this.iconView.alpha = this.text.alpha;
+      this.alpha = this._enabled ? 1 : 0.85;
+      return;
+    }
     const fillAlpha = !this._enabled ? 0.15 : this.pressed ? 0.45 : this.hovered ? 0.32 : 0.2;
     this.bg
       .clear()
@@ -207,13 +280,28 @@ export class Badge extends Container {
 export class ProgressBar extends Container {
   private bg = new Graphics();
   private fg = new Graphics();
+  private back: NineSliceSprite[] = [];
+  private fill: NineSliceSprite | null = null;
   private shown = 0;
   private target = 0;
 
   constructor(private w: number, private h: number, private color = theme.accent) {
     super();
-    this.addChild(this.bg, this.fg);
-    this.bg.roundRect(0, 0, w, h, h / 2).fill({ color: theme.panelBorder });
+    if (skin.bar) {
+      this.back = makeLayers(skin.bar.back);
+      this.fill = makeLayers([skin.bar.fill])[0];
+      this.addChild(this.back[0], this.fill, ...this.back.slice(1));
+      this.sizeSkin();
+    } else {
+      this.addChild(this.bg, this.fg);
+      this.bg.roundRect(0, 0, w, h, h / 2).fill({ color: theme.panelBorder });
+    }
+  }
+
+  /** Com pele, a moldura fica um pouco maior que a área útil da barra. */
+  private sizeSkin(): void {
+    const m = Math.max(2, Math.round(this.h * 0.3));
+    sizeLayers(this.back, skin.bar!.back, this.w + m * 2, this.h + m * 2, -m, -m);
   }
 
   setValue(v: number, instant = false): void {
@@ -229,6 +317,11 @@ export class ProgressBar extends Container {
 
   resizeBar(w: number): void {
     this.w = w;
+    if (this.fill) {
+      this.sizeSkin();
+      this.draw();
+      return;
+    }
     this.bg.clear().roundRect(0, 0, w, this.h, this.h / 2).fill({ color: theme.panelBorder });
     this.draw();
   }
@@ -240,6 +333,16 @@ export class ProgressBar extends Container {
   }
 
   private draw(): void {
+    if (this.fill) {
+      const f = skin.bar!.fill;
+      const k = f.scale ?? 1;
+      const minW = (f.slice[0] + f.slice[2]) * k;
+      const w = this.w * this.shown;
+      this.fill.visible = w > 0.5;
+      this.fill.tint = this.color;
+      sizeLayers([this.fill], [f], Math.max(minW, w), this.h);
+      return;
+    }
     this.fg.clear();
     const w = this.w * this.shown;
     if (w > 0.5) this.fg.roundRect(0, 0, Math.max(this.h, w), this.h, this.h / 2).fill({ color: this.color });

@@ -17,7 +17,7 @@ Este repositório é um template de jogos incrementais. Quando ele for usado com
 | --- | --- |
 | `src/core` | Motor (`engine.ts`), números grandes (`num.ts`), modificadores, save/offline, loop de passo fixo, eventos |
 | `src/modules` | Prestígio, runs curtas, automação, eventos aleatórios |
-| `src/ui` | `KitApp`/`Scene`, `Button` (selo "!" com `badge`), `Badge`, `Panel`, `ProgressBar`, `Tooltip`, `Toasts`, `TreeView`, `Particles`, `FloatingText`, `ScreenShake`, `ResourceBar`, `DebugPanel`, `GameMenu`, `Slider`, `audio`, `settings` |
+| `src/ui` | `KitApp`/`Scene`, `skin` (pele 9-slice opcional), `Button` (selo "!" com `badge`, `icon`), `Badge`, `Panel`, `ProgressBar`, `Tooltip`, `Toasts`, `TreeView`, `Particles`, `FloatingText`, `ScreenShake`, `ResourceBar`, `DebugPanel`, `GameMenu`, `Slider`, `audio`, `settings` |
 | `src/sim` | Simulador headless de balanceamento, com perfis de jogador (`simulateProfiles`, `DEFAULT_PROFILES`) |
 | `games/puzzle-packs` | **O jogo deste repositório.** Economia em `collection.ts` (sem Pixi), dados em `data/*.json`, textos em `i18n/*.json`, arte e corte das peças em `art.ts`, portais em `portal.ts` |
 | `games/node-breaker` | Jogo de exemplo do template: use como referência |
@@ -56,5 +56,7 @@ Teste no navegador (`npm run dev`, Chromium via Playwright em `/opt/pw-browsers`
 ## Puzzle Packs
 
 - Textos visíveis passam por `t()` de `games/puzzle-packs/i18n.ts`; adicione a chave nos 5 JSON (EN, RU, PT, ES, TR). O teste de localização falha se faltar alguma.
-- Arte só entra pelo `public/assets/manifest.json` (`"ready": true`). Não gere arte com IA; o Renato fornece as imagens.
+- Arte e sons só entram pelo `public/assets/manifest.json` (`"ready": true`; sons na lista `sounds`).
+- GUI e sons vêm do acervo do Renato (`E:\Recursos`, skill game-assets). As ilustrações do álbum, os pacotes e o verso das cartas são gerados com sprite-gen (Grok) só porque o Renato pediu; não gere outra arte com IA sem ele pedir.
+- A pele da interface (`src/ui/skin.ts`, montada em `games/puzzle-packs/gui.ts`) usa peças brancas 9-slice que recebem a cor por tint. Registre a origem de cada arquivo novo em `assets_manifest.json` e `CREDITS.md`.
 - Ritmo alvo (perfil Humano do `npm run sim`): série 1 ~3 min, série 2 ~10 min, série 3 ~25 min, série 4 ~40 min, série 5 ~60 min, série 6 ~80 min (tempos acumulados).

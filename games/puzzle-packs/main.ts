@@ -17,7 +17,8 @@ import { createGame } from './game';
 import { detectLang, localizeContent, setLang, t } from './i18n';
 import { MainScene } from './main-scene';
 import { portal } from './portal';
-import { defineSfx } from './sfx';
+import { addBackground, applyGuiSkin } from './gui';
+import { defineSfx, loadSounds, type SoundEntry } from './sfx';
 import { TreeScene } from './tree-scene';
 import { Tutorial } from './tutorial';
 import { TutorialOverlay } from './tutorial-view';
@@ -35,7 +36,8 @@ async function loadAssets(): Promise<Record<string, Texture>> {
   try {
     const res = await fetch('assets/manifest.json');
     if (!res.ok) return out;
-    const manifest = (await res.json()) as { assets: ManifestEntry[] };
+    const manifest = (await res.json()) as { assets: ManifestEntry[]; sounds?: SoundEntry[] };
+    loadSounds(manifest.sounds);
     const wanted = manifest.assets.filter((a) => a.ready && a.loadInGame !== false);
     await Promise.all(
       wanted.map(async (a) => {
@@ -67,6 +69,8 @@ async function main() {
   if (import.meta.env.DEV) (globalThis as any).game = game;
 
   const textures = await loadAssets();
+  applyGuiSkin(textures);
+  addBackground(kit, textures['gui-background']);
   const arts = SERIES.map((s, i) => buildSeriesArt(kit.app.renderer, i, textures[s.asset]));
 
   const saves = new SaveManager(engine);

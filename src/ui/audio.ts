@@ -3,8 +3,8 @@ import { settings } from './settings';
 /**
  * Áudio sintetizado com Web Audio: nenhum arquivo de som é necessário.
  * Efeitos são receitas curtas de osciladores e ruído; a música é um
- * lo-fi gerado na hora (acordes + arpejo). Troque por amostras quando o
- * jogo tiver sons próprios: basta registrar com `audio.define`.
+ * lo-fi gerado na hora (acordes + arpejo). Quando o jogo tiver sons
+ * próprios, registre arquivos com `audio.sample` (ou receitas com `audio.define`).
  */
 
 export interface SfxRecipe {
@@ -52,6 +52,7 @@ class AudioManager {
   private musicBus!: GainNode;
   private noise!: AudioBuffer;
   private recipes = { ...RECIPES };
+  private samples = new Map<string, { volume: number; data: Promise<ArrayBuffer | null>; buffer: AudioBuffer | null }>();
   private lastPlayed = new Map<string, { t: number; n: number }>();
   private musicTimer: ReturnType<typeof setInterval> | null = null;
   private nextBar = 0;
@@ -77,6 +78,34 @@ class AudioManager {
     this.recipes[name] = recipe;
   }
 
+  /**
+   * Usa um arquivo de som (mp3/ogg/wav) para o efeito `name`. O arquivo é
+   * baixado já e decodificado quando o áudio for liberado; até lá (ou se
+   * falhar), toca a receita sintetizada de mesmo nome, se houver.
+   */
+  sample(name: string, url: string, volume = 1): void {
+    const data = fetch(url)
+      .then((r) => (r.ok ? r.arrayBuffer() : null))
+      .catch(() => null);
+    const entry = { volume, data, buffer: null as AudioBuffer | null };
+    this.samples.set(name, entry);
+    if (this.ctx) this.decode(entry);
+  }
+
+  private decode(entry: { data: Promise<ArrayBuffer | null>; buffer: AudioBuffer | null }): void {
+    const ctx = this.ctx;
+    if (!ctx) return;
+    void entry.data.then(async (buf) => {
+      if (!buf) return;
+      try {
+        // decodeAudioData consome o ArrayBuffer; decodifica uma cópia.
+        entry.buffer = await ctx.decodeAudioData(buf.slice(0));
+      } catch (e) {
+        console.warn('Som não decodificou', e);
+      }
+    });
+  }
+
   private ensure(): AudioContext | null {
     if (this.ctx) {
       if (this.ctx.state === 'suspended') void this.ctx.resume();
@@ -98,6 +127,7 @@ class AudioManager {
     const data = this.noise.getChannelData(0);
     for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
     this.applyVolumes();
+    for (const entry of this.samples.values()) this.decode(entry);
     if (this.wantMusic) this.startMusic();
     return ctx;
   }
@@ -118,7 +148,8 @@ class AudioManager {
   play(name: string, opts: { pitch?: number; volume?: number } = {}): void {
     const ctx = this.ctx;
     const r = this.recipes[name];
-    if (!ctx || !r || ctx.state !== 'running') return;
+    const smp = this.samples.get(name)?.buffer;
+    if (!ctx || (!r && !smp) || ctx.state !== 'running') return;
     const now = ctx.currentTime;
     const last = this.lastPlayed.get(name);
     if (last && now - last.t < 0.05) {
@@ -128,6 +159,17 @@ class AudioManager {
       this.lastPlayed.set(name, { t: now, n: 1 });
     }
     const pitch = (opts.pitch ?? 1) * (0.97 + Math.random() * 0.06);
+    if (smp) {
+      const src = ctx.createBufferSource();
+      src.buffer = smp;
+      src.playbackRate.value = pitch;
+      const gain = ctx.createGain();
+      gain.gain.value = this.samples.get(name)!.volume * (opts.volume ?? 1);
+      src.connect(gain).connect(this.sfxBus);
+      src.start(now);
+      return;
+    }
+    if (!r) return;
     const volume = (r.volume ?? 0.3) * (opts.volume ?? 1);
     const steps = r.steps ?? [1];
     steps.forEach((mult, i) => this.voice(r, now + i * (r.stepTime ?? 0), r.from * mult * pitch, (r.to ?? r.from) * mult * pitch, volume));
