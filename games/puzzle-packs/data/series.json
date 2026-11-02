@@ -1,0 +1,7 @@
+{
+  "series": [
+    { "id": "s1", "grid": 3, "rare": [4], "coinMult": 1, "rarePity": 22, "asset": "series-1", "palette": [16733525, 16761095, 6737151] },
+    { "id": "s2", "grid": 4, "rare": [5, 10], "coinMult": 3, "rarePity": 8, "asset": "series-2", "palette": [5025616, 2201331, 16771899] },
+    { "id": "s3", "grid": 5, "rare": [6, 18], "coinMult": 8, "rarePity": 6, "asset": "series-3", "palette": [10233776, 16750592, 3355443] }
+  ]
+}

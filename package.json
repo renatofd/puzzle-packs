@@ -9,7 +9,8 @@
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "sim": "vite-node tools/simulate.ts"
+    "sim": "vite-node tools/simulate.ts",
+    "sim:node-breaker": "vite-node tools/simulate-node-breaker.ts"
   },
   "dependencies": {
     "break_eternity.js": "^2.1.3",

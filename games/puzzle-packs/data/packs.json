@@ -1,0 +1,8 @@
+{
+  "packs": [
+    { "id": "basic",   "cards": 3, "cost": 0,  "rareMult": 1,   "currentShare": 0.03, "missingBoost": 1, "color": 4999920 },
+    { "id": "series",  "cards": 4, "cost": 20, "rareMult": 1.5, "currentShare": 1, "missingBoost": 3,   "color": 6109346 },
+    { "id": "premium", "cards": 5, "cost": 50, "rareMult": 5,   "currentShare": 1, "missingBoost": 2,   "color": 16106057 }
+  ],
+  "seriesCostMult": [1, 7, 800]
+}
