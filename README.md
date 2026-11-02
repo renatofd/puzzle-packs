@@ -1,6 +1,6 @@
 # Puzzle Packs
 
-Incremental de rasgar pacotes de cartas: cada carta é uma peça de jigsaw de uma ilustração. Complete as 3 séries (3×3, 4×4 e 5×5) para terminar o jogo. Veja o [REPORT.md](REPORT.md) para o que foi feito, os números do simulador e a lista de assets.
+Incremental de rasgar pacotes de cartas: cada carta é uma peça de jigsaw de uma ilustração. Complete as 6 séries (de 3×3 a 8×8) para terminar o jogo. Veja o [REPORT.md](REPORT.md) para o que foi feito, os números do simulador e a lista de assets.
 
 ```bash
 npm install

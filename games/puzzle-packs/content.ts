@@ -96,19 +96,32 @@ const achievements: AchievementDef[] = [
   { id: 'packs-100', name: 'packs-100', description: '', when: (s) => (s.modules.collection?.packs ?? 0) >= 100 },
   { id: 'first-rare', name: 'first-rare', description: '', when: { flag: 'rareFound' }, effects: [{ stat: 'dupe.value', op: 'mult', value: 1.1 }] },
   { id: 'dupes-200', name: 'dupes-200', description: '', when: (s) => (s.modules.collection?.dupes ?? 0) >= 200, effects: [{ stat: 'dupe.value', op: 'mult', value: 1.1 }] },
-  { id: 'series-1', name: 'series-1', description: '', when: seriesDone(0) },
-  { id: 'series-2', name: 'series-2', description: '', when: seriesDone(1) },
-  { id: 'series-3', name: 'series-3', description: '', when: seriesDone(2) },
+  ...SERIES.map((_, i): AchievementDef => ({ id: `series-${i + 1}`, name: `series-${i + 1}`, description: '', when: seriesDone(i) })),
 ];
+
+/**
+ * v1 → v2: as séries 4 a 6 entraram. Quem tinha fechado a coleção de 3
+ * séries perde a vitória (e o aviso de fim já visto) até completar a última.
+ * As peças das séries novas nascem zeradas no `CollectionModule.state`.
+ */
+function migrateV1(raw: any): any {
+  const last = SERIES[SERIES.length - 1].id;
+  if (raw?.unlocks && !raw.unlocks[last]) {
+    delete raw.unlocks.victory;
+    if (raw.flags) delete raw.flags.endSeen;
+  }
+  return raw;
+}
 
 export const definition: GameDefinition = {
   id: 'puzzle-packs',
-  version: 1,
+  version: 2,
+  migrations: [(raw) => raw, migrateV1],
   resources: [{ id: 'coins', name: 'coins', color: COLORS.coins, start: 0 }],
   stats: { ...upgradesJson.stats, 'pity.packs': PITY.packs },
   upgrades,
   achievements,
-  // s1..s3: série completa (libera a próxima e, na primeira, o auto-abridor).
+  // s1..s6: série completa (libera a próxima e, na primeira, o auto-abridor).
   unlocks: [
     ...SERIES.map((s, i) => ({ id: s.id, when: (st: GameState) => isSeriesComplete(st, i) })),
     { id: 'victory', when: seriesDone(SERIES.length - 1) },

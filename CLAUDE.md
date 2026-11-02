@@ -57,4 +57,4 @@ Teste no navegador (`npm run dev`, Chromium via Playwright em `/opt/pw-browsers`
 
 - Textos visíveis passam por `t()` de `games/puzzle-packs/i18n.ts`; adicione a chave nos 5 JSON (EN, RU, PT, ES, TR). O teste de localização falha se faltar alguma.
 - Arte só entra pelo `public/assets/manifest.json` (`"ready": true`). Não gere arte com IA; o Renato fornece as imagens.
-- Ritmo alvo (perfil Humano do `npm run sim`): série 1 ~3 min, série 2 ~10 min, série 3 ~25 min.
+- Ritmo alvo (perfil Humano do `npm run sim`): série 1 ~3 min, série 2 ~10 min, série 3 ~25 min, série 4 ~40 min, série 5 ~60 min, série 6 ~80 min (tempos acumulados).

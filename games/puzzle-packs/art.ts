@@ -107,7 +107,7 @@ function rand(seed: number): () => number {
   };
 }
 
-/** Placeholder: cena simples por série (aurora, floresta, oceano) com números grandes. */
+/** Placeholder: cena simples por série (aurora, floresta, oceano, deserto, montanhas, galáxia) com números grandes. */
 function paintPlaceholder(series: number): Container {
   const S = ART_SIZE;
   const c = new Container();
@@ -133,7 +133,7 @@ function paintPlaceholder(series: number): Container {
       g.rect(x - 3, base - 4, 6, 14).fill({ color: 0x4a2f1f });
       g.poly([x, base - h, x - w, base, x + w, base]).fill({ color: [0x2e7d4f, 0x3f9d5a, 0x1f6b44][i % 3] });
     }
-  } else {
+  } else if (series === 2) {
     g.rect(0, 0, S, S).fill(gradient(0x7fd3ff, 0x2a7fd4, 0x0b2a66));
     g.circle(S * 0.25, S * 0.22, S * 0.09).fill({ color: 0xfff1a8 });
     for (let k = 0; k < 7; k++) {
@@ -151,6 +151,53 @@ function paintPlaceholder(series: number): Container {
       g.ellipse(x, y, 16, 8).fill({ color: [0xffa94d, 0xff6b6b, 0xffd43b][i % 3] });
       g.poly([x - 14, y, x - 26, y - 8, x - 26, y + 8]).fill({ color: [0xffa94d, 0xff6b6b, 0xffd43b][i % 3] });
     }
+  } else if (series === 3) {
+    // Deserto: sol grande, dunas em camadas e cactos.
+    g.rect(0, 0, S, S).fill(gradient(0xffd27a, 0xf59e4c, 0xc8642e));
+    g.circle(S * 0.7, S * 0.3, S * 0.12).fill({ color: 0xfff3c4 });
+    const dunes = [0xe8a95c, 0xd98e45, 0xc47335, 0xa85a28];
+    dunes.forEach((color, k) => {
+      const y = S * (0.5 + k * 0.12);
+      g.moveTo(0, y).bezierCurveTo(S * 0.3, y - S * 0.1, S * 0.6, y + S * 0.08, S, y - S * 0.04).lineTo(S, S).lineTo(0, S).closePath().fill({ color });
+    });
+    for (let i = 0; i < 4; i++) {
+      const x = S * (0.12 + i * 0.24 + r() * 0.06);
+      const base = S * (0.78 + r() * 0.12);
+      g.roundRect(x - 7, base - 70, 14, 70, 7).fill({ color: 0x3f7d3a });
+      g.roundRect(x - 26, base - 50, 10, 26, 5).fill({ color: 0x3f7d3a });
+      g.roundRect(x + 16, base - 58, 10, 30, 5).fill({ color: 0x3f7d3a });
+    }
+  } else if (series === 4) {
+    // Montanhas: céu frio, picos nevados e lago.
+    g.rect(0, 0, S, S).fill(gradient(0x9fd8ff, 0xd8ecff, 0x6f93b8));
+    const peaks: Array<[number, number, number, number]> = [
+      [-0.1, 0.62, 0.35, 0x55708f],
+      [0.25, 0.75, 0.22, 0x46607e],
+      [0.55, 0.7, 0.28, 0x3b5370],
+      [0.9, 0.62, 0.36, 0x506b8a],
+    ];
+    for (const [cx, base, top, color] of peaks) {
+      const x = S * cx;
+      const w = S * 0.32;
+      g.poly([x - w, S * base, x, S * top, x + w, S * base]).fill({ color });
+      g.poly([x - w * 0.3, S * (top + (base - top) * 0.3), x, S * top, x + w * 0.3, S * (top + (base - top) * 0.3)]).fill({ color: 0xffffff });
+    }
+    g.rect(0, S * 0.7, S, S * 0.3).fill(gradient(0x2f6f6a, 0x23524f, 0x183a38));
+    for (let i = 0; i < 20; i++) {
+      const x = r() * S;
+      const base = S * (0.7 + r() * 0.04);
+      const h = S * (0.06 + r() * 0.06);
+      g.poly([x, base - h, x - h * 0.35, base, x + h * 0.35, base]).fill({ color: 0x1f4a35 });
+    }
+  } else {
+    // Galáxia (e fallback para séries futuras): estrelas, nebulosa e planetas.
+    g.rect(0, 0, S, S).fill(gradient(0x0b0820, 0x2a1450, 0x09061a));
+    for (let i = 0; i < 6; i++) g.circle(S * (0.3 + r() * 0.4), S * (0.3 + r() * 0.4), S * (0.12 + r() * 0.12)).fill({ color: [0x9b4dcc, 0x4d6bcc, 0xcc4d8a][i % 3], alpha: 0.12 });
+    for (let i = 0; i < 140; i++) g.circle(r() * S, r() * S, 0.6 + r() * 2.2).fill({ color: 0xffffff, alpha: 0.3 + r() * 0.7 });
+    g.circle(S * 0.28, S * 0.7, S * 0.13).fill({ color: 0xe0864a });
+    g.ellipse(S * 0.28, S * 0.7, S * 0.22, S * 0.04).stroke({ width: 6, color: 0xffd9a8, alpha: 0.8 });
+    g.circle(S * 0.75, S * 0.25, S * 0.07).fill({ color: 0x6fc3ff });
+    g.circle(S * 0.82, S * 0.78, S * 0.04).fill({ color: 0xffd700 });
   }
   c.addChild(g);
   // Número de cada peça bem visível: é o placeholder "numerado".

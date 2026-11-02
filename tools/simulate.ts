@@ -97,8 +97,7 @@ console.log(
     { id: 'collector', label: '1º upgrade' },
     { id: 'S1', label: 'Série 1' },
     { id: 'auto', label: 'Auto+' },
-    { id: 'S2', label: 'Série 2' },
-    { id: 'S3', label: 'Série 3' },
+    ...SERIES.slice(1).map((_, i) => ({ id: `S${i + 2}`, label: `Série ${i + 2}` })),
   ]),
 );
 console.log('');
@@ -136,7 +135,7 @@ for (const profile of profiles) {
     packs.push(collection.state.packs);
   }
   const cell = (xs: number[]) => `${median(xs).toFixed(1)} (${median(xs, 0.1).toFixed(1)}-${median(xs, 0.9).toFixed(1)})`;
-  console.log(`  ${profile.name.padEnd(10)} série 1 ${cell(times[0])} | série 2 ${cell(times[1])} | série 3 ${cell(times[2])} | pacotes ${median(packs)}`);
+  console.log(`  ${profile.name.padEnd(10)} ${times.map((x, i) => `série ${i + 1} ${cell(x)}`).join(' | ')} | pacotes ${median(packs)}`);
 }
 
 if (detail) {
