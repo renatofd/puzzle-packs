@@ -1,4 +1,6 @@
 import { Container, FederatedPointerEvent, Graphics, Rectangle, Sprite } from 'pixi.js';
+import type { TutorialTarget, TutorialUi } from './tutorial';
+import type { TutorialHost } from './tutorial-view';
 import { hasAffordable } from '../../src/core/engine';
 import { format } from '../../src/core/num';
 import { Scene } from '../../src/ui/app';
@@ -20,7 +22,7 @@ type StageState = 'idle' | 'revealing' | 'collecting';
 const BASE_OPEN_TIME = 4.5;
 
 /** Tela principal: rasgar pacotes, revelar cartas, loja, auto-abridor e tabuleiro da série atual. */
-export class MainScene extends Scene {
+export class MainScene extends Scene implements TutorialHost {
   private hud = new Container();
   private stage = new Container();
   private stageHit = new Graphics();
@@ -102,6 +104,7 @@ export class MainScene extends Scene {
         onClick: () => {
           if (collection.buyPack(p.id)) {
             audio.play('buy');
+            this.ctx.tutorial.notify('buy');
             this.ctx.saves.save();
             if (this.state === 'idle') this.showNextPack();
           }
@@ -519,6 +522,7 @@ export class MainScene extends Scene {
     this.particles.burst(top.x, top.y, 0xffffff, 12, 300, 0.25, 0.5);
     this.shake.add(0.25);
 
+    this.ctx.tutorial.notify('rip');
     const result = collection.openNext('manual');
     this.current = result;
     // Peças novas da série do tabuleiro ficam escondidas até a coleta.
@@ -592,6 +596,7 @@ export class MainScene extends Scene {
     }
     if (this.cards.every((c) => c.flipped) && this.state === 'revealing') {
       this.state = 'collecting';
+      this.ctx.tutorial.notify('revealed');
       this.after(0.5 * this.speed() + 0.1, () => this.collect());
     }
   }
@@ -714,6 +719,44 @@ export class MainScene extends Scene {
   private afterAutoComplete(): void {
     audio.play('complete');
     this.refreshBoard(true);
+  }
+
+  // ------------------------------------------------------------ tutorial
+
+  tutorialUi(): TutorialUi {
+    return {
+      scene: 'main',
+      idle: this.state === 'idle',
+      revealing: this.state === 'revealing',
+      blocked: this.ctx.menu.isOpen || !!this.endPanel,
+    };
+  }
+
+  tutorialTarget(target: TutorialTarget): Rectangle | null {
+    const of = (c: Container) => (c.visible ? c.getBounds().rectangle : null);
+    switch (target) {
+      case 'pack':
+        return of(this.pack);
+      case 'stage': {
+        const r = this.stageRect;
+        const k = this.layout.k;
+        return new Rectangle(r.x * k, r.y * k, r.width * k, r.height * k);
+      }
+      case 'board':
+        return of(this.boardHolder);
+      case 'coins':
+        return of(this.coins);
+      case 'shop':
+        return this.shopButtons.has('series') ? of(this.shopButtons.get('series')!) : null;
+      case 'treeButton':
+        return of(this.treeButton);
+      case 'albumButton':
+        return of(this.albumButton);
+      case 'auto':
+        return of(this.autoPanel);
+      default:
+        return null;
+    }
   }
 
   // ------------------------------------------------------------- final

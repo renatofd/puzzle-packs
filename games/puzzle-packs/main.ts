@@ -19,6 +19,8 @@ import { MainScene } from './main-scene';
 import { portal } from './portal';
 import { defineSfx } from './sfx';
 import { TreeScene } from './tree-scene';
+import { Tutorial } from './tutorial';
+import { TutorialOverlay } from './tutorial-view';
 
 interface ManifestEntry {
   id: string;
@@ -70,11 +72,16 @@ async function main() {
   const saves = new SaveManager(engine);
   const offline = saves.load();
   const offlinePacks = collection.takeOfflineCount();
+  const tutorial = new Tutorial(game);
+  tutorial.start();
+  if (import.meta.env.DEV) (globalThis as any).tutorial = tutorial;
 
   const loop = new GameLoop(engine, { tickRate: 30 });
   const tooltip = new Tooltip(() => kit.app.screen);
   const toasts = new Toasts(() => kit.app.screen);
-  kit.overlayLayer.addChild(toasts, tooltip);
+  const tutorialOverlay = new TutorialOverlay(kit, tutorial);
+  kit.overlayLayer.addChild(tutorialOverlay, toasts, tooltip);
+  kit.onFrame((dt) => tutorialOverlay.update(dt));
 
   if (import.meta.env.DEV) {
     const debug = new DebugPanel(engine, loop, saves);
@@ -110,6 +117,7 @@ async function main() {
     toasts,
     menu,
     arts,
+    tutorial,
     textures,
     go: (name) => {
       if (name === 'main') {

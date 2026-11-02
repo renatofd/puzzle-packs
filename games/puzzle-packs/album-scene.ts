@@ -1,4 +1,6 @@
-import { Container, Graphics, Sprite } from 'pixi.js';
+import { Container, Graphics, Rectangle, Sprite } from 'pixi.js';
+import type { TutorialTarget, TutorialUi } from './tutorial';
+import type { TutorialHost } from './tutorial-view';
 import { Scene } from '../../src/ui/app';
 import { theme } from '../../src/ui/theme';
 import { ease, Tweens } from '../../src/ui/tween';
@@ -18,7 +20,7 @@ interface SeriesCard {
 }
 
 /** Álbum: as ilustrações (completas e em progresso), % por série e a imagem inteira. */
-export class AlbumScene extends Scene {
+export class AlbumScene extends Scene implements TutorialHost {
   private hud = new Container();
   private header = label('', 26, theme.text, { fontWeight: '800' });
   private back: Button;
@@ -63,6 +65,16 @@ export class AlbumScene extends Scene {
   onEnter(): void {
     window.addEventListener('keydown', this.keyHandler);
     this.refresh();
+    this.ctx.tutorial.notify('enterAlbum');
+  }
+
+  tutorialUi(): TutorialUi {
+    return { scene: 'album', idle: true, blocked: !!this.viewer || this.ctx.menu.isOpen };
+  }
+
+  tutorialTarget(target: TutorialTarget): Rectangle | null {
+    const view = this.cards[0]?.view;
+    return target === 'albumView' && view ? view.getBounds().rectangle : null;
   }
 
   onExit(): void {
@@ -131,6 +143,7 @@ export class AlbumScene extends Scene {
   private openViewer(i: number): void {
     const { collection } = this.ctx.game;
     this.closeViewer();
+    this.ctx.tutorial.notify('viewImage');
     const v = new Container();
     const bg = new Graphics();
     bg.eventMode = 'static';
