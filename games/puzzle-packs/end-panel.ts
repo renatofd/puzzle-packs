@@ -7,34 +7,41 @@ import { SERIES } from './content';
 import type { GameContext } from './context';
 import { t } from './i18n';
 
-/** Tela de conclusão: as 3 ilustrações e as estatísticas da coleção. */
+/** Tela de conclusão: todas as ilustrações e as estatísticas da coleção. */
 export class EndPanel extends Container {
   private backdrop = new Graphics();
   private panel: Panel;
   private readonly w = 520;
-  private readonly h = 560;
+  private readonly h: number;
 
   constructor(ctx: GameContext, onClose: () => void) {
     super();
     const { engine, collection } = ctx.game;
     const st = collection.state;
     this.backdrop.eventMode = 'static';
+    // Miniaturas numa linha só e uma linha de estatística por série: a altura acompanha.
+    const n = SERIES.length;
+    const gap = 12;
+    const size = Math.min(130, Math.floor((this.w - 40 - gap * (n - 1)) / n));
+    const rowsY = 104 + size + 20;
+    const rowH = 26;
+    this.h = rowsY + (5 + n) * rowH + 86;
     this.panel = new Panel({ width: this.w, height: this.h, alpha: 1, border: theme.warning });
     this.panel.eventMode = 'static';
     const title = label(t('end.title'), 30, theme.warning, { fontWeight: '800' });
     title.anchor.set(0.5, 0);
     title.position.set(this.w / 2, 20);
-    const body = label(t('end.body'), 15, theme.textDim, { align: 'center', wordWrap: true, wordWrapWidth: this.w - 60 });
+    const body = label(t('end.body', n), 15, theme.textDim, { align: 'center', wordWrap: true, wordWrapWidth: this.w - 60 });
     body.anchor.set(0.5, 0);
     body.position.set(this.w / 2, 64);
     this.panel.addChild(title, body);
 
-    // As três ilustrações completas.
-    const size = 130;
+    // As ilustrações completas.
+    const total = n * size + (n - 1) * gap;
     SERIES.forEach((_, i) => {
       const sp = new Sprite(ctx.arts[i].full);
       sp.width = sp.height = size;
-      sp.position.set(this.w / 2 - (size * 1.5 + 16) + i * (size + 16), 104);
+      sp.position.set((this.w - total) / 2 + i * (size + gap), 104);
       const frame = new Graphics().roundRect(sp.x - 3, sp.y - 3, size + 6, size + 6, 6).stroke({ width: 2, color: theme.warning, alpha: 0.7 });
       this.panel.addChild(sp, frame);
     });
@@ -48,7 +55,7 @@ export class EndPanel extends Container {
       ...SERIES.map((s, i): [string, string] => [t('end.seriesAt', i + 1), st.completedAt[s.id] !== undefined ? formatTime(st.completedAt[s.id]) : '-']),
     ];
     rows.forEach(([k, v], i) => {
-      const y = 254 + i * 28;
+      const y = rowsY + i * rowH;
       const kl = label(k, 15, theme.textDim);
       kl.position.set(40, y);
       const vl = label(v, 15, theme.text, { fontWeight: '700' });

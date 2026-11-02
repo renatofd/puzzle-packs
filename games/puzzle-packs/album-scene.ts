@@ -17,11 +17,18 @@ interface SeriesCard {
   view: Button;
 }
 
-/** Álbum: as ilustrações (completas e em progresso), % por série e a imagem inteira. */
+/** Séries por página do álbum. */
+const PER_PAGE = 3;
+
+/** Álbum: as ilustrações (completas e em progresso), % por série e a imagem inteira, 3 séries por página. */
 export class AlbumScene extends Scene {
   private hud = new Container();
   private header = label('', 26, theme.text, { fontWeight: '800' });
   private back: Button;
+  private prev: Button;
+  private nextPage: Button;
+  private pageLabel = label('', 15, theme.textDim);
+  private page = 0;
   private cards: SeriesCard[] = [];
   private viewer: Container | null = null;
   private size = 220;
@@ -29,14 +36,18 @@ export class AlbumScene extends Scene {
     if (e.key === 'Escape' || e.key === 'Backspace') {
       if (this.viewer) this.closeViewer();
       else this.ctx.go('main');
-    }
+    } else if (!this.viewer && e.key === 'ArrowLeft') this.setPage(this.page - 1);
+    else if (!this.viewer && e.key === 'ArrowRight') this.setPage(this.page + 1);
   };
 
   constructor(private ctx: GameContext) {
     super();
     this.header.text = t('album');
     this.back = new Button({ text: t('back'), width: 120, height: 44, size: 15, color: theme.textDim, onClick: () => ctx.go('main') });
-    this.hud.addChild(this.header, this.back);
+    this.prev = new Button({ text: '‹', width: 52, height: 44, size: 22, onClick: () => this.setPage(this.page - 1) });
+    this.nextPage = new Button({ text: '›', width: 52, height: 44, size: 22, onClick: () => this.setPage(this.page + 1) });
+    this.pageLabel.anchor.set(0.5, 0.5);
+    this.hud.addChild(this.header, this.back, this.prev, this.nextPage, this.pageLabel);
     this.root.addChild(this.hud);
     this.build();
   }
@@ -60,9 +71,21 @@ export class AlbumScene extends Scene {
     });
   }
 
+  private get pages(): number {
+    return Math.ceil(SERIES.length / PER_PAGE);
+  }
+
+  private setPage(p: number): void {
+    this.page = Math.max(0, Math.min(this.pages - 1, p));
+    this.resize(this.kit.width, this.kit.height);
+  }
+
   onEnter(): void {
     window.addEventListener('keydown', this.keyHandler);
+    // Abre na página da série que o jogador está montando.
+    this.page = Math.floor(this.ctx.game.collection.currentSeries() / PER_PAGE);
     this.refresh();
+    this.resize(this.kit.width, this.kit.height);
   }
 
   onExit(): void {
@@ -95,17 +118,31 @@ export class AlbumScene extends Scene {
     this.hud.scale.set(k);
     this.header.position.set(24, 18);
     this.back.place(W - 144, 16);
-    const size = portrait ? Math.min(220, (H - 120) / 3 - 140) : Math.min(260, (W - 120) / 3, H - 260);
+    // Espaço de baixo reservado para a navegação entre páginas.
+    const size = portrait ? Math.min(220, (H - 180) / PER_PAGE - 140) : Math.min(260, (W - 120) / PER_PAGE, H - 320);
     const cardH = size + 130;
     if (Math.abs(size - this.size) > 1) {
       this.size = Math.max(90, size);
       this.build();
       this.refresh();
     }
-    this.cards.forEach((c, i) => {
+    const multi = this.pages > 1;
+    for (const b of [this.prev, this.nextPage]) b.visible = multi;
+    this.pageLabel.visible = multi;
+    this.prev.enabled = this.page > 0;
+    this.nextPage.enabled = this.page < this.pages - 1;
+    this.pageLabel.text = `${this.page + 1} / ${this.pages}`;
+    this.prev.place(W / 2 - 120, H - 64);
+    this.nextPage.place(W / 2 + 68, H - 64);
+    this.pageLabel.position.set(W / 2, H - 42);
+    this.cards.forEach((card, idx) => {
+      card.root.visible = Math.floor(idx / PER_PAGE) === this.page;
+    });
+    this.cards.forEach((c, idx) => {
+      const i = idx % PER_PAGE;
       if (portrait) {
         // Retrato: tabuleiro à esquerda, informações à direita, uma série por linha.
-        const rowH = (H - 90) / 3;
+        const rowH = (H - 150) / PER_PAGE;
         c.root.position.set(24, 80 + i * rowH);
         c.board.position.set(0, 28);
         c.title.position.set(0, 0);
@@ -114,8 +151,8 @@ export class AlbumScene extends Scene {
         c.status.position.set(ix, 76);
         c.view.place(ix, 108);
       } else {
-        const total = 3 * this.size + 2 * 40;
-        c.root.position.set((W - total) / 2 + i * (this.size + 40), Math.max(80, (H - cardH) / 2));
+        const total = PER_PAGE * this.size + (PER_PAGE - 1) * 40;
+        c.root.position.set((W - total) / 2 + i * (this.size + 40), Math.max(80, (H - 60 - cardH) / 2));
         c.title.position.set(0, 0);
         c.board.position.set(0, 34);
         c.bar.position.set(0, this.size + 48);

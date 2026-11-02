@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { SaveManager, memoryStorage } from '../src/core/save';
-import { PACKS, SERIES, pieceCount, pieceRarity } from '../games/puzzle-packs/content';
+import { PACKS, SERIES, SERIES_COST_MULT, pieceCount, pieceRarity } from '../games/puzzle-packs/content';
 import { createGame } from '../games/puzzle-packs/game';
 
 const completeSeries = (game: ReturnType<typeof createGame>, i: number) => {
@@ -9,13 +9,31 @@ const completeSeries = (game: ReturnType<typeof createGame>, i: number) => {
 };
 
 describe('Puzzle Packs: dados', () => {
-  it('séries com grades 3x3, 4x4 e 5x5 e 1 ou 2 raras cada', () => {
-    expect(SERIES.map((s) => s.grid)).toEqual([3, 4, 5]);
-    for (const s of SERIES) {
+  it('6 séries de 3x3 a 8x8, com raras no miolo e cada vez mais caras', () => {
+    expect(SERIES.map((s) => s.grid)).toEqual([3, 4, 5, 6, 7, 8]);
+    expect(new Set(SERIES.map((s) => s.id)).size).toBe(SERIES.length);
+    expect(SERIES_COST_MULT.length).toBeGreaterThanOrEqual(SERIES.length);
+    SERIES.forEach((s, i) => {
       expect(s.rare.length).toBeGreaterThanOrEqual(1);
-      expect(s.rare.length).toBeLessThanOrEqual(2);
-      for (const r of s.rare) expect(r).toBeLessThan(pieceCount(s));
-    }
+      expect(s.rare.length).toBeLessThanOrEqual(Math.max(2, s.grid - 3));
+      for (const r of s.rare) {
+        expect(r).toBeLessThan(pieceCount(s));
+        // Rara nunca fica na borda (a borda é das comuns).
+        const x = r % s.grid;
+        const y = Math.floor(r / s.grid);
+        expect(x > 0 && y > 0 && x < s.grid - 1 && y < s.grid - 1, `${s.id} #${r}`).toBe(true);
+      }
+      if (i > 0) {
+        expect(s.coinMult).toBeGreaterThan(SERIES[i - 1].coinMult);
+        expect(SERIES_COST_MULT[i]).toBeGreaterThan(SERIES_COST_MULT[i - 1]);
+      }
+    });
+  });
+
+  it('toda série tem entrada de arte no manifest', async () => {
+    const manifest = (await import('../public/assets/manifest.json')).default as { assets: Array<{ id: string }> };
+    const ids = manifest.assets.map((a) => a.id);
+    for (const s of SERIES) expect(ids, s.asset).toContain(s.asset);
   });
 
   it('borda é comum, centro incomum e as listadas são raras', () => {
@@ -122,11 +140,37 @@ describe('Puzzle Packs: economia', () => {
     expect(collection.openTime()).toBeLessThan(time);
   });
 
-  it('as 3 séries completas liberam a vitória', () => {
+  it('só a última série completa libera a vitória', () => {
     const game = createGame(6);
-    for (let i = 0; i < SERIES.length; i++) completeSeries(game, i);
+    for (let i = 0; i < SERIES.length - 1; i++) completeSeries(game, i);
+    expect(game.engine.isUnlocked('victory')).toBe(false);
+    expect(game.collection.currentSeries()).toBe(SERIES.length - 1);
+    completeSeries(game, SERIES.length - 1);
     expect(game.collection.allComplete()).toBe(true);
     expect(game.engine.isUnlocked('victory')).toBe(true);
+  });
+
+  it('save v1 (3 séries, vitória já vista) continua na Série 4', () => {
+    const old = createGame(9);
+    for (let i = 0; i < 3; i++) completeSeries(old, i);
+    // Como era o save antigo: só 3 séries, vitória liberada e fim já visto.
+    const st = old.collection.state;
+    for (const s of SERIES.slice(3)) delete st.owned[s.id];
+    old.engine.state.unlocks.victory = true;
+    old.engine.state.flags.endSeen = true;
+    const storage = memoryStorage();
+    const saves = new SaveManager(old.engine, { storage, key: 'k', now: () => 0 });
+    const file = JSON.parse(saves.toString());
+    file.v = 1;
+    storage.write('k', JSON.stringify(file));
+
+    const game = createGame(9);
+    new SaveManager(game.engine, { storage, key: 'k', now: () => 0 }).load();
+    expect(game.engine.isUnlocked('victory')).toBe(false);
+    expect(game.engine.state.flags.endSeen).toBeFalsy();
+    expect(game.collection.isComplete(2)).toBe(true);
+    expect(game.collection.currentSeries()).toBe(3);
+    expect(game.collection.owned(3)).toEqual(new Array(36).fill(0));
   });
 
   it('offline: o auto-abridor trabalha com o jogo fechado, até o teto', () => {

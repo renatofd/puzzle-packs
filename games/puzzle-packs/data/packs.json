@@ -4,5 +4,5 @@
     { "id": "series",  "cards": 4, "cost": 20, "rareMult": 1.5, "currentShare": 1, "missingBoost": 3,   "color": 6109346 },
     { "id": "premium", "cards": 5, "cost": 50, "rareMult": 5,   "currentShare": 1, "missingBoost": 2,   "color": 16106057 }
   ],
-  "seriesCostMult": [1, 7, 800]
+  "seriesCostMult": [1, 7, 800, 3000, 14000, 70000]
 }
