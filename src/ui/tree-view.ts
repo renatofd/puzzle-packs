@@ -6,6 +6,7 @@ import type { Particles } from './fx';
 import { audio } from './audio';
 import { theme } from './theme';
 import { ease, Tweens } from './tween';
+import { fill, kitText as T } from './strings';
 import { label, type Tooltip, type TooltipLine } from './widgets';
 
 export interface TreeViewOptions {
@@ -37,12 +38,12 @@ interface NodeView {
   status: UpgradeStatus | 'teased' | null;
 }
 
-const STATUS_TEXT: Record<UpgradeStatus, string> = {
-  hidden: '',
-  locked: 'Bloqueado',
-  available: 'Recursos insuficientes',
-  affordable: 'Clique para comprar',
-  maxed: 'Nível máximo',
+const STATUS_TEXT: Record<UpgradeStatus, () => string> = {
+  hidden: () => '',
+  locked: () => T.treeLocked,
+  available: () => T.treeAvailable,
+  affordable: () => T.treeAffordable,
+  maxed: () => T.treeMaxed,
 };
 
 /**
@@ -322,7 +323,7 @@ export class TreeView extends Container {
     const v = this.views.get(id);
     if (!v || !v.status || v.status === 'hidden') return;
     if (v.status === 'teased') {
-      this.tooltip.show([{ text: '???', bold: true, size: 16 }, { text: 'Compre um nó vizinho para revelar.', color: theme.textDim }], this.lastPointer.x, this.lastPointer.y);
+      this.tooltip.show([{ text: '???', bold: true, size: 16 }, { text: T.treeHiddenHint, color: theme.textDim }], this.lastPointer.x, this.lastPointer.y);
       return;
     }
     const u = v.def;
@@ -330,16 +331,16 @@ export class TreeView extends Container {
     const max = u.maxLevel ?? 1;
     const desc = typeof u.description === 'function' ? u.description(level, this.engine.state) : u.description;
     const lines: TooltipLine[] = [{ text: u.name, bold: true, size: 16 }, { text: desc, color: theme.textDim }];
-    if (max > 1) lines.push({ text: `Nível ${level}${max === Infinity ? '' : ' / ' + max}`, color: theme.text, size: 13 });
+    if (max > 1) lines.push({ text: fill(T.treeLevel, `${level}${max === Infinity ? '' : ' / ' + max}`), color: theme.text, size: 13 });
     if (this.opts.extraTooltip) lines.push(...this.opts.extraTooltip(u, this.engine));
     if (v.status !== 'maxed') {
       for (const c of this.engine.upgradeCost(id)) {
         const name = this.engine.def.resources.find((r) => r.id === c.resource)?.name ?? c.resource;
         const ok = this.engine.amount(c.resource).gte(c.amount);
-        lines.push({ text: `Custo: ${format(c.amount)} ${name}`, color: ok ? theme.good : theme.bad, bold: true });
+        lines.push({ text: fill(T.treeCost, format(c.amount), name), color: ok ? theme.good : theme.bad, bold: true });
       }
     }
-    lines.push({ text: STATUS_TEXT[v.status as UpgradeStatus], color: theme.textDim, size: 12 });
+    lines.push({ text: STATUS_TEXT[v.status as UpgradeStatus](), color: theme.textDim, size: 12 });
     this.tooltip.show(lines, this.lastPointer.x, this.lastPointer.y);
   }
 

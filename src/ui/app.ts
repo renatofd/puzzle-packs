@@ -26,7 +26,23 @@ export abstract class Scene {
  * painéis encolhem em telas pequenas e crescem em telas grandes.
  */
 export function uiScale(width: number, height: number, baseW = 1100, baseH = 680, min = 0.55, max = 1.6): number {
+  if (portraitBase && isPortrait(width, height)) [baseW, baseH] = portraitBase;
   return Math.max(min, Math.min(max, width / baseW, height / baseH));
+}
+
+let portraitBase: [number, number] | null = null;
+
+/** Tela em pé (celular na vertical). */
+export function isPortrait(width: number, height: number): boolean {
+  return height > width * 1.05;
+}
+
+/**
+ * Jogos com layout próprio para retrato passam a base lógica dele (ex.:
+ * 560 × 960). Assim tooltips, toasts e o HUD usam a mesma escala em pé.
+ */
+export function setPortraitBase(width: number, height: number): void {
+  portraitBase = [width, height];
 }
 
 export interface KitAppOptions {

@@ -7,6 +7,7 @@ import { audio } from './audio';
 import { settings } from './settings';
 import { theme } from './theme';
 import { ease, Tweens } from './tween';
+import { fill, kitText as T } from './strings';
 import { Button, label, Panel, Slider } from './widgets';
 
 export type MenuTab = 'options' | 'stats' | 'achievements' | 'save';
@@ -19,17 +20,17 @@ export interface GameMenuOptions {
   extraStats?: (engine: Engine) => Array<[string, string]>;
 }
 
-const TABS: Array<{ id: MenuTab; name: string }> = [
-  { id: 'options', name: 'Opções' },
-  { id: 'stats', name: 'Estatísticas' },
-  { id: 'achievements', name: 'Conquistas' },
-  { id: 'save', name: 'Save' },
+const TABS: Array<{ id: MenuTab; name: () => string }> = [
+  { id: 'options', name: () => T.tabOptions },
+  { id: 'stats', name: () => T.tabStats },
+  { id: 'achievements', name: () => T.tabAchievements },
+  { id: 'save', name: () => T.tabSave },
 ];
 
-const NOTATIONS: Array<{ id: Notation; name: string }> = [
-  { id: 'short', name: 'Curta (1.5M)' },
-  { id: 'scientific', name: 'Científica (1.5e6)' },
-  { id: 'engineering', name: 'Engenharia (1.5e6, 15e6)' },
+const NOTATIONS: Array<{ id: Notation; name: () => string }> = [
+  { id: 'short', name: () => T.notationShort },
+  { id: 'scientific', name: () => T.notationScientific },
+  { id: 'engineering', name: () => T.notationEngineering },
 ];
 
 /**
@@ -58,12 +59,12 @@ export class GameMenu extends Container {
     this.backdrop.on('pointertap', () => this.close());
     this.panel = new Panel({ width: this.w, height: this.h, alpha: 1 });
     this.panel.eventMode = 'static';
-    const title = label('Menu', 20, theme.text, { fontWeight: '700' });
+    const title = label(T.menu, 20, theme.text, { fontWeight: '700' });
     title.position.set(24, 18);
-    const close = new Button({ text: 'Fechar', width: 90, height: 32, size: 13, color: theme.textDim, onClick: () => this.close() }).place(this.w - 114, 16);
+    const close = new Button({ text: T.close, width: 90, height: 32, size: 13, color: theme.textDim, onClick: () => this.close() }).place(this.w - 114, 16);
     this.panel.addChild(title, close);
     TABS.forEach((t, i) => {
-      const b = new Button({ text: t.name, width: 138, height: 34, size: 14, onClick: () => this.show(t.id) }).place(24 + i * 148, 62);
+      const b = new Button({ text: t.name(), width: 138, height: 34, size: 14, onClick: () => this.show(t.id) }).place(24 + i * 148, 62);
       this.tabButtons.set(t.id, b);
       this.panel.addChild(b);
     });
@@ -161,16 +162,16 @@ export class GameMenu extends Container {
       this.body.addChild(l, sl, pct);
       y += 46;
     };
-    slider('Volume geral', s.masterVolume, (v) => settings.set('masterVolume', v));
-    slider('Efeitos sonoros', s.sfxVolume, (v) => {
+    slider(T.masterVolume, s.masterVolume, (v) => settings.set('masterVolume', v));
+    slider(T.sfxVolume, s.sfxVolume, (v) => {
       settings.set('sfxVolume', v);
       audio.play('click');
     });
-    slider('Música', s.musicVolume, (v) => settings.set('musicVolume', v));
-    slider('Partículas e efeitos', s.effects, (v) => settings.set('effects', v));
+    slider(T.musicVolume, s.musicVolume, (v) => settings.set('musicVolume', v));
+    slider(T.effects, s.effects, (v) => settings.set('effects', v));
 
     const shake = new Button({
-      text: `Tremida de tela: ${s.screenShake ? 'ligada' : 'desligada'}`,
+      text: s.screenShake ? T.screenShakeOn : T.screenShakeOff,
       width: 300,
       height: 36,
       size: 14,
@@ -182,7 +183,7 @@ export class GameMenu extends Container {
     y += 52;
     const idx = NOTATIONS.findIndex((n) => n.id === s.notation);
     const notation = new Button({
-      text: `Notação: ${NOTATIONS[idx].name}`,
+      text: fill(T.notation, NOTATIONS[idx].name()),
       width: 300,
       height: 36,
       size: 14,
@@ -191,7 +192,7 @@ export class GameMenu extends Container {
         this.render();
       },
     }).place(0, y + 6);
-    const example = label(`Exemplo: ${format(1.5e6)}, ${format(2.34e15)}`, 13, theme.textDim);
+    const example = label(fill(T.example, `${format(1.5e6)}, ${format(2.34e15)}`), 13, theme.textDim);
     example.position.set(316, y + 16);
     this.body.addChild(shake, notation, example);
   }
@@ -199,18 +200,18 @@ export class GameMenu extends Container {
   private renderStats(): void {
     const e = this.opts.engine;
     const rows: Array<[string, string]> = [
-      ['Tempo de jogo', formatTime(e.state.time.played)],
-      ['Desde o último reset', formatTime(e.state.time.sinceReset)],
+      [T.playTime, formatTime(e.state.time.played)],
+      [T.sinceReset, formatTime(e.state.time.sinceReset)],
     ];
     for (const r of e.def.resources) {
       const life = e.state.lifetime[r.id];
       if (!life || life.lte(0)) continue;
-      rows.push([`${r.name}: total ganho`, format(life)]);
+      rows.push([fill(T.totalEarned, r.name), format(life)]);
     }
     const ups = e.def.upgrades ?? [];
-    rows.push(['Upgrades comprados', `${ups.filter((u) => e.upgradeLevel(u.id) > 0).length} de ${ups.length}`]);
+    rows.push([T.upgradesBought, fill(T.xOfY, ups.filter((u) => e.upgradeLevel(u.id) > 0).length, ups.length)]);
     const ach = e.def.achievements ?? [];
-    rows.push(['Conquistas', `${ach.filter((a) => e.state.achievements[a.id]).length} de ${ach.length}`]);
+    rows.push([T.achievements, fill(T.xOfY, ach.filter((a) => e.state.achievements[a.id]).length, ach.length)]);
     rows.push(...(this.opts.extraStats?.(e) ?? []));
     rows.forEach(([k, v], i) => {
       const y = i * 32;
@@ -243,7 +244,7 @@ export class GameMenu extends Container {
         .stroke({ width: got ? 2 : 1, color });
       const n = label(secret ? '???' : a.name, 15, got ? theme.text : theme.textDim, { fontWeight: '700' });
       n.position.set(12, 10);
-      const d = label(secret ? 'Conquista secreta.' : a.description, 12, theme.textDim, { wordWrap: true, wordWrapWidth: cardW - 24 });
+      const d = label(secret ? T.secretAchievement : a.description, 12, theme.textDim, { wordWrap: true, wordWrapWidth: cardW - 24 });
       d.position.set(12, 34);
       c.addChild(bg, n, d);
       this.body.addChild(c);
@@ -252,7 +253,7 @@ export class GameMenu extends Container {
 
   private renderSave(): void {
     const { saves } = this.opts;
-    const info = label('O jogo salva sozinho a cada 10 segundos e ao fechar a aba.', 14, theme.textDim);
+    const info = label(T.saveInfo, 14, theme.textDim);
     info.position.set(0, 4);
     this.status = label('', 14, theme.good);
     this.status.position.set(0, 250);
@@ -261,9 +262,9 @@ export class GameMenu extends Container {
       this.status.text = text;
       this.status.style.fill = ok ? theme.good : theme.bad;
     };
-    const saveNow = new Button({ text: 'Salvar agora', width: 280, height: 40, size: 14, onClick: () => (saves.save(), say('Jogo salvo.')) }).place(0, 40);
+    const saveNow = new Button({ text: T.saveNow, width: 280, height: 40, size: 14, onClick: () => (saves.save(), say(T.saved)) }).place(0, 40);
     const exp = new Button({
-      text: 'Exportar (copiar código)',
+      text: T.exportSave,
       width: 280,
       height: 40,
       size: 14,
@@ -271,28 +272,28 @@ export class GameMenu extends Container {
         const code = saves.export();
         navigator.clipboard
           ?.writeText(code)
-          .then(() => say('Código do save copiado. Guarde-o num lugar seguro.'))
-          .catch(() => say('O navegador não deixou copiar. Tente de novo depois de clicar na página.', false));
+          .then(() => say(T.exported))
+          .catch(() => say(T.exportFailed, false));
       },
     }).place(0, 92);
     const imp = new Button({
-      text: 'Importar (colar código)',
+      text: T.importSave,
       width: 280,
       height: 40,
       size: 14,
       onClick: () => {
-        if (!navigator.clipboard?.readText) return say('Este navegador não permite ler a área de transferência.', false);
+        if (!navigator.clipboard?.readText) return say(T.importUnsupported, false);
         navigator.clipboard
           .readText()
           .then((code) => {
             saves.import(code);
-            say('Save importado.');
+            say(T.imported);
           })
-          .catch(() => say('Não deu para importar: copie o código do save e permita colar.', false));
+          .catch(() => say(T.importFailed, false));
       },
     }).place(0, 144);
     const wipe = new Button({
-      text: this.wipeArmed ? 'Clique de novo para apagar tudo' : 'Apagar save',
+      text: this.wipeArmed ? T.wipeConfirm : T.wipeSave,
       width: 280,
       height: 40,
       size: 14,
