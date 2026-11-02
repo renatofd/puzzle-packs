@@ -13,9 +13,10 @@ import { CardView, BoardView, CoinCounter, PackView, CARD_H, CARD_W, PACK_H, PAC
 import { COLORS, PACKS, RARITIES, SERIES, type PackId } from './content';
 import type { PackResult } from './collection';
 import { layoutOf, type GameContext } from './context';
-import { LANG_ORDER, LANGS, lang, saveLang, t } from './i18n';
+import { LANGS, lang, saveLang, t } from './i18n';
 import { portal } from './portal';
 import { EndPanel } from './end-panel';
+import { flagTexture, LangPopup } from './lang-popup';
 
 type StageState = 'idle' | 'revealing' | 'collecting';
 
@@ -67,10 +68,11 @@ export class MainScene extends Scene implements TutorialHost {
   private floats = new FloatingText(22);
   private shake = new ScreenShake();
   private endPanel: EndPanel | null = null;
+  private langPopup: LangPopup | null = null;
   private layout = layoutOf(800, 600);
   private keyHandler = (e: KeyboardEvent) => {
     if (e.key === 'm' || e.key === 'M') return this.ctx.menu.toggle();
-    if (this.ctx.menu.isOpen || this.endPanel) return;
+    if (this.ctx.menu.isOpen || this.endPanel || this.langPopup) return;
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       this.advance();
@@ -148,17 +150,13 @@ export class MainScene extends Scene implements TutorialHost {
     this.treeButton = new Button({ text: t('upgrades'), width: 130, height: 44, size: 15, color: theme.good, icon: ctx.textures['icon-upgrades'], onClick: () => ctx.go('tree') });
     this.menuButton = new Button({ text: t('menu'), width: 100, height: 44, size: 15, color: theme.textDim, icon: ctx.textures['icon-menu'], onClick: () => ctx.menu.toggle() });
     this.langButton = new Button({
-      text: lang().toUpperCase(),
+      text: '',
       width: 60,
       height: 44,
       size: 15,
       color: theme.textDim,
-      onClick: () => {
-        const next = LANG_ORDER[(LANG_ORDER.indexOf(lang()) + 1) % LANG_ORDER.length];
-        saveLang(next);
-        ctx.saves.save();
-        location.reload();
-      },
+      icon: flagTexture(ctx.kit.app.renderer, lang()),
+      onClick: () => this.showLang(),
     });
     this.langButton.on('pointerover', (e: FederatedPointerEvent) => ctx.tooltip.show([{ text: t('language', LANGS[lang()].langName) }], e.global.x, e.global.y));
     this.langButton.on('pointerout', () => ctx.tooltip.hide());
@@ -292,6 +290,7 @@ export class MainScene extends Scene implements TutorialHost {
     this.hint.position.set(stageX + stageW / 2, stageY + stageH - 44);
     this.layoutStage();
     this.endPanel?.layout(W, H);
+    this.langPopup?.layout(W, H);
   }
 
   private placeBoard(x: number, y: number, size: number): void {
@@ -723,6 +722,28 @@ export class MainScene extends Scene implements TutorialHost {
     this.refreshBoard(true);
   }
 
+  // ------------------------------------------------------------ idioma
+
+  private showLang(): void {
+    if (this.langPopup) return;
+    this.ctx.tooltip.hide();
+    const close = () => {
+      this.langPopup?.destroy({ children: true });
+      this.langPopup = null;
+    };
+    this.langPopup = new LangPopup(
+      this.ctx.kit.app.renderer,
+      (l) => {
+        saveLang(l);
+        this.ctx.saves.save();
+        location.reload();
+      },
+      close,
+    );
+    this.hud.addChild(this.langPopup);
+    this.langPopup.layout(this.layout.W, this.layout.H);
+  }
+
   // ------------------------------------------------------------ tutorial
 
   tutorialUi(): TutorialUi {
@@ -730,7 +751,7 @@ export class MainScene extends Scene implements TutorialHost {
       scene: 'main',
       idle: this.state === 'idle',
       revealing: this.state === 'revealing',
-      blocked: this.ctx.menu.isOpen || !!this.endPanel,
+      blocked: this.ctx.menu.isOpen || !!this.endPanel || !!this.langPopup,
     };
   }
 
