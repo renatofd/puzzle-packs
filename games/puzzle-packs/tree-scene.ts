@@ -8,9 +8,11 @@ import { Button, label } from '../../src/ui/widgets';
 import { layoutOf, type GameContext } from './context';
 import { t } from './i18n';
 import { CoinCounter } from './views';
+import type { TutorialUi } from './tutorial';
+import type { TutorialHost } from './tutorial-view';
 
 /** Árvore de melhorias do template, paga com moedas. */
-export class TreeScene extends Scene {
+export class TreeScene extends Scene implements TutorialHost {
   private tree: TreeView;
   private particles: Particles;
   private hud = new Container();
@@ -45,6 +47,16 @@ export class TreeScene extends Scene {
     window.addEventListener('keydown', this.keyHandler);
     this.tree.refresh(true);
     this.tree.focus();
+    this.ctx.tutorial.notify('enterTree');
+  }
+
+  tutorialUi(): TutorialUi {
+    return { scene: 'tree', idle: true, blocked: this.ctx.menu.isOpen };
+  }
+
+  /** A árvore inteira é o alvo: o balão fica embaixo, sem escurecer. */
+  tutorialTarget(): null {
+    return null;
   }
 
   onExit(): void {

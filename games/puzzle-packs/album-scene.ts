@@ -1,4 +1,6 @@
-import { Container, Graphics, Sprite } from 'pixi.js';
+import { Container, Graphics, Rectangle, Sprite } from 'pixi.js';
+import type { TutorialTarget, TutorialUi } from './tutorial';
+import type { TutorialHost } from './tutorial-view';
 import { Scene } from '../../src/ui/app';
 import { theme } from '../../src/ui/theme';
 import { ease, Tweens } from '../../src/ui/tween';
@@ -21,7 +23,7 @@ interface SeriesCard {
 const PER_PAGE = 3;
 
 /** Álbum: as ilustrações (completas e em progresso), % por série e a imagem inteira, 3 séries por página. */
-export class AlbumScene extends Scene {
+export class AlbumScene extends Scene implements TutorialHost {
   private hud = new Container();
   private header = label('', 26, theme.text, { fontWeight: '800' });
   private back: Button;
@@ -86,6 +88,17 @@ export class AlbumScene extends Scene {
     this.page = Math.floor(this.ctx.game.collection.currentSeries() / PER_PAGE);
     this.refresh();
     this.resize(this.kit.width, this.kit.height);
+    this.ctx.tutorial.notify('enterAlbum');
+  }
+
+  tutorialUi(): TutorialUi {
+    return { scene: 'album', idle: true, blocked: !!this.viewer || this.ctx.menu.isOpen };
+  }
+
+  tutorialTarget(target: TutorialTarget): Rectangle | null {
+    // O primeiro cartão visível da página atual.
+    const view = this.cards[this.page * PER_PAGE]?.view;
+    return target === 'albumView' && view ? view.getBounds().rectangle : null;
   }
 
   onExit(): void {
@@ -168,6 +181,7 @@ export class AlbumScene extends Scene {
   private openViewer(i: number): void {
     const { collection } = this.ctx.game;
     this.closeViewer();
+    this.ctx.tutorial.notify('viewImage');
     const v = new Container();
     const bg = new Graphics();
     bg.eventMode = 'static';
