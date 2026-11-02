@@ -1,7 +1,7 @@
 /**
  * Simula o Puzzle Packs com perfis de jogador e mede o tempo de cada série
  * e quantos pacotes foram abertos.
- * Uso: npm run sim -- [minutos] [perfil]
+ * Uso: npm run sim -- [minutos] [perfil]   (padrão: 1500 min; SEEDS=n muda o número de sementes da mediana)
  * Com um perfil (optimal, human, casual), imprime também o relatório
  * completo dele, compra a compra.
  */
@@ -9,7 +9,7 @@ import { SERIES, type PackId } from '../games/puzzle-packs/content';
 import { createGame, type Game } from '../games/puzzle-packs/game';
 import { buyCheapestUpgrade, formatProfileTable, formatReport, simulateProfiles, type SimPolicy, type SimProfile } from '../src/sim/simulator';
 
-const maxMinutes = Number(process.argv[2] ?? 60);
+const maxMinutes = Number(process.argv[2] ?? 1500);
 const detail = process.argv[3];
 
 /**
@@ -113,7 +113,7 @@ for (const { profile } of results) {
 }
 
 // Uma semente só engana: a sorte com as raras muda muito o ritmo. Mediana de várias sementes.
-const SEEDS = 25;
+const SEEDS = Number(process.env.SEEDS ?? 25);
 console.log(`\nMediana e faixa (p10 a p90) de ${SEEDS} sementes, em minutos:`);
 const median = (xs: number[], q = 0.5) => {
   const v = [...xs].sort((a, b) => a - b);

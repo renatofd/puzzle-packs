@@ -1,4 +1,4 @@
-import { Container, FillGradient, Graphics, Rectangle, Sprite, Text, type Renderer, type Texture } from 'pixi.js';
+import { Assets, Container, FillGradient, Graphics, Rectangle, Sprite, Text, type Renderer, type Texture } from 'pixi.js';
 import { SERIES, pieceCount, type SeriesDef } from './content';
 
 /**
@@ -18,8 +18,8 @@ export interface SeriesArt {
   cell: number;
   /** Margem em volta da célula para os encaixes (tabs) da peça. */
   pad: number;
-  /** Peça já recortada no formato de jigsaw, com `pad` em volta. */
-  pieces: Texture[];
+  /** Peça já recortada no formato de jigsaw, com `pad` em volta (gerada na primeira vez que é pedida). */
+  piece(p: number): Texture;
 }
 
 // ------------------------------------------------------------ jigsaw
@@ -189,8 +189,8 @@ function paintPlaceholder(series: number): Container {
       const h = S * (0.06 + r() * 0.06);
       g.poly([x, base - h, x - h * 0.35, base, x + h * 0.35, base]).fill({ color: 0x1f4a35 });
     }
-  } else {
-    // Galáxia (e fallback para séries futuras): estrelas, nebulosa e planetas.
+  } else if (series === 5) {
+    // Galáxia: estrelas, nebulosa e planetas.
     g.rect(0, 0, S, S).fill(gradient(0x0b0820, 0x2a1450, 0x09061a));
     for (let i = 0; i < 6; i++) g.circle(S * (0.3 + r() * 0.4), S * (0.3 + r() * 0.4), S * (0.12 + r() * 0.12)).fill({ color: [0x9b4dcc, 0x4d6bcc, 0xcc4d8a][i % 3], alpha: 0.12 });
     for (let i = 0; i < 140; i++) g.circle(r() * S, r() * S, 0.6 + r() * 2.2).fill({ color: 0xffffff, alpha: 0.3 + r() * 0.7 });
@@ -198,6 +198,29 @@ function paintPlaceholder(series: number): Container {
     g.ellipse(S * 0.28, S * 0.7, S * 0.22, S * 0.04).stroke({ width: 6, color: 0xffd9a8, alpha: 0.8 });
     g.circle(S * 0.75, S * 0.25, S * 0.07).fill({ color: 0x6fc3ff });
     g.circle(S * 0.82, S * 0.78, S * 0.04).fill({ color: 0xffd700 });
+  } else {
+    // Séries 7+: cena genérica nas cores da `palette` da série (a arte final vem do manifest).
+    const [top, mid, bottom] = SERIES[series].palette;
+    g.rect(0, 0, S, S).fill(gradient(top, mid, bottom));
+    g.circle(S * (0.2 + r() * 0.6), S * (0.15 + r() * 0.15), S * (0.06 + r() * 0.05)).fill({ color: 0xffffff, alpha: 0.75 });
+    for (let i = 0; i < 40; i++) g.circle(r() * S, r() * S * 0.45, 1 + r() * 3).fill({ color: 0xffffff, alpha: 0.15 + r() * 0.35 });
+    // Três camadas de morros, cada uma mais escura, na cor de baixo da paleta.
+    for (let k = 0; k < 3; k++) {
+      const y = S * (0.55 + k * 0.13);
+      const amp = S * (0.05 + r() * 0.06);
+      g.moveTo(0, y);
+      for (let x = 0; x < S; x += S / 4) g.quadraticCurveTo(x + S / 8, y - amp * (r() * 2 - 0.5), x + S / 4, y + (r() - 0.5) * amp);
+      g.lineTo(S, S).lineTo(0, S).closePath().fill({ color: bottom, alpha: 0.35 + k * 0.2 });
+    }
+    // Formas soltas (flores, cristais, luzes...) para as peças não ficarem iguais.
+    for (let i = 0; i < 14; i++) {
+      const x = r() * S;
+      const y = S * (0.5 + r() * 0.45);
+      const rad = 6 + r() * 16;
+      const color = [top, mid, 0xffffff][i % 3];
+      if (i % 2) g.circle(x, y, rad).fill({ color, alpha: 0.8 });
+      else g.poly([x, y - rad * 1.6, x - rad, y + rad, x + rad, y + rad]).fill({ color, alpha: 0.8 });
+    }
   }
   c.addChild(g);
   // Número de cada peça bem visível: é o placeholder "numerado".
@@ -228,8 +251,11 @@ export function buildSeriesArt(renderer: Renderer, series: number, image?: Textu
 
   const cell = S / s.grid;
   const pad = Math.ceil(cell * 0.26);
-  const pieces: Texture[] = [];
-  for (let p = 0; p < pieceCount(s); p++) {
+  // Uma textura por peça custa memória de GPU: só recorta quando a peça aparece.
+  const pieces: Array<Texture | undefined> = [];
+  const piece = (p: number): Texture => {
+    const hit = pieces[p];
+    if (hit) return hit;
     const x = p % s.grid;
     const y = Math.floor(p / s.grid);
     const holder = new Container();
@@ -239,8 +265,69 @@ export function buildSeriesArt(renderer: Renderer, series: number, image?: Textu
     img.mask = mask;
     const outline = piecePath(new Graphics(), series, p, cell).stroke({ width: 3, color: 0xffffff, alpha: 0.55 });
     holder.addChild(img, mask, outline);
-    pieces.push(renderer.generateTexture({ target: holder, frame: new Rectangle(-pad, -pad, cell + pad * 2, cell + pad * 2) }));
+    const tex = renderer.generateTexture({ target: holder, frame: new Rectangle(-pad, -pad, cell + pad * 2, cell + pad * 2) });
     holder.destroy({ children: true });
+    pieces[p] = tex;
+    return tex;
+  };
+  return { series, full, cell, pad, piece };
+}
+
+// ------------------------------------------------------------ cache
+
+/**
+ * Arte das séries sob demanda. Com dezenas de séries, carregar e recortar
+ * tudo na abertura pesa no celular: a imagem de uma série só é baixada
+ * quando `load(i)` é chamado (séries liberadas, a próxima, a página do
+ * álbum) e a arte só é montada no primeiro `get(i)`.
+ */
+export class ArtStore {
+  private cache = new Map<number, { art: SeriesArt; placeholder: boolean }>();
+  private loading = new Map<number, Promise<void>>();
+
+  /** `files`: id do asset → caminho dentro de `assets/`, só dos que estão prontos no manifest. */
+  constructor(
+    private renderer: Renderer,
+    private files: Record<string, string>,
+    private images: Record<string, Texture> = {},
+  ) {}
+
+  hasImage(i: number): boolean {
+    return !!this.files[SERIES[i].asset];
   }
-  return { series, full, cell, pad, pieces };
+
+  /** A arte da série. Se a imagem ainda não foi carregada com `load`, devolve o placeholder (trocado depois do `load`). */
+  get(i: number): SeriesArt {
+    const hit = this.cache.get(i);
+    if (hit) return hit.art;
+    const image = this.images[SERIES[i].asset];
+    const art = buildSeriesArt(this.renderer, i, image);
+    const placeholder = !image && this.hasImage(i);
+    this.cache.set(i, { art, placeholder });
+    return art;
+  }
+
+  /** Baixa a imagem da série (se houver no manifest). Resolve quando ela está pronta ou falhou. */
+  load(i: number): Promise<void> {
+    if (i < 0 || i >= SERIES.length) return Promise.resolve();
+    const id = SERIES[i].asset;
+    const file = this.files[id];
+    if (!file || this.images[id]) return Promise.resolve();
+    let p = this.loading.get(i);
+    if (!p) {
+      p = Assets.load<Texture>(`assets/${file}`)
+        .then((tex) => {
+          this.images[id] = tex;
+          // Quem pedir de novo recebe a arte de verdade no lugar do placeholder.
+          if (this.cache.get(i)?.placeholder) this.cache.delete(i);
+        })
+        .catch((e) => console.warn(`Asset ${id} não carregou; usando placeholder.`, e));
+      this.loading.set(i, p);
+    }
+    return p;
+  }
+
+  loadMany(indices: number[]): Promise<void> {
+    return Promise.all(indices.map((i) => this.load(i))).then(() => undefined);
+  }
 }

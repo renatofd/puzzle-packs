@@ -100,11 +100,12 @@ const achievements: AchievementDef[] = [
 ];
 
 /**
- * v1 → v2: as séries 4 a 6 entraram. Quem tinha fechado a coleção de 3
- * séries perde a vitória (e o aviso de fim já visto) até completar a última.
- * As peças das séries novas nascem zeradas no `CollectionModule.state`.
+ * Séries novas no fim da lista (v1 → v2: séries 4 a 6; v2 → v3: séries 7 a 26).
+ * Quem tinha fechado a coleção antiga perde a vitória (e o aviso de fim já
+ * visto) até completar a última. As peças das séries novas nascem zeradas no
+ * `CollectionModule.state`.
  */
-function migrateV1(raw: any): any {
+function reopenCollection(raw: any): any {
   const last = SERIES[SERIES.length - 1].id;
   if (raw?.unlocks && !raw.unlocks[last]) {
     delete raw.unlocks.victory;
@@ -115,13 +116,13 @@ function migrateV1(raw: any): any {
 
 export const definition: GameDefinition = {
   id: 'puzzle-packs',
-  version: 2,
-  migrations: [(raw) => raw, migrateV1],
+  version: 3,
+  migrations: [(raw) => raw, reopenCollection, reopenCollection],
   resources: [{ id: 'coins', name: 'coins', color: COLORS.coins, start: 0 }],
   stats: { ...upgradesJson.stats, 'pity.packs': PITY.packs },
   upgrades,
   achievements,
-  // s1..s6: série completa (libera a próxima e, na primeira, o auto-abridor).
+  // s1..s26: série completa (libera a próxima e, na primeira, o auto-abridor).
   unlocks: [
     ...SERIES.map((s, i) => ({ id: s.id, when: (st: GameState) => isSeriesComplete(st, i) })),
     { id: 'victory', when: seriesDone(SERIES.length - 1) },

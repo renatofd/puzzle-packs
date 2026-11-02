@@ -59,4 +59,4 @@ Teste no navegador (`npm run dev`, Chromium via Playwright em `/opt/pw-browsers`
 - Arte e sons só entram pelo `public/assets/manifest.json` (`"ready": true`; sons na lista `sounds`).
 - GUI e sons vêm do acervo do Renato (`E:\Recursos`, skill game-assets). As ilustrações do álbum, os pacotes, o verso das cartas e os ícones da árvore são gerados com sprite-gen (Grok) só porque o Renato pediu; não gere outra arte com IA sem ele pedir.
 - A pele da interface (`src/ui/skin.ts`, montada em `games/puzzle-packs/gui.ts`) usa peças brancas 9-slice que recebem a cor por tint. Registre a origem de cada arquivo novo em `assets_manifest.json` e `CREDITS.md`.
-- Ritmo alvo (perfil Humano do `npm run sim`): série 1 ~3 min, série 2 ~10 min, série 3 ~25 min, série 4 ~40 min, série 5 ~60 min, série 6 ~80 min (tempos acumulados).
+- Ritmo alvo (perfil Humano do `npm run sim`): série 1 ~3 min, série 2 ~10 min, série 3 ~25 min, série 4 ~40 min, série 5 ~60 min, série 6 ~80 min; das séries 7 a 26, cerca de 15 a 35 min cada, fechando em ~9,5 h (tempos acumulados). `npm run sim` roda 1500 min por padrão; `SEEDS=1 npm run sim` dá uma leitura rápida.
