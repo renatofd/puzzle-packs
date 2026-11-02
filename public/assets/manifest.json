@@ -1,0 +1,14 @@
+{
+  "_comment": "Assets do Puzzle Packs. O jogo só carrega um arquivo quando \"ready\" é true; senão usa o placeholder desenhado em código. Para trocar a arte: salve o arquivo no caminho de \"file\" (dentro de public/assets/) e mude \"ready\" para true.",
+  "assets": [
+    { "id": "series-1", "file": "series/series-1.png", "size": "1024x1024 (quadrada)", "use": "Ilustração da Série 1 (Aurora). O jogo corta em 3x3 peças de jigsaw.", "ready": false },
+    { "id": "series-2", "file": "series/series-2.png", "size": "1024x1024 (quadrada)", "use": "Ilustração da Série 2 (Floresta). Cortada em 4x4.", "ready": false },
+    { "id": "series-3", "file": "series/series-3.png", "size": "1024x1024 (quadrada)", "use": "Ilustração da Série 3 (Oceano). Cortada em 5x5.", "ready": false },
+    { "id": "pack-basic", "file": "packs/basic.png", "size": "400x560", "use": "Frente do Pacote Básico (sem texto; o nome é desenhado por cima).", "ready": false },
+    { "id": "pack-series", "file": "packs/series.png", "size": "400x560", "use": "Frente do Pacote da Série.", "ready": false },
+    { "id": "pack-premium", "file": "packs/premium.png", "size": "400x560", "use": "Frente do Pacote Premium.", "ready": false },
+    { "id": "card-back", "file": "ui/card-back.png", "size": "240x336", "use": "Verso das cartas antes de virar.", "ready": false },
+    { "id": "portal-icon", "file": "ui/icon-512.png", "size": "512x512", "use": "Ícone para as páginas dos portais (não é carregado pelo jogo).", "ready": false, "loadInGame": false },
+    { "id": "portal-cover", "file": "ui/cover-1280x720.png", "size": "1280x720", "use": "Capa/thumbnail para GamePush, Poki e CrazyGames (não é carregada pelo jogo).", "ready": false, "loadInGame": false }
+  ]
+}

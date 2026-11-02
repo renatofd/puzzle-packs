@@ -8,3 +8,4 @@ export * from './hud';
 export * from './settings';
 export * from './audio';
 export * from './menu';
+export * from './strings';

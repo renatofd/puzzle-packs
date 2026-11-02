@@ -1,0 +1,8 @@
+{
+  "rarities": {
+    "common":   { "weight": 1,    "dupeValue": 1, "color": 10264196 },
+    "uncommon": { "weight": 0.5,  "dupeValue": 2, "color": 5097200 },
+    "rare":     { "weight": 0.06, "dupeValue": 6, "color": 16106057 }
+  },
+  "pity": { "packs": 6 }
+}

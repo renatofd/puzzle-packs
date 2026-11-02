@@ -1,0 +1,273 @@
+{
+  "stats": {
+    "pack.cards": 0,
+    "dupe.value": 1,
+    "rare.mult": 1,
+    "pack.cost": 1,
+    "open.time": 4.5,
+    "auto.interval": 15,
+    "auto.series": 0
+  },
+  "upgrades": [
+    {
+      "id": "collector",
+      "icon": "★",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "cost": {
+        "base": 5
+      },
+      "effects": [
+        {
+          "stat": "dupe.value",
+          "op": "mult",
+          "value": 1.5
+        }
+      ]
+    },
+    {
+      "id": "value",
+      "icon": "$",
+      "pos": {
+        "x": 1,
+        "y": 0
+      },
+      "parents": [
+        "collector"
+      ],
+      "maxLevel": 10,
+      "cost": {
+        "base": 10,
+        "growth": 1.55
+      },
+      "effects": [
+        {
+          "stat": "dupe.value",
+          "op": "mult",
+          "value": 1.2
+        }
+      ]
+    },
+    {
+      "id": "speed",
+      "icon": "»",
+      "pos": {
+        "x": -1,
+        "y": 0
+      },
+      "parents": [
+        "collector"
+      ],
+      "maxLevel": 6,
+      "cost": {
+        "base": 15,
+        "growth": 1.8
+      },
+      "effects": [
+        {
+          "stat": "open.time",
+          "op": "mult",
+          "value": 0.85
+        }
+      ]
+    },
+    {
+      "id": "luck",
+      "icon": "♣",
+      "pos": {
+        "x": 0,
+        "y": 1
+      },
+      "parents": [
+        "collector"
+      ],
+      "maxLevel": 8,
+      "cost": {
+        "base": 25,
+        "growth": 1.8
+      },
+      "effects": [
+        {
+          "stat": "rare.mult",
+          "op": "mult",
+          "value": 1.2
+        }
+      ]
+    },
+    {
+      "id": "cards",
+      "icon": "+1",
+      "pos": {
+        "x": 0,
+        "y": -1
+      },
+      "parents": [
+        "collector"
+      ],
+      "maxLevel": 2,
+      "cost": {
+        "base": 60,
+        "growth": 5
+      },
+      "effects": [
+        {
+          "stat": "pack.cards",
+          "op": "add",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "pity",
+      "icon": "♥",
+      "pos": {
+        "x": -1,
+        "y": 1
+      },
+      "parents": [
+        "luck"
+      ],
+      "maxLevel": 4,
+      "cost": {
+        "base": 50,
+        "growth": 2
+      },
+      "effects": [
+        {
+          "stat": "pity.packs",
+          "op": "add",
+          "value": -1
+        }
+      ]
+    },
+    {
+      "id": "discount",
+      "icon": "%",
+      "pos": {
+        "x": 1,
+        "y": -1
+      },
+      "parents": [
+        "value",
+        "cards"
+      ],
+      "maxLevel": 5,
+      "cost": {
+        "base": 80,
+        "growth": 2
+      },
+      "effects": [
+        {
+          "stat": "pack.cost",
+          "op": "mult",
+          "value": 0.88
+        }
+      ]
+    },
+    {
+      "id": "auto",
+      "icon": "⚙",
+      "pos": {
+        "x": -1,
+        "y": -1
+      },
+      "parents": [
+        "speed",
+        "cards"
+      ],
+      "requires": {
+        "unlock": "s1"
+      },
+      "maxLevel": 6,
+      "cost": {
+        "base": 40,
+        "growth": 1.7
+      },
+      "effects": [
+        {
+          "stat": "auto.interval",
+          "op": "mult",
+          "value": 0.88
+        }
+      ]
+    },
+    {
+      "id": "subscription",
+      "icon": "∞",
+      "pos": {
+        "x": -2,
+        "y": -1
+      },
+      "parents": [
+        "auto"
+      ],
+      "requires": {
+        "unlock": "s2"
+      },
+      "cost": {
+        "base": 1500
+      },
+      "effects": [
+        {
+          "stat": "auto.series",
+          "op": "add",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "value2",
+      "icon": "$$",
+      "pos": {
+        "x": 2,
+        "y": 0
+      },
+      "parents": [
+        "value"
+      ],
+      "requires": {
+        "unlock": "s2"
+      },
+      "maxLevel": 8,
+      "cost": {
+        "base": 2500,
+        "growth": 2.2
+      },
+      "effects": [
+        {
+          "stat": "dupe.value",
+          "op": "mult",
+          "value": 1.25
+        }
+      ]
+    },
+    {
+      "id": "luck2",
+      "icon": "♣♣",
+      "pos": {
+        "x": 1,
+        "y": 1
+      },
+      "parents": [
+        "luck"
+      ],
+      "requires": {
+        "unlock": "s2"
+      },
+      "maxLevel": 6,
+      "cost": {
+        "base": 3000,
+        "growth": 2.2
+      },
+      "effects": [
+        {
+          "stat": "rare.mult",
+          "op": "mult",
+          "value": 1.25
+        }
+      ]
+    }
+  ]
+}

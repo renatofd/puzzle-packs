@@ -1,3 +1,17 @@
+# Puzzle Packs
+
+Incremental de rasgar pacotes de cartas: cada carta é uma peça de jigsaw de uma ilustração. Complete as 3 séries (3×3, 4×4 e 5×5) para terminar o jogo. Veja o [REPORT.md](REPORT.md) para o que foi feito, os números do simulador e a lista de assets.
+
+```bash
+npm install
+npm run dev            # jogo em http://localhost:5173
+npm run build:portal   # dist/puzzlepacks-portal.zip para GamePush, Poki e CrazyGames
+```
+
+O jogo está em `games/puzzle-packs/` e usa o template abaixo.
+
+---
+
 # incremental-kit
 
 Template reutilizável para jogos incrementais em TypeScript, desenhado 100% em canvas com [PixiJS](https://pixijs.com/) v8. A página tem só uma tag `<canvas>`: botões, painéis, árvore de upgrades, tooltips e textos são todos desenhados pelo PixiJS.
