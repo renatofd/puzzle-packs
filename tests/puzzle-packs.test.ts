@@ -146,3 +146,27 @@ describe('Puzzle Packs: economia', () => {
     expect(report.gains.coins?.gt(0)).toBe(true);
   });
 });
+
+describe('Puzzle Packs: localização', () => {
+  it('EN, RU, PT, ES e TR têm as mesmas chaves, sem textos vazios', async () => {
+    const { LANGS } = await import('../games/puzzle-packs/i18n');
+    const base = LANGS.pt as unknown as Record<string, unknown>;
+    for (const [id, dict] of Object.entries(LANGS) as Array<[string, Record<string, unknown>]>) {
+      expect(Object.keys(dict).sort(), id).toEqual(Object.keys(base).sort());
+      expect(Object.keys(dict.kit as object).sort(), id).toEqual(Object.keys(base.kit as object).sort());
+      for (const [k, v] of Object.entries(dict)) if (typeof v === 'string') expect(v.length, `${id}.${k}`).toBeGreaterThan(0);
+    }
+  });
+
+  it('todo upgrade, conquista, pacote e série tem texto', async () => {
+    const { LANGS } = await import('../games/puzzle-packs/i18n');
+    const { definition } = await import('../games/puzzle-packs/content');
+    const keys = [
+      ...(definition.upgrades ?? []).flatMap((u) => [`up.${u.id}`, `up.${u.id}.desc`]),
+      ...(definition.achievements ?? []).flatMap((a) => [`ach.${a.id}`, `ach.${a.id}.desc`]),
+      ...PACKS.flatMap((p) => [`pack.${p.id}`, `pack.${p.id}.desc`]),
+      ...SERIES.map((s) => `series.${s.id}`),
+    ];
+    for (const dict of Object.values(LANGS) as Array<Record<string, unknown>>) for (const k of keys) expect(dict[k], k).toBeTruthy();
+  });
+});

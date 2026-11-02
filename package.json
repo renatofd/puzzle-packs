@@ -1,16 +1,17 @@
 {
-  "name": "incremental-kit",
+  "name": "puzzle-packs",
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Template reutilizável para jogos incrementais em TypeScript, renderizado 100% em canvas.",
+  "description": "Puzzle Packs: incremental de rasgar pacotes de cartas que são peças de quebra-cabeça. Feito sobre o incremental-kit (PixiJS v8, 100% canvas).",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "sim": "vite-node tools/simulate.ts",
-    "sim:node-breaker": "vite-node tools/simulate-node-breaker.ts"
+    "sim:node-breaker": "vite-node tools/simulate-node-breaker.ts",
+    "build:portal": "npm run build && vite-node tools/zip.ts"
   },
   "dependencies": {
     "break_eternity.js": "^2.1.3",

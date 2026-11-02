@@ -57,7 +57,16 @@ export interface CollectionState {
   /** Tempo de jogo (s) em que cada série foi completada. */
   completedAt: Record<string, number>;
   coinsFromDupes: number;
+  /** Segundos restantes do bônus de 2× moedas (rewarded). */
+  doubleLeft: number;
+  /** Segundos até o próximo rewarded poder ser oferecido. */
+  rewardCooldown: number;
 }
+
+export type RewardKind = 'pack' | 'double';
+
+/** Duração do 2× moedas e intervalo mínimo entre rewardeds, em segundos. */
+export const REWARD = { doubleSeconds: 120, cooldown: 150 };
 
 export class CollectionModule implements GameModule {
   readonly id = 'collection';
@@ -88,6 +97,8 @@ export class CollectionModule implements GameModule {
       queue: [],
       completedAt: {},
       coinsFromDupes: 0,
+      doubleLeft: 0,
+      rewardCooldown: 60,
     };
   }
 
@@ -296,9 +307,36 @@ export class CollectionModule implements GameModule {
 
   // ------------------------------------------------------------ automação
 
-  tick(_engine: Engine, dt: number, ctx: TickContext): void {
-    if (!this.autoUnlocked()) return;
+  // ------------------------------------------------------------ rewarded
+
+  canReward(): boolean {
+    return this.state.rewardCooldown <= 0 && this.state.packs >= 3;
+  }
+
+  /** Aplica a recompensa de um anúncio assistido até o fim. */
+  grantReward(kind: RewardKind): void {
     const st = this.state;
+    if (kind === 'pack') st.queue.unshift('series');
+    else {
+      st.doubleLeft = REWARD.doubleSeconds;
+      this.engine.invalidate();
+    }
+    st.rewardCooldown = REWARD.cooldown;
+  }
+
+  modifiers() {
+    if (!(this.state.doubleLeft > 0)) return [];
+    return [{ stat: 'coins.gain', op: 'mult' as const, value: () => D(2), source: 'reward:double' }];
+  }
+
+  tick(_engine: Engine, dt: number, ctx: TickContext): void {
+    const st = this.state;
+    if (st.doubleLeft > 0) {
+      st.doubleLeft = Math.max(0, st.doubleLeft - dt);
+      if (st.doubleLeft === 0) this.engine.invalidate();
+    }
+    if (st.rewardCooldown > 0) st.rewardCooldown = Math.max(0, st.rewardCooldown - dt);
+    if (!this.autoUnlocked()) return;
     st.autoTimer += dt;
     const interval = this.autoInterval();
     while (st.autoTimer >= interval) {
