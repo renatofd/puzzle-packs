@@ -10,6 +10,7 @@ import { settings } from '../../src/ui/settings';
 import { setTheme } from '../../src/ui/theme';
 import { Toasts, Tooltip } from '../../src/ui/widgets';
 import { AlbumScene } from './album-scene';
+import { Analytics } from './analytics';
 import { ArtStore } from './art';
 import { COLORS, SERIES } from './content';
 import { PORTRAIT_BASE, type GameContext } from './context';
@@ -62,6 +63,29 @@ async function loadAssets(seriesFiles: Record<string, string>): Promise<Record<s
   return out;
 }
 
+/**
+ * Regras de página dos portais: setas, espaço e roda do mouse não podem
+ * rolar a página de fora (o jogo roda num iframe), sem menu de contexto
+ * no canvas, e nada de teclado do jogo durante um anúncio.
+ */
+function guardPage(canvas: HTMLCanvasElement): void {
+  const SCROLL_KEYS = new Set(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'PageUp', 'PageDown', 'Home', 'End']);
+  window.addEventListener(
+    'keydown',
+    (e) => {
+      if (portal.isAdActive) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        return;
+      }
+      if (SCROLL_KEYS.has(e.key)) e.preventDefault();
+    },
+    true,
+  );
+  window.addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+  canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
 async function main() {
   await portal.init();
   setLang(detectLang());
@@ -70,6 +94,7 @@ async function main() {
   setPortraitBase(PORTRAIT_BASE.w, PORTRAIT_BASE.h);
 
   const canvas = document.getElementById('game') as HTMLCanvasElement;
+  guardPage(canvas);
   const kit = await KitApp.create({ canvas });
   const game = createGame();
   const { engine, collection } = game;
@@ -90,8 +115,22 @@ async function main() {
   const tutorial = new Tutorial(game);
   tutorial.start();
   if (import.meta.env.DEV) (globalThis as any).tutorial = tutorial;
+  const analytics = new Analytics((c, w, a) => portal.measure(c, w, a));
+  analytics.attach(game, tutorial);
+  if (import.meta.env.DEV) (globalThis as any).portal = portal;
 
   const loop = new GameLoop(engine, { tickRate: 30 });
+  // Anúncio na tela: som mudo e jogo parado; tudo volta quando ele acaba.
+  portal.hooks = {
+    onAdStart: () => {
+      audio.silence(true);
+      loop.stop();
+    },
+    onAdEnd: () => {
+      audio.silence(false);
+      loop.start();
+    },
+  };
   const tooltip = new Tooltip(() => kit.app.screen);
   const toasts = new Toasts(() => kit.app.screen);
   const tutorialOverlay = new TutorialOverlay(kit, tutorial);
@@ -106,7 +145,25 @@ async function main() {
 
   setDefaultNotation(settings.values.notation);
   settings.onChange((v) => setDefaultNotation(v.notation));
-  const menu = new GameMenu({
+  let scenes: Record<'main' | 'album' | 'tree', MainScene | AlbumScene | TreeScene>;
+  /** Voltar da pausa para a tela principal: gameplayStop → commercialBreak → gameplayStart. */
+  let resuming = false;
+  const resumeMain = (enter: boolean) => {
+    if (resuming) return;
+    resuming = true;
+    void portal.commercialBreak().finally(() => {
+      resuming = false;
+      if (enter) kit.setScene(scenes.main);
+      if (kit.scene === scenes.main && !menu.isOpen) portal.gameplayStart();
+    });
+  };
+  const menu: GameMenu = new GameMenu({
+    onToggle: (open) => {
+      if (open) {
+        portal.gameplayStop();
+        analytics.screen('menu');
+      } else if (kit.scene === scenes.main) resumeMain(false);
+    },
     kit,
     engine,
     saves,
@@ -122,7 +179,6 @@ async function main() {
     },
   });
 
-  let scenes: Record<'main' | 'album' | 'tree', MainScene | AlbumScene | TreeScene>;
   const ctx: GameContext = {
     game,
     kit,
@@ -133,13 +189,17 @@ async function main() {
     menu,
     arts,
     tutorial,
+    analytics,
     textures,
     go: (name) => {
       if (name === 'main') {
-        portal.gameplayStart();
         // Interstitial só num ponto de pausa natural (voltando do álbum ou das melhorias), nunca na abertura.
-        if (kit.scene !== scenes.main) void portal.commercialBreak();
-      } else portal.gameplayStop();
+        if (kit.scene !== scenes.main) resumeMain(true);
+        return;
+      }
+      if (resuming) return;
+      portal.gameplayStop();
+      analytics.screen(name === 'tree' ? 'upgrades' : name);
       kit.setScene(scenes[name]);
     },
   };
@@ -162,11 +222,13 @@ async function main() {
   kit.setScene(scenes.main);
   loop.start();
   portal.loadingFinished();
+  // Só vira gameplayStart no SDK no primeiro toque ou tecla do jogador.
   portal.gameplayStart();
   audio.startMusic();
 
   if (offline && offline.seconds > 60 && (offlinePacks > 0 || offline.gains.coins)) {
     toasts.push(t('toastOffline'), t('toastOfflineBody', offlinePacks, format(offline.gains.coins ?? 0)), COLORS.coins);
+    analytics.offlineReturn(offlinePacks);
   }
 
   const persist = () => {
@@ -176,10 +238,9 @@ async function main() {
   setInterval(persist, 10_000);
   window.addEventListener('beforeunload', () => saves.save());
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') {
-      persist();
-      portal.gameplayStop();
-    } else if (kit.scene === scenes.main) portal.gameplayStart();
+    const hidden = document.visibilityState === 'hidden';
+    if (hidden) persist();
+    portal.setHidden(hidden);
   });
 }
 

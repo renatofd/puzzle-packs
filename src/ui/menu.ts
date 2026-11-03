@@ -18,6 +18,8 @@ export interface GameMenuOptions {
   saves: SaveManager;
   /** Linhas extras de estatística do jogo (ex.: nós destruídos, runs). */
   extraStats?: (engine: Engine) => Array<[string, string]>;
+  /** Menu abriu (`true`) ou fechou (`false`): pausa do jogo, eventos de portal. */
+  onToggle?: (open: boolean) => void;
 }
 
 const TABS: Array<{ id: MenuTab; name: () => string }> = [
@@ -94,7 +96,9 @@ export class GameMenu extends Container {
   }
 
   open(tab: MenuTab = this.tab): void {
+    const was = this.visible;
     this.visible = true;
+    if (!was) this.opts.onToggle?.(true);
     this.show(tab);
     Tweens.to(0.2, 0.96, 1, (v) => !this.panel.destroyed && this.panel.scale.set(v), ease.outBack);
     Tweens.to(0.2, 0, 1, (v) => (this.alpha = v), ease.outQuad);
@@ -104,6 +108,7 @@ export class GameMenu extends Container {
     if (!this.visible) return;
     this.visible = false;
     this.wipeArmed = false;
+    this.opts.onToggle?.(false);
   }
 
   toggle(): void {

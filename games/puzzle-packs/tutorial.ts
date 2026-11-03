@@ -66,6 +66,10 @@ export class Tutorial {
   readonly steps = TUTORIAL_STEPS;
   /** Passo mostrado no último `active`, para `notify` saber o que concluir. */
   private shown: TutorialStep | null = null;
+  /** Passos já anunciados nesta sessão (para o `start` sair uma vez só). */
+  private announced = new Set<string>();
+  /** Aviso de progresso do tutorial (game events). */
+  onStep?: (id: string, action: 'start' | 'complete' | 'skip' | 'restart') => void;
 
   constructor(private game: Game) {
     game.engine.events.on('upgradeBought', () => this.notify('upgrade'));
@@ -109,7 +113,13 @@ export class Tutorial {
     if (this.skipped || ui.blocked) return null;
     for (const s of this.steps) {
       if (this.isDone(s.id) || s.scene !== ui.scene) continue;
-      if (s.when(this.game, ui)) return (this.shown = s);
+      if (s.when(this.game, ui)) {
+        if (!this.announced.has(s.id)) {
+          this.announced.add(s.id);
+          this.onStep?.(s.id, 'start');
+        }
+        return (this.shown = s);
+      }
     }
     return null;
   }
@@ -126,11 +136,13 @@ export class Tutorial {
   }
 
   complete(id: string): void {
+    if (!this.flags[KEY(id)] && !this.skipped) this.onStep?.(id, 'complete');
     this.flags[KEY(id)] = true;
     if (this.shown?.id === id) this.shown = null;
   }
 
   skip(): void {
+    if (!this.skipped) this.onStep?.(this.shown?.id ?? 'all', 'skip');
     this.flags[SKIPPED] = true;
     this.shown = null;
   }
@@ -141,5 +153,7 @@ export class Tutorial {
     delete this.flags[SKIPPED];
     this.flags[STARTED] = true;
     this.shown = null;
+    this.announced.clear();
+    this.onStep?.('all', 'restart');
   }
 }

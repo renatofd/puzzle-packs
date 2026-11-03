@@ -2,14 +2,15 @@
  * Gera dist/puzzlepacks-portal.zip com o conteúdo de dist/ na raiz do zip
  * (index.html na raiz), pronto para subir em GamePush, Poki ou CrazyGames.
  * Sem dependências: zip "deflate" escrito à mão com zlib do Node.
- * Uso: npm run build:portal
+ * Uso: npm run build:portal (genérico) ou npm run build:poki (com o PokiSDK no <head>)
  */
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { deflateRawSync } from 'node:zlib';
 
 const DIST = 'dist';
-const OUT = join(DIST, 'puzzlepacks-portal.zip');
+/** Nome do zip: `vite-node tools/zip.ts -- puzzlepacks-poki.zip` (padrão: puzzlepacks-portal.zip). */
+const OUT = join(DIST, process.argv.slice(2).find((a) => a.endsWith('.zip')) ?? 'puzzlepacks-portal.zip');
 const LIMIT_MB = 15;
 /** 1º de janeiro de 1980 (data fixa: o zip sai igual a cada build). */
 const DOS_DATE = (0 << 9) | (1 << 5) | 1;

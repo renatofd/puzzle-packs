@@ -11,7 +11,9 @@
     "test": "vitest run",
     "sim": "vite-node tools/simulate.ts",
     "sim:node-breaker": "vite-node tools/simulate-node-breaker.ts",
-    "build:portal": "npm run build && vite-node tools/zip.ts"
+    "build:portal": "npm run build && vite-node tools/zip.ts",
+    "build:poki": "tsc --noEmit && vite build --mode poki && vite-node tools/zip.ts -- puzzlepacks-poki.zip",
+    "dev:poki": "vite --mode poki"
   },
   "dependencies": {
     "break_eternity.js": "^2.1.3",

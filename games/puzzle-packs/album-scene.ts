@@ -199,6 +199,7 @@ export class AlbumScene extends Scene implements TutorialHost {
     const { collection } = this.ctx.game;
     this.closeViewer();
     this.ctx.tutorial.notify('viewImage');
+    this.ctx.analytics.screen('image');
     const v = new Container();
     const bg = new Graphics();
     bg.eventMode = 'static';

@@ -329,3 +329,22 @@ export class CoinCounter extends Container {
     Tweens.to(0.25, 1.25, 1, (v) => !this.destroyed && this.scale.set(v), ease.outBack);
   }
 }
+
+/**
+ * Ícone de vídeo (claquete) dos botões de rewarded, desenhado em vetor:
+ * o Poki pede um ícone de vídeo bem visível em todo botão de anúncio.
+ */
+export function videoIcon(renderer: import('pixi.js').Renderer): Texture {
+  const g = new Graphics();
+  const ink = 0x2a2140;
+  // Corpo
+  g.roundRect(0, 8, 26, 16, 3).fill({ color: 0xffffff }).stroke({ color: ink, width: 2 });
+  // Tampa listrada
+  g.poly([1, 2, 24, -2, 25, 4, 2, 8]).fill({ color: ink });
+  for (let i = 0; i < 3; i++) g.poly([5 + i * 7, 2.2 - i * 1.2, 9 + i * 7, 1.5 - i * 1.2, 7 + i * 7, 6.6 - i * 1.2, 3 + i * 7, 7.3 - i * 1.2]).fill({ color: 0xffffff });
+  // Play
+  g.poly([10, 11, 10, 21, 18, 16]).fill({ color: ink });
+  const tex = renderer.generateTexture({ target: g, resolution: 2 });
+  g.destroy();
+  return tex;
+}
