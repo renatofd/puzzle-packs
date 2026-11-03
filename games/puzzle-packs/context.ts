@@ -4,6 +4,7 @@ import type { SaveManager } from '../../src/core/save';
 import { isPortrait, uiScale, type KitApp } from '../../src/ui/app';
 import type { GameMenu } from '../../src/ui/menu';
 import type { Toasts, Tooltip } from '../../src/ui/widgets';
+import type { Analytics } from './analytics';
 import type { ArtStore } from './art';
 import type { Game } from './game';
 import type { Tutorial } from './tutorial';
@@ -21,6 +22,8 @@ export interface GameContext {
   arts: ArtStore;
   /** Tutorial guiado (lógica em `tutorial.ts`, overlay em `tutorial-view.ts`). */
   tutorial: Tutorial;
+  /** Game events do portal (Poki `measure`). */
+  analytics: Analytics;
   /** Texturas opcionais do manifest (pacotes, verso da carta). */
   textures: Record<string, Texture>;
   go(scene: 'main' | 'album' | 'tree'): void;

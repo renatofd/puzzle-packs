@@ -58,6 +58,7 @@ class AudioManager {
   private nextBar = 0;
   private bar = 0;
   private wantMusic = false;
+  private silenced = false;
 
   constructor() {
     // Navegadores só liberam áudio depois de um gesto do jogador.
@@ -71,6 +72,19 @@ class AudioManager {
       window.addEventListener('keydown', unlock);
     }
     settings.onChange(() => this.applyVolumes());
+  }
+
+  /**
+   * Silencia tudo (anúncio de portal na tela) sem mexer nas opções do
+   * jogador; `silence(false)` devolve os volumes.
+   */
+  silence(on: boolean): void {
+    this.silenced = on;
+    this.applyVolumes();
+  }
+
+  get isSilenced(): boolean {
+    return this.silenced;
   }
 
   /** Registra ou substitui um efeito sonoro. */
@@ -136,7 +150,7 @@ class AudioManager {
     if (!this.ctx) return;
     const s = settings.values;
     const t = this.ctx.currentTime;
-    this.master.gain.setTargetAtTime(s.masterVolume, t, 0.05);
+    this.master.gain.setTargetAtTime(this.silenced ? 0 : s.masterVolume, t, 0.05);
     this.sfxBus.gain.setTargetAtTime(s.sfxVolume, t, 0.05);
     this.musicBus.gain.setTargetAtTime(s.musicVolume * 0.5, t, 0.05);
   }

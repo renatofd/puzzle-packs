@@ -9,7 +9,7 @@ import { FloatingText, Particles, ScreenShake } from '../../src/ui/fx';
 import { theme } from '../../src/ui/theme';
 import { ease, Tweens } from '../../src/ui/tween';
 import { Button, label, Panel, ProgressBar } from '../../src/ui/widgets';
-import { CardView, BoardView, CoinCounter, PackView, CARD_H, CARD_W, PACK_H, PACK_W } from './views';
+import { CardView, BoardView, CoinCounter, PackView, CARD_H, CARD_W, PACK_H, PACK_W, videoIcon } from './views';
 import { COLORS, PACKS, RARITIES, SERIES, type PackId } from './content';
 import type { PackResult } from './collection';
 import { layoutOf, type GameContext } from './context';
@@ -73,6 +73,8 @@ export class MainScene extends Scene implements TutorialHost {
   private keyHandler = (e: KeyboardEvent) => {
     if (e.key === 'm' || e.key === 'M') return this.ctx.menu.toggle();
     if (this.ctx.menu.isOpen || this.endPanel || this.langPopup) return;
+    // Esc pausa (abre o menu); o próprio menu fecha com Esc.
+    if (e.key === 'Escape') return this.ctx.menu.open();
     if (e.key === ' ' || e.key === 'Enter') {
       e.preventDefault();
       this.advance();
@@ -131,6 +133,7 @@ export class MainScene extends Scene implements TutorialHost {
     const watch = (kind: 'pack' | 'double') => {
       if (this.rewardBusy || !collection.canReward()) return;
       this.rewardBusy = true;
+      ctx.analytics.rewardButton(kind, 'interact');
       portal
         .rewarded()
         .then((ok) => {
@@ -142,8 +145,10 @@ export class MainScene extends Scene implements TutorialHost {
         })
         .finally(() => (this.rewardBusy = false));
     };
-    this.rewardPack = new Button({ text: '', width: 260, height: 38, size: 13, color: theme.warning, onClick: () => watch('pack') });
-    this.rewardDouble = new Button({ text: '', width: 260, height: 38, size: 13, color: theme.warning, onClick: () => watch('double') });
+    // Botões de anúncio: nunca verdes e sempre com o ícone de vídeo (regra do Poki).
+    const video = videoIcon(ctx.kit.app.renderer);
+    this.rewardPack = new Button({ text: '', width: 260, height: 38, size: 13, color: theme.warning, icon: video, onClick: () => watch('pack') });
+    this.rewardDouble = new Button({ text: '', width: 260, height: 38, size: 13, color: theme.warning, icon: video, onClick: () => watch('double') });
 
     // Navegação
     this.albumButton = new Button({ text: t('album'), width: 130, height: 44, size: 15, icon: ctx.textures['icon-album'], onClick: () => ctx.go('album') });
@@ -399,7 +404,11 @@ export class MainScene extends Scene implements TutorialHost {
     }
 
     // Rewarded: só fora da abertura e quando o cooldown acabou.
-    const canReward = collection.canReward() && !this.rewardBusy;
+    const canReward = collection.canReward() && !this.rewardBusy && portal.rewardedAvailable();
+    if (canReward && !this.rewardPack.visible) {
+      this.ctx.analytics.rewardButton('pack', 'visible');
+      this.ctx.analytics.rewardButton('double', 'visible');
+    }
     this.rewardPack.visible = this.rewardDouble.visible = canReward;
     this.rewardPack.enabled = this.rewardDouble.enabled = this.state === 'idle';
     this.rewardPack.setText(`${t('reward.watch')}: ${t('reward.pack')}`);
@@ -727,14 +736,18 @@ export class MainScene extends Scene implements TutorialHost {
   private showLang(): void {
     if (this.langPopup) return;
     this.ctx.tooltip.hide();
+    this.ctx.analytics.screen('language');
+    portal.gameplayStop();
     const close = () => {
       this.langPopup?.destroy({ children: true });
       this.langPopup = null;
+      portal.gameplayStart();
     };
     this.langPopup = new LangPopup(
       this.ctx.kit.app.renderer,
       (l) => {
         saveLang(l);
+        this.ctx.analytics.language(l);
         this.ctx.saves.save();
         location.reload();
       },
@@ -787,6 +800,7 @@ export class MainScene extends Scene implements TutorialHost {
   private showEnd(): void {
     const { engine } = this.ctx.game;
     engine.state.flags.endSeen = true;
+    this.ctx.analytics.screen('end');
     this.ctx.saves.save();
     portal.gameplayStop();
     this.endPanel = new EndPanel(this.ctx, () => {

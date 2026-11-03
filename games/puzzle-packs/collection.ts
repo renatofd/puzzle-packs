@@ -209,6 +209,7 @@ export class CollectionModule implements GameModule {
     const cost = this.packCost(id);
     if (!this.engine.spend([{ resource: 'coins', amount: D(cost) }])) return false;
     this.state.queue.push(id);
+    this.engine.events.emit('packBought', { id, cost });
     this.engine.checkProgress();
     return true;
   }
@@ -262,8 +263,10 @@ export class CollectionModule implements GameModule {
         st.completedAt[s.id] = this.engine.state.time.played;
       }
     });
+    const result: PackResult = { pack: id, source, cards, completed, coins: cards.reduce((a, c) => a + c.coins, 0) };
+    this.engine.events.emit('packOpened', result);
     this.engine.checkProgress();
-    return { pack: id, source, cards, completed, coins: cards.reduce((a, c) => a + c.coins, 0) };
+    return result;
   }
 
   /** Sorteia uma peça da série, com peso por raridade (e `missingBoost` nas que faltam). `only` limita às peças listadas. */
@@ -322,6 +325,7 @@ export class CollectionModule implements GameModule {
       this.engine.invalidate();
     }
     st.rewardCooldown = REWARD.cooldown;
+    this.engine.events.emit('rewardGranted', { kind });
   }
 
   modifiers() {
