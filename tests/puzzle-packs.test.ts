@@ -101,6 +101,31 @@ describe('Puzzle Packs: economia', () => {
     expect(opened).toBeLessThanOrEqual(SERIES[0].rarePity);
   });
 
+  it('série 1 fecha rápido: no máximo uns 15 pacotes básicos na maioria das sementes', () => {
+    const packs: number[] = [];
+    for (let seed = 1; seed <= 200; seed++) {
+      const { collection } = createGame(seed);
+      let n = 0;
+      while (!collection.isComplete(0) && n < 200) {
+        collection.openNext();
+        n++;
+      }
+      packs.push(n);
+    }
+    packs.sort((a, b) => a - b);
+    expect(packs[Math.floor(packs.length * 0.9)]).toBeLessThanOrEqual(15);
+  });
+
+  it('na série 2, o pacote básico traz sempre uma carta da série atual', () => {
+    const { engine, collection } = createGame(4);
+    completeSeries({ engine, collection }, 0);
+    expect(collection.currentSeries()).toBe(1);
+    for (let i = 0; i < 30; i++) {
+      const r = collection.openNext();
+      expect(r.cards.filter((c) => c.series === 1).length).toBeGreaterThanOrEqual(1);
+    }
+  });
+
   it('completar a série 1 libera a série 2 e o auto-abridor', () => {
     const { engine, collection } = createGame(2);
     expect(collection.isSeriesUnlocked(1)).toBe(false);

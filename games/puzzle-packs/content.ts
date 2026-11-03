@@ -20,6 +20,12 @@ export interface SeriesDef {
   coinMult: number;
   /** Pacotes seguidos sem novidade até o pity dar uma rara (quando só faltam raras). */
   rarePity: number;
+  /**
+   * Cartas do pacote básico que saem sempre desta série enquanto ela é a
+   * atual (o resto vem das séries completas). Mantém peças novas pingando
+   * para quem ainda não usa a loja.
+   */
+  basicCards?: number;
   asset: string;
   palette: number[];
 }

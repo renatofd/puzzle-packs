@@ -34,7 +34,7 @@ export interface TutorialStep {
   id: string;
   scene: TutorialScene;
   target?: TutorialTarget;
-  /** Passo informativo: termina no botão OK. */
+  /** Passo informativo: termina no botão OK (ou na ação de `on`, se houver). */
   ack?: boolean;
   /** Ação que conclui o passo (passos sem `ack`). */
   on?: TutorialEvent[];
@@ -48,12 +48,12 @@ const state = (g: Game) => g.collection.state;
 export const TUTORIAL_STEPS: TutorialStep[] = [
   { id: 'rip', scene: 'main', target: 'pack', on: ['rip'], when: (_g, ui) => ui.idle },
   { id: 'flip', scene: 'main', target: 'stage', on: ['revealed'], when: (_g, ui) => !!ui.revealing },
-  { id: 'board', scene: 'main', target: 'board', ack: true, when: (g, ui) => ui.idle && g.collection.state.newPieces > 0 },
-  { id: 'dupes', scene: 'main', target: 'coins', ack: true, when: (g, ui) => ui.idle && state(g).dupes > 0 },
+  { id: 'board', scene: 'main', target: 'board', ack: true, on: ['rip'], when: (g, ui) => ui.idle && g.collection.state.newPieces > 0 },
+  { id: 'dupes', scene: 'main', target: 'coins', ack: true, on: ['rip'], when: (g, ui) => ui.idle && state(g).dupes > 0 },
   { id: 'shop', scene: 'main', target: 'shop', on: ['buy'], when: (g, ui) => ui.idle && g.collection.canBuy('series') },
   { id: 'upgrades', scene: 'main', target: 'treeButton', on: ['enterTree', 'upgrade'], when: (g, ui) => ui.idle && hasAffordable(g.engine, 'main') },
   { id: 'tree', scene: 'tree', target: 'tree', on: ['upgrade'], when: (g) => hasAffordable(g.engine, 'main') },
-  { id: 'auto', scene: 'main', target: 'auto', ack: true, when: (g, ui) => ui.idle && g.collection.autoUnlocked() },
+  { id: 'auto', scene: 'main', target: 'auto', ack: true, on: ['rip'], when: (g, ui) => ui.idle && g.collection.autoUnlocked() },
   { id: 'album', scene: 'main', target: 'albumButton', on: ['enterAlbum'], when: (g, ui) => ui.idle && g.collection.isComplete(0) },
   { id: 'albumView', scene: 'album', target: 'albumView', ack: true, on: ['viewImage'], when: (g) => g.collection.isComplete(0) },
 ];

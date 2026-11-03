@@ -59,6 +59,24 @@ describe('Puzzle Packs: tutorial guiado', () => {
     expect(tutorial.finished).toBe(true);
   });
 
+  it('dicas informativas fecham sozinhas quando o jogador rasga o próximo pacote', () => {
+    const { game, tutorial } = setup();
+    const { collection } = game;
+    tutorial.active(idle);
+    tutorial.notify('rip');
+    collection.openNext();
+    tutorial.active(revealing);
+    tutorial.notify('revealed');
+    // Sem apertar OK: o próximo rasgo conclui a dica do tabuleiro.
+    expect(tutorial.active(idle)?.id).toBe('board');
+    tutorial.notify('rip');
+    expect(tutorial.isDone('board')).toBe(true);
+    while (collection.state.dupes === 0) collection.openNext();
+    expect(tutorial.active(idle)?.id).toBe('dupes');
+    tutorial.notify('rip');
+    expect(tutorial.isDone('dupes')).toBe(true);
+  });
+
   it('nada aparece com o menu aberto ou durante a coleta', () => {
     const { tutorial } = setup();
     expect(tutorial.active({ ...idle, blocked: true })).toBeNull();
