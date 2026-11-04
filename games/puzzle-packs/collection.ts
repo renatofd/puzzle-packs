@@ -232,8 +232,10 @@ export class CollectionModule implements GameModule {
     const n = this.cardsIn(id);
     const wasComplete = SERIES.map((_, i) => this.isComplete(i));
     const cards: CardResult[] = [];
-    // O pity só vale para pacotes focados na série atual.
-    const pityPack = share >= 0.5 && !this.isComplete(cur);
+    // Cartas que saem sempre da série atual (o básico, em séries com `basicCards`).
+    const fixedCur = others.length && id === 'basic' ? Math.min(n, SERIES[cur].basicCards ?? 0) : 0;
+    // O pity só vale para pacotes focados na série atual (ou com cartas fixas dela).
+    const pityPack = (share >= 0.5 || fixedCur > 0) && !this.isComplete(cur);
     const forcePity = pityPack && st.dry + 1 >= this.pityThreshold();
 
     for (let k = 0; k < n; k++) {
@@ -244,7 +246,7 @@ export class CollectionModule implements GameModule {
         piece = this.pick(cur, rareMult, 1, this.missing(cur));
         pity = true;
       } else {
-        if (others.length && this.rng() >= share) series = others[Math.floor(this.rng() * others.length)];
+        if (k >= fixedCur && others.length && this.rng() >= share) series = others[Math.floor(this.rng() * others.length)];
         piece = this.pick(series, rareMult, series === cur ? pack.missingBoost : 1);
       }
       cards.push(this.apply(series, piece, pity));

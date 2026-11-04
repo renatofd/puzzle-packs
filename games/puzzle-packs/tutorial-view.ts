@@ -117,9 +117,13 @@ export class TutorialOverlay extends Container {
     this.body.text = t(`tut.${step.id}`);
     const textBottom = 32 + this.body.height + 14;
     this.ok.visible = !!step.ack;
+    // Nas duas primeiras dicas não há "Pular": no playtest, 7% pulava já na primeira.
+    this.skip.visible = p.done >= 2;
     this.ok.place(BUBBLE_W - PAD - 96, textBottom);
     this.skip.place(PAD - 8, textBottom);
-    this.panel.setSize(BUBBLE_W, textBottom + 36 + PAD);
+    // Sem botões (primeiras dicas de ação), o balão fecha logo abaixo do texto.
+    const buttons = this.ok.visible || this.skip.visible;
+    this.panel.setSize(BUBBLE_W, buttons ? textBottom + 36 + PAD : textBottom + PAD - 14);
     // Entrada com um "pop".
     const b = this.bubble;
     Tweens.to(0.3, 0, 1, (v) => !b.destroyed && (b.alpha = v), ease.outCubic);
