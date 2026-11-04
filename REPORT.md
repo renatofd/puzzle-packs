@@ -36,7 +36,7 @@ No jogo: toque/arraste no pacote para rasgar, toque (ou espaço) para virar as c
 | Build < 15 MB e zip de portal | `tools/zip.ts` | 0,75 MB sem compressão, 0,23 MB no zip. |
 | Economia em módulo separado com testes | `collection.ts`, `tests/puzzle-packs.test.ts` | 14 testes do jogo (dados, pity, loja, auto, offline, vitória, localização). |
 | Dados em JSON | `games/puzzle-packs/data/` | Séries, grade, raridades, pity, pacotes, upgrades e atributos base. |
-| Localização EN, RU, PT, ES, TR | `games/puzzle-packs/i18n/*.json` | Feito, incluindo o menu e a árvore do kit. Detecta o idioma do navegador; o botão de idioma troca e recarrega. |
+| Localização EN, PT, ES, RU, TR, DE, FR, IT, NL, PL, ID, VI, JA, KO | `games/puzzle-packs/i18n/*.json` | Feito, incluindo o menu e a árvore do kit. Detecta o idioma do navegador; o botão de idioma troca e recarrega. |
 | Corte das ilustrações em código | `art.ts` | Uma imagem por série; o código recorta as peças com encaixes de jigsaw. Trocar a imagem não exige retrabalho. |
 
 ### Mudanças no núcleo do kit (mínimas)

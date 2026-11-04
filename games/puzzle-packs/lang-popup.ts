@@ -55,6 +55,62 @@ function drawFlag(l: Lang): Graphics {
       g.circle(25, H / 2, 8).fill({ color: 0xe30a17 });
       star(g, 35, H / 2, 4.5, 0xffffff, Math.PI);
       break;
+    case 'de':
+      g.rect(0, 0, W, H / 3).fill({ color: 0x000000 });
+      g.rect(0, H / 3, W, H / 3).fill({ color: 0xdd0000 });
+      g.rect(0, (2 * H) / 3, W, H / 3 + 0.5).fill({ color: 0xffce00 });
+      break;
+    case 'fr':
+      g.rect(0, 0, W / 3, H).fill({ color: 0x0055a4 });
+      g.rect(W / 3, 0, W / 3, H).fill({ color: 0xffffff });
+      g.rect((2 * W) / 3, 0, W / 3 + 0.5, H).fill({ color: 0xef4135 });
+      break;
+    case 'it':
+      g.rect(0, 0, W / 3, H).fill({ color: 0x009246 });
+      g.rect(W / 3, 0, W / 3, H).fill({ color: 0xffffff });
+      g.rect((2 * W) / 3, 0, W / 3 + 0.5, H).fill({ color: 0xce2b37 });
+      break;
+    case 'nl':
+      g.rect(0, 0, W, H / 3).fill({ color: 0xae1c28 });
+      g.rect(0, H / 3, W, H / 3).fill({ color: 0xffffff });
+      g.rect(0, (2 * H) / 3, W, H / 3 + 0.5).fill({ color: 0x21468b });
+      break;
+    case 'pl':
+      g.rect(0, 0, W, H / 2).fill({ color: 0xffffff });
+      g.rect(0, H / 2, W, H / 2).fill({ color: 0xdc143c });
+      break;
+    case 'id':
+      g.rect(0, 0, W, H / 2).fill({ color: 0xce1126 });
+      g.rect(0, H / 2, W, H / 2).fill({ color: 0xffffff });
+      break;
+    case 'vi':
+      g.rect(0, 0, W, H).fill({ color: 0xda251d });
+      star(g, W / 2, H / 2 + 1, 11, 0xffff00);
+      break;
+    case 'ja':
+      g.rect(0, 0, W, H).fill({ color: 0xffffff });
+      g.circle(W / 2, H / 2, 11).fill({ color: 0xbc002d });
+      break;
+    case 'ko': {
+      // Coreia do Sul: taegeuk no centro e os quatro trigramas simplificados.
+      g.rect(0, 0, W, H).fill({ color: 0xffffff });
+      const cx = W / 2;
+      const cy = H / 2;
+      g.circle(cx, cy, 9).fill({ color: 0x0047a0 });
+      g.arc(cx, cy, 9, Math.PI, 0).fill({ color: 0xcd2e3a });
+      g.circle(cx - 4.5, cy, 4.5).fill({ color: 0xcd2e3a });
+      g.circle(cx + 4.5, cy, 4.5).fill({ color: 0x0047a0 });
+      for (const [x, y, rot] of [[-19, -11, 0.6], [19, -11, -0.6], [-19, 11, -0.6], [19, 11, 0.6]]) {
+        for (let k = -1; k <= 1; k++) {
+          const dx = Math.cos(rot + Math.PI / 2) * k * 2.6;
+          const dy = Math.sin(rot + Math.PI / 2) * k * 2.6;
+          const hx = Math.cos(rot) * 5;
+          const hy = Math.sin(rot) * 5;
+          g.moveTo(cx + x + dx - hx, cy + y + dy - hy).lineTo(cx + x + dx + hx, cy + y + dy + hy).stroke({ width: 1.6, color: 0x000000 });
+        }
+      }
+      break;
+    }
   }
   // Moldura e brilho leve, como uma plaquinha.
   g.rect(0, 0, W, H / 2).fill({ color: 0xffffff, alpha: 0.12 });

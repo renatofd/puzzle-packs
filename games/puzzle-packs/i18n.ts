@@ -1,16 +1,29 @@
 import type { Engine } from '../../src/core/engine';
 import { fill, setKitText } from '../../src/ui/strings';
+import de from './i18n/de.json';
 import en from './i18n/en.json';
 import es from './i18n/es.json';
+import fr from './i18n/fr.json';
+import id from './i18n/id.json';
+import it from './i18n/it.json';
+import ja from './i18n/ja.json';
+import ko from './i18n/ko.json';
+import nl from './i18n/nl.json';
+import pl from './i18n/pl.json';
 import pt from './i18n/pt.json';
 import ru from './i18n/ru.json';
 import tr from './i18n/tr.json';
+import vi from './i18n/vi.json';
 
-/** Localização: EN, RU, PT, ES, TR. Cada idioma é um JSON em `i18n/` com as mesmas chaves. */
+/**
+ * Localização: 14 idiomas. Cada um é um JSON em `i18n/` com as mesmas chaves
+ * (o teste de localização confere). Os 9 últimos entraram para os mercados
+ * grandes da Poki que ainda faltavam.
+ */
 
-export const LANGS = { en, ru, pt, es, tr } as const;
+export const LANGS = { en, ru, pt, es, tr, de, fr, it, nl, pl, id, vi, ja, ko } as const;
 export type Lang = keyof typeof LANGS;
-export const LANG_ORDER: Lang[] = ['en', 'ru', 'pt', 'es', 'tr'];
+export const LANG_ORDER: Lang[] = ['en', 'pt', 'es', 'ru', 'tr', 'de', 'fr', 'it', 'nl', 'pl', 'id', 'vi', 'ja', 'ko'];
 type Dict = typeof pt;
 export type TextKey = Exclude<keyof Dict, 'kit'>;
 
