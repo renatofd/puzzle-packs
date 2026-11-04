@@ -85,6 +85,7 @@
   "reward.double": "2분간 코인 2배",
   "reward.active": "코인 2배: {0}초",
   "reward.watch": "광고 보기",
+  "reward.none": "지금은 영상이 없어요. 나중에 다시 시도해 주세요.",
   "language": "언어: {0}",
   "langTitle": "언어",
   "close": "닫기",

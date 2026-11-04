@@ -85,6 +85,7 @@
   "reward.double": "2分間コイン2倍",
   "reward.active": "コイン2倍：{0}秒",
   "reward.watch": "広告を見る",
+  "reward.none": "今は動画がありません。あとでもう一度試してね。",
   "language": "言語：{0}",
   "langTitle": "言語",
   "close": "閉じる",

@@ -82,6 +82,16 @@ describe('Puzzle Packs: tutorial guiado', () => {
     expect(quiet).toEqual(['rip', 'flip']);
   });
 
+  it('só as dicas de toque escurecem a tela, nunca as informativas', () => {
+    const dimmed = TUTORIAL_STEPS.filter((s) => s.dim);
+    expect(dimmed.map((s) => s.id)).toEqual(['shop', 'upgrades', 'album']);
+    for (const s of dimmed) {
+      expect(s.ack).toBeFalsy();
+      expect(s.quiet).toBeFalsy();
+      expect(s.target).toBeTruthy();
+    }
+  });
+
   it('nada aparece com o menu aberto ou durante a coleta', () => {
     const { tutorial } = setup();
     expect(tutorial.active({ ...idle, blocked: true })).toBeNull();

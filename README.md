@@ -5,7 +5,9 @@ Incremental de rasgar pacotes de cartas: cada carta é uma peça de jigsaw de um
 ```bash
 npm install
 npm run dev            # jogo em http://localhost:5173
-npm run build:portal   # dist/puzzlepacks-portal.zip para GamePush, Poki e CrazyGames
+npm run build:crazygames  # dist/puzzlepacks-crazygames.zip, com o SDK do CrazyGames (veja docs/crazygames.md)
+npm run build:poki        # dist/puzzlepacks-poki.zip, com o PokiSDK
+npm run build:portal      # dist/puzzlepacks-portal.zip, sem SDK (outros portais)
 ```
 
 O jogo está em `games/puzzle-packs/` e usa o template abaixo.

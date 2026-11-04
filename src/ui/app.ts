@@ -45,6 +45,25 @@ export function setPortraitBase(width: number, height: number): void {
   portraitBase = [width, height];
 }
 
+/**
+ * Tamanho útil da janela para o `resizeTo` do Pixi: a janela menos a área
+ * insegura do celular (entalhe, barras do sistema, app do CrazyGames). O
+ * index.html põe essa área como padding do body com `env(safe-area-inset-*)`,
+ * então o canvas já fica dentro dela; sem entalhe, o padding é 0.
+ */
+function safeArea(): HTMLElement {
+  const pad = (side: string) => parseFloat(getComputedStyle(document.body).getPropertyValue(`padding-${side}`)) || 0;
+  const size = {
+    get clientWidth() {
+      return Math.max(1, window.innerWidth - pad('left') - pad('right'));
+    },
+    get clientHeight() {
+      return Math.max(1, window.innerHeight - pad('top') - pad('bottom'));
+    },
+  };
+  return size as unknown as HTMLElement;
+}
+
 export interface KitAppOptions {
   canvas: HTMLCanvasElement;
   background?: number;
@@ -69,7 +88,7 @@ export class KitApp {
     const kit = new KitApp();
     await kit.app.init({
       canvas: opts.canvas,
-      resizeTo: window,
+      resizeTo: safeArea(),
       background: opts.background ?? theme.background,
       antialias: true,
       autoDensity: true,

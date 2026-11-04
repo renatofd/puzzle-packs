@@ -85,6 +85,7 @@
   "reward.double": "2× monety przez 2 min",
   "reward.active": "2× monety: {0} s",
   "reward.watch": "Obejrzyj reklamę",
+  "reward.none": "Brak filmu w tej chwili. Spróbuj później.",
   "language": "Język: {0}",
   "langTitle": "Język",
   "close": "Zamknij",

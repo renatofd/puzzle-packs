@@ -85,6 +85,7 @@
   "reward.double": "Koin 2× selama 2 mnt",
   "reward.active": "Koin 2×: {0} dtk",
   "reward.watch": "Tonton iklan",
+  "reward.none": "Belum ada video. Coba lagi nanti.",
   "language": "Bahasa: {0}",
   "langTitle": "Bahasa",
   "close": "Tutup",

@@ -19,11 +19,11 @@ Este repositório é um template de jogos incrementais. Quando ele for usado com
 | `src/modules` | Prestígio, runs curtas, automação, eventos aleatórios |
 | `src/ui` | `KitApp`/`Scene`, `skin` (pele 9-slice opcional), `Button` (selo "!" com `badge`, `icon`), `Badge`, `Panel`, `ProgressBar`, `Tooltip`, `Toasts`, `TreeView`, `Particles`, `FloatingText`, `ScreenShake`, `ResourceBar`, `DebugPanel`, `GameMenu`, `Slider`, `audio`, `settings` |
 | `src/sim` | Simulador headless de balanceamento, com perfis de jogador (`simulateProfiles`, `DEFAULT_PROFILES`) |
-| `games/puzzle-packs` | **O jogo deste repositório.** Economia em `collection.ts` (sem Pixi), dados em `data/*.json`, textos em `i18n/*.json`, arte e corte das peças em `art.ts`, portais em `portal.ts` (PokiSDK), game events em `analytics.ts` (lista em `docs/poki-events.md`) |
+| `games/puzzle-packs` | **O jogo deste repositório.** Economia em `collection.ts` (sem Pixi), dados em `data/*.json`, textos em `i18n/*.json`, arte e corte das peças em `art.ts`, portais em `portal.ts` (PokiSDK e SDK v3 do CrazyGames; regras em `docs/crazygames.md`), game events em `analytics.ts` (lista em `docs/poki-events.md`) |
 | `games/node-breaker` | Jogo de exemplo do template: use como referência |
 | `tools/simulate.ts` | Bot que joga o Puzzle Packs e mede o tempo de cada série (`npm run sim`) |
 | `tools/simulate-node-breaker.ts` | Simulador do exemplo (`npm run sim:node-breaker`) |
-| `tools/zip.ts` | `npm run build:portal`: gera `dist/puzzlepacks-portal.zip`; `npm run build:poki`: `dist/puzzlepacks-poki.zip` com o PokiSDK |
+| `tools/zip.ts` | `npm run build:portal`: gera `dist/puzzlepacks-portal.zip`; `npm run build:poki`: `dist/puzzlepacks-poki.zip` com o PokiSDK; `npm run build:crazygames`: `dist/puzzlepacks-crazygames.zip` com o SDK do CrazyGames |
 
 ## Como criar um jogo novo a partir do template
 
@@ -59,5 +59,5 @@ Teste no navegador (`npm run dev`, Chromium via Playwright em `/opt/pw-browsers`
 - Arte e sons só entram pelo `public/assets/manifest.json` (`"ready": true`; sons na lista `sounds`).
 - GUI e sons vêm do acervo do Renato (`E:\Recursos`, skill game-assets). As ilustrações do álbum, os pacotes, o verso das cartas e os ícones da árvore são gerados com sprite-gen (Grok) só porque o Renato pediu; não gere outra arte com IA sem ele pedir.
 - A pele da interface (`src/ui/skin.ts`, montada em `games/puzzle-packs/gui.ts`) usa peças brancas 9-slice que recebem a cor por tint. Registre a origem de cada arquivo novo em `assets_manifest.json` e `CREDITS.md`.
-- Poki: o jogo só fala com o SDK por `portal.ts` (nunca chame `PokiSDK` direto). Pausas usam `portal.gameplayStop()`; voltar de uma pausa para a tela principal passa por `commercialBreak`. Mecânica nova ganha game event em `analytics.ts` e uma linha em `docs/poki-events.md`.
+- Portais: o jogo só fala com os SDKs por `portal.ts` (nunca chame `PokiSDK` ou `CrazyGames.SDK` direto). Pausas usam `portal.gameplayStop()`. Interstitial: `commercialBreak('resume')` ao voltar de uma pausa para a tela principal (só o Poki mostra) e `commercialBreak('milestone')` ao completar uma série (só o CrazyGames mostra; ele proíbe anúncio em botão de navegação). Botão de rewarded só aparece com `portal.rewardedAvailable()`. Mecânica nova ganha game event em `analytics.ts` e uma linha em `docs/poki-events.md`. Desde 2026-11-04 o alvo é o CrazyGames (`npm run build:crazygames`); o Poki parou nos playtests.
 - Ritmo alvo (perfil Humano do `npm run sim`): série 1 ~1 min, série 2 ~4 min, série 3 ~20 min, série 4 ~36 min, série 5 ~54 min, série 6 ~73 min; das séries 7 a 26, cerca de 10 a 27 min cada, fechando em ~7,3 h (tempos acumulados). A cada 2 séries mais ou menos, uma melhoria nova da reta final é liberada (`requires.unlock` em `data/upgrades.json`). O começo é rápido de propósito: no playtest do Poki (média de 2m02s), a maioria saía na seca da peça rara da série 1, antes de ver a primeira imagem completa. `npm run sim` roda 1500 min por padrão; `SEEDS=1 npm run sim` dá uma leitura rápida.
