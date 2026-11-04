@@ -85,6 +85,7 @@
   "reward.double": "2× Münzen für 2 Min.",
   "reward.active": "2× Münzen: {0} s",
   "reward.watch": "Werbung ansehen",
+  "reward.none": "Gerade kein Video da. Versuch es später noch mal.",
   "language": "Sprache: {0}",
   "langTitle": "Sprache",
   "close": "Schließen",

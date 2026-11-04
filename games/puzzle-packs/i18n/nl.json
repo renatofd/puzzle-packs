@@ -85,6 +85,7 @@
   "reward.double": "2× munten voor 2 min",
   "reward.active": "2× munten: {0} s",
   "reward.watch": "Bekijk advertentie",
+  "reward.none": "Nu geen video beschikbaar. Probeer het later opnieuw.",
   "language": "Taal: {0}",
   "langTitle": "Taal",
   "close": "Sluiten",

@@ -38,6 +38,12 @@ export interface TutorialStep {
   quiet?: boolean;
   /** Passo informativo: termina no botão OK (ou na ação de `on`, se houver). */
   ack?: boolean;
+  /**
+   * Escurece a tela em volta do alvo. Só nas dicas de toque, em que o
+   * jogador precisa achar um botão: sem o escurecido, no 3º playtest do Poki
+   * a abertura das Melhorias caiu de 58% para 40% dos jogadores.
+   */
+  dim?: boolean;
   /** Ação que conclui o passo (passos sem `ack`). */
   on?: TutorialEvent[];
   /** O passo pode aparecer agora? */
@@ -52,11 +58,11 @@ export const TUTORIAL_STEPS: TutorialStep[] = [
   { id: 'flip', scene: 'main', target: 'stage', quiet: true, on: ['revealed'], when: (_g, ui) => !!ui.revealing },
   { id: 'board', scene: 'main', target: 'board', ack: true, on: ['rip'], when: (g, ui) => ui.idle && g.collection.state.newPieces > 0 },
   { id: 'dupes', scene: 'main', target: 'coins', ack: true, on: ['rip'], when: (g, ui) => ui.idle && state(g).dupes > 0 },
-  { id: 'shop', scene: 'main', target: 'shop', on: ['buy'], when: (g, ui) => ui.idle && g.collection.canBuy('series') },
-  { id: 'upgrades', scene: 'main', target: 'treeButton', on: ['enterTree', 'upgrade'], when: (g, ui) => ui.idle && hasAffordable(g.engine, 'main') },
+  { id: 'shop', scene: 'main', target: 'shop', dim: true, on: ['buy'], when: (g, ui) => ui.idle && g.collection.canBuy('series') },
+  { id: 'upgrades', scene: 'main', target: 'treeButton', dim: true, on: ['enterTree', 'upgrade'], when: (g, ui) => ui.idle && hasAffordable(g.engine, 'main') },
   { id: 'tree', scene: 'tree', target: 'tree', on: ['upgrade'], when: (g) => hasAffordable(g.engine, 'main') },
   { id: 'auto', scene: 'main', target: 'auto', ack: true, on: ['rip'], when: (g, ui) => ui.idle && g.collection.autoUnlocked() },
-  { id: 'album', scene: 'main', target: 'albumButton', on: ['enterAlbum'], when: (g, ui) => ui.idle && g.collection.isComplete(0) },
+  { id: 'album', scene: 'main', target: 'albumButton', dim: true, on: ['enterAlbum'], when: (g, ui) => ui.idle && g.collection.isComplete(0) },
   { id: 'albumView', scene: 'album', target: 'albumView', ack: true, on: ['viewImage'], when: (g) => g.collection.isComplete(0) },
 ];
 

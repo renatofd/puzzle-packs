@@ -24,7 +24,7 @@ export class PackView extends Container {
   private stripG = new Graphics();
   private tear = new Graphics();
   private shine = new Graphics();
-  private title = label('', 22, 0xffffff, { fontWeight: '800', align: 'center', wordWrap: true, wordWrapWidth: PACK_W - 30, stroke: { color: 0x000000, width: 4, alpha: 0.4 } });
+  private title = label('', 22, 0xffffff, { fontWeight: '800', align: 'center', stroke: { color: 0x000000, width: 4, alpha: 0.4 } });
   private sub = label('', 14, 0xffffff, { fontWeight: '600' });
   private art: Container | null = null;
   private stripArt: Container | null = null;
@@ -60,7 +60,11 @@ export class PackView extends Container {
     this.stripG.lineTo(0, 8).closePath().fill({ color: c }).stroke({ width: 3, color: 0xffffff, alpha: 0.35 });
     this.stripG.rect(0, 20, W, 8).fill({ color: 0xffffff, alpha: 0.25 });
     this.shine.clear().poly([W * 0.15, 60, W * 0.35, 60, W * 0.1, H - 20, -W * 0.1 + 20, H - 20]).fill({ color: 0xffffff, alpha: 0.12 });
+    // Nome numa linha só, encolhido para caber: quebrado em duas linhas (ex.:
+    // "Sobre de la Serie"), ele cobria o "4 cartas" de baixo.
     this.title.text = t(`pack.${id}`);
+    this.title.scale.set(1);
+    if (this.title.width > W - 30) this.title.scale.set((W - 30) / this.title.width);
     this.title.position.set(W / 2, H * 0.48);
     this.sub.position.set(W / 2, H * 0.72);
     this.art?.destroy();

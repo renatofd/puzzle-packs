@@ -137,7 +137,11 @@ export class MainScene extends Scene implements TutorialHost {
       portal
         .rewarded()
         .then((ok) => {
-          if (!ok) return;
+          if (!ok) {
+            // Sem vídeo para mostrar agora: o CrazyGames pede para avisar e sugerir tentar depois.
+            if (portal.lastAdError === 'unfilled' || portal.lastAdError === 'other') ctx.toasts.push(t('reward.none'), '', theme.warning);
+            return;
+          }
           collection.grantReward(kind);
           audio.play('achievement');
           if (kind === 'pack' && this.state === 'idle') this.showNextPack();
@@ -402,6 +406,10 @@ export class MainScene extends Scene implements TutorialHost {
       this.autoBar.visible = false;
       this.autoPanel.alpha = 0.6;
     }
+    // Textos longos (alemão, russo) encolhem para não vazar do painel.
+    this.autoInfo.scale.set(1);
+    const autoMax = this.autoPanel.panelWidth - 28;
+    if (this.autoInfo.width > autoMax) this.autoInfo.scale.set(autoMax / this.autoInfo.width);
 
     // Rewarded: só fora da abertura e quando o cooldown acabou.
     const canReward = collection.canReward() && !this.rewardBusy && portal.rewardedAvailable();
@@ -689,6 +697,9 @@ export class MainScene extends Scene implements TutorialHost {
     this.refreshBoard();
     this.showNextPack();
     this.ctx.saves.save();
+    // Série completa é a pausa natural do jogo: o CrazyGames pode mostrar um
+    // interstitial aqui (o portal trava os toques até ele acabar).
+    if (result?.completed.length) void portal.commercialBreak('milestone');
   }
 
   /** Sai da tela no meio de uma abertura: termina tudo sem animação. */

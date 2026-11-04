@@ -13,7 +13,9 @@
     "sim:node-breaker": "vite-node tools/simulate-node-breaker.ts",
     "build:portal": "npm run build && vite-node tools/zip.ts",
     "build:poki": "tsc --noEmit && vite build --mode poki && vite-node tools/zip.ts -- puzzlepacks-poki.zip",
-    "dev:poki": "vite --mode poki"
+    "build:crazygames": "tsc --noEmit && vite build --mode crazygames && vite-node tools/zip.ts -- puzzlepacks-crazygames.zip",
+    "dev:poki": "vite --mode poki",
+    "dev:crazygames": "vite --mode crazygames"
   },
   "dependencies": {
     "break_eternity.js": "^2.1.3",

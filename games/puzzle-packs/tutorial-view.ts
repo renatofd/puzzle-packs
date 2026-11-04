@@ -23,10 +23,11 @@ const BUBBLE_W = 340;
 const PAD = 16;
 
 /**
- * Overlay do tutorial: escurece a tela em volta do alvo, contorna o alvo
- * com um anel pulsando, aponta com uma seta e mostra um balão com o texto
- * do passo. O escurecido não bloqueia cliques: o jogador sempre pode
- * tocar no que está destacado (ou em qualquer outra coisa).
+ * Overlay do tutorial: contorna o alvo com um anel pulsando, aponta com uma
+ * seta e mostra um balão com o texto do passo. Nas dicas de toque (`dim`),
+ * também escurece a tela em volta do alvo. O escurecido não bloqueia
+ * cliques: o jogador sempre pode tocar no que está destacado (ou em
+ * qualquer outra coisa).
  */
 export class TutorialOverlay extends Container {
   private dim = new Graphics();
@@ -111,8 +112,9 @@ export class TutorialOverlay extends Container {
     this.screenKey = '';
     const on = !!step;
     this.ring.visible = this.arrow.visible = on;
-    // O jogo nunca escurece: no 2º playtest, 1 em cada 4 saía com uma dica na tela.
-    this.dim.visible = false;
+    // Só as dicas de toque escurecem: com tudo escurecido, no 2º playtest 1 em
+    // cada 4 jogadores saía com uma dica na tela.
+    this.dim.visible = !!step?.dim;
     this.bubble.visible = on && !step?.quiet;
     if (!step) return;
     const p = this.tutorial.progress();

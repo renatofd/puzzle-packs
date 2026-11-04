@@ -85,6 +85,7 @@
   "reward.double": "Pièces ×2 pendant 2 min",
   "reward.active": "Pièces ×2 : {0} s",
   "reward.watch": "Voir une pub",
+  "reward.none": "Aucune vidéo pour l'instant. Réessaie plus tard.",
   "language": "Langue : {0}",
   "langTitle": "Langue",
   "close": "Fermer",

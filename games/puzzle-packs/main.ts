@@ -88,7 +88,7 @@ function guardPage(canvas: HTMLCanvasElement): void {
 
 async function main() {
   await portal.init();
-  setLang(detectLang());
+  setLang(detectLang(portal.lang()));
   setTheme({ background: 0x15122a, panel: 0x211c3b, panelBorder: 0x3b3466, accent: COLORS.accent, nodeAffordable: COLORS.accent, edgeActive: COLORS.accent });
   defineSfx();
   setPortraitBase(PORTRAIT_BASE.w, PORTRAIT_BASE.h);
@@ -107,7 +107,8 @@ async function main() {
   addBackground(kit, textures['gui-background']);
   const arts = new ArtStore(kit.app.renderer, seriesFiles);
 
-  const saves = new SaveManager(engine);
+  // No CrazyGames o save vai pelo módulo Data do SDK (conta do jogador); nos outros, localStorage.
+  const saves = new SaveManager(engine, { storage: portal.saveStorage() ?? undefined });
   const offline = saves.load();
   const offlinePacks = collection.takeOfflineCount();
   // Baixa já as ilustrações das séries liberadas e da próxima; as outras vêm sob demanda.
@@ -120,17 +121,24 @@ async function main() {
   if (import.meta.env.DEV) (globalThis as any).portal = portal;
 
   const loop = new GameLoop(engine, { tickRate: 30 });
-  // Anúncio na tela: som mudo e jogo parado; tudo volta quando ele acaba.
+  // Pedido de anúncio: nenhum toque chega ao jogo até ele acabar. Anúncio na
+  // tela: som mudo e jogo parado. Tudo volta quando ele acaba (ou não vem).
   portal.hooks = {
+    onAdRequest: () => {
+      kit.app.stage.interactiveChildren = false;
+    },
     onAdStart: () => {
-      audio.silence(true);
+      audio.silence(true, 'ad');
       loop.stop();
     },
     onAdEnd: () => {
-      audio.silence(false);
+      kit.app.stage.interactiveChildren = true;
+      audio.silence(false, 'ad');
       loop.start();
     },
+    onMute: (muted) => audio.silence(muted, 'portal'),
   };
+  audio.silence(portal.muted, 'portal');
   const tooltip = new Tooltip(() => kit.app.screen);
   const toasts = new Toasts(() => kit.app.screen);
   const tutorialOverlay = new TutorialOverlay(kit, tutorial);
@@ -146,12 +154,16 @@ async function main() {
   setDefaultNotation(settings.values.notation);
   settings.onChange((v) => setDefaultNotation(v.notation));
   let scenes: Record<'main' | 'album' | 'tree', MainScene | AlbumScene | TreeScene>;
-  /** Voltar da pausa para a tela principal: gameplayStop → commercialBreak → gameplayStart. */
+  /**
+   * Voltar da pausa para a tela principal: gameplayStop → commercialBreak →
+   * gameplayStart. Só o Poki mostra anúncio aqui; o CrazyGames proíbe
+   * anúncio em botão de navegação e usa a série completa (main-scene.ts).
+   */
   let resuming = false;
   const resumeMain = (enter: boolean) => {
     if (resuming) return;
     resuming = true;
-    void portal.commercialBreak().finally(() => {
+    void portal.commercialBreak('resume').finally(() => {
       resuming = false;
       if (enter) kit.setScene(scenes.main);
       if (kit.scene === scenes.main && !menu.isOpen) portal.gameplayStart();
@@ -214,6 +226,7 @@ async function main() {
     const i = SERIES.findIndex((s) => s.id === id);
     if (i < 0) return;
     toasts.push(t('toastSeries', t(`series.${id}`)), i < SERIES.length - 1 ? t('toastNextSeries') : '', COLORS.coins);
+    portal.happytime();
     if (i === 0) {
       toasts.push(t('toastAuto'), t('toastAutoBody'), COLORS.accent);
       toasts.push(t('toastGift'), t('toastGiftBody'), COLORS.coins);
@@ -234,10 +247,7 @@ async function main() {
     analytics.offlineReturn(offlinePacks);
   }
 
-  const persist = () => {
-    saves.save();
-    void portal.cloudSave.save(saves.toString());
-  };
+  const persist = () => saves.save();
   setInterval(persist, 10_000);
   // Tempo com a aba visível (game events `time / <n>s / reached`).
   let visibleSeconds = 0;

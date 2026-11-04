@@ -58,7 +58,8 @@ class AudioManager {
   private nextBar = 0;
   private bar = 0;
   private wantMusic = false;
-  private silenced = false;
+  /** Motivos de silêncio ativos (`ad`, `portal`); o som só volta quando não sobra nenhum. */
+  private silencers = new Set<string>();
 
   constructor() {
     // Navegadores só liberam áudio depois de um gesto do jogador.
@@ -67,24 +68,35 @@ class AudioManager {
       window.removeEventListener('pointerdown', unlock);
       window.removeEventListener('keydown', unlock);
     };
+    // iOS suspende o áudio numa interrupção (ligação, outro app); só um gesto
+    // do jogador consegue retomá-lo, então todo toque tenta.
+    const resume = () => {
+      if (this.ctx && this.ctx.state !== 'running') void this.ctx.resume().catch(() => {});
+    };
     if (typeof window !== 'undefined') {
       window.addEventListener('pointerdown', unlock);
       window.addEventListener('keydown', unlock);
+      window.addEventListener('touchend', resume, true);
+      window.addEventListener('pointerup', resume, true);
+      window.addEventListener('keydown', resume, true);
     }
     settings.onChange(() => this.applyVolumes());
   }
 
   /**
-   * Silencia tudo (anúncio de portal na tela) sem mexer nas opções do
-   * jogador; `silence(false)` devolve os volumes.
+   * Silencia tudo sem mexer nas opções do jogador: anúncio na tela (`ad`) ou
+   * pedido do portal (`portal`, ex.: som desligado no site do CrazyGames, que
+   * manda mais que o volume do jogo). `silence(false, motivo)` tira só aquele
+   * motivo; o som volta quando não sobra nenhum.
    */
-  silence(on: boolean): void {
-    this.silenced = on;
+  silence(on: boolean, reason = 'ad'): void {
+    if (on) this.silencers.add(reason);
+    else this.silencers.delete(reason);
     this.applyVolumes();
   }
 
   get isSilenced(): boolean {
-    return this.silenced;
+    return this.silencers.size > 0;
   }
 
   /** Registra ou substitui um efeito sonoro. */
@@ -150,7 +162,7 @@ class AudioManager {
     if (!this.ctx) return;
     const s = settings.values;
     const t = this.ctx.currentTime;
-    this.master.gain.setTargetAtTime(this.silenced ? 0 : s.masterVolume, t, 0.05);
+    this.master.gain.setTargetAtTime(this.isSilenced ? 0 : s.masterVolume, t, 0.05);
     this.sfxBus.gain.setTargetAtTime(s.sfxVolume, t, 0.05);
     this.musicBus.gain.setTargetAtTime(s.musicVolume * 0.5, t, 0.05);
   }

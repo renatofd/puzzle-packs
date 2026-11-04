@@ -85,6 +85,7 @@
   "reward.double": "Монеты ×2 на 2 мин",
   "reward.active": "Монеты ×2: {0} с",
   "reward.watch": "Смотреть рекламу",
+  "reward.none": "Сейчас нет видео. Попробуйте позже.",
   "language": "Язык: {0}",
   "langTitle": "Язык",
   "close": "Закрыть",

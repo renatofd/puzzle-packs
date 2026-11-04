@@ -34,16 +34,20 @@ export function lang(): Lang {
   return current;
 }
 
-/** Idioma salvo, ou o do navegador, ou inglês. */
-export function detectLang(): Lang {
+/**
+ * Idioma salvo; senão o que o portal informa (`portal`, ex. `pt-BR` do
+ * CrazyGames, que pede inglês quando o dele não existe no jogo); senão o do
+ * navegador; senão inglês.
+ */
+export function detectLang(portal?: string | null): Lang {
   try {
     const saved = globalThis.localStorage?.getItem(STORAGE_KEY);
     if (saved && saved in LANGS) return saved as Lang;
   } catch {
     /* sem localStorage */
   }
-  const nav = (globalThis.navigator?.language ?? 'en').slice(0, 2).toLowerCase();
-  return (nav in LANGS ? nav : 'en') as Lang;
+  const code = (portal ?? globalThis.navigator?.language ?? 'en').slice(0, 2).toLowerCase();
+  return (code in LANGS ? code : 'en') as Lang;
 }
 
 export function saveLang(l: Lang): void {
