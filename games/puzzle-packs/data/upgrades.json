@@ -371,6 +371,314 @@
           "value": 1
         }
       ]
+    },
+    {
+      "id": "speed2",
+      "icon": "»»",
+      "pos": {
+        "x": -2,
+        "y": 0
+      },
+      "parents": [
+        "speed"
+      ],
+      "requires": {
+        "unlock": "s6"
+      },
+      "maxLevel": 3,
+      "cost": {
+        "base": 33000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "open.time",
+          "op": "mult",
+          "value": 0.85
+        }
+      ]
+    },
+    {
+      "id": "auto3",
+      "icon": "⚙³",
+      "pos": {
+        "x": -3,
+        "y": -2
+      },
+      "parents": [
+        "auto2"
+      ],
+      "requires": {
+        "unlock": "s7"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 55000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "auto.interval",
+          "op": "mult",
+          "value": 0.85
+        }
+      ]
+    },
+    {
+      "id": "value4",
+      "icon": "$⁴",
+      "pos": {
+        "x": 4,
+        "y": 0
+      },
+      "parents": [
+        "value3"
+      ],
+      "requires": {
+        "unlock": "s8"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 91000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "dupe.value",
+          "op": "mult",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "discount2",
+      "icon": "%%",
+      "pos": {
+        "x": 2,
+        "y": -1
+      },
+      "parents": [
+        "discount"
+      ],
+      "requires": {
+        "unlock": "s9"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 150000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "pack.cost",
+          "op": "mult",
+          "value": 0.95
+        }
+      ]
+    },
+    {
+      "id": "luck4",
+      "icon": "♣⁴",
+      "pos": {
+        "x": 1,
+        "y": 3
+      },
+      "parents": [
+        "luck3"
+      ],
+      "requires": {
+        "unlock": "s10"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 250000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "rare.mult",
+          "op": "mult",
+          "value": 1.25
+        }
+      ]
+    },
+    {
+      "id": "cards4",
+      "icon": "+3",
+      "pos": {
+        "x": 0,
+        "y": -3
+      },
+      "parents": [
+        "cards3"
+      ],
+      "requires": {
+        "unlock": "s12"
+      },
+      "cost": {
+        "base": 5000000000
+      },
+      "effects": [
+        {
+          "stat": "pack.cards",
+          "op": "add",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "value5",
+      "icon": "$⁵",
+      "pos": {
+        "x": 5,
+        "y": 0
+      },
+      "parents": [
+        "value4"
+      ],
+      "requires": {
+        "unlock": "s14"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 1800000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "dupe.value",
+          "op": "mult",
+          "value": 1.1
+        }
+      ]
+    },
+    {
+      "id": "discount3",
+      "icon": "%³",
+      "pos": {
+        "x": 3,
+        "y": -1
+      },
+      "parents": [
+        "discount2"
+      ],
+      "requires": {
+        "unlock": "s16"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 5000000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "pack.cost",
+          "op": "mult",
+          "value": 0.95
+        }
+      ]
+    },
+    {
+      "id": "luck5",
+      "icon": "♣⁵",
+      "pos": {
+        "x": 1,
+        "y": 4
+      },
+      "parents": [
+        "luck4"
+      ],
+      "requires": {
+        "unlock": "s18"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 14000000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "rare.mult",
+          "op": "mult",
+          "value": 1.25
+        }
+      ]
+    },
+    {
+      "id": "cards5",
+      "icon": "+4",
+      "pos": {
+        "x": 0,
+        "y": -4
+      },
+      "parents": [
+        "cards4"
+      ],
+      "requires": {
+        "unlock": "s20"
+      },
+      "cost": {
+        "base": 280000000000
+      },
+      "effects": [
+        {
+          "stat": "pack.cards",
+          "op": "add",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "id": "auto4",
+      "icon": "⚙⁴",
+      "pos": {
+        "x": -4,
+        "y": -2
+      },
+      "parents": [
+        "auto3"
+      ],
+      "requires": {
+        "unlock": "s22"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 100000000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "auto.interval",
+          "op": "mult",
+          "value": 0.85
+        }
+      ]
+    },
+    {
+      "id": "value6",
+      "icon": "$⁶",
+      "pos": {
+        "x": 6,
+        "y": 0
+      },
+      "parents": [
+        "value5"
+      ],
+      "requires": {
+        "unlock": "s24"
+      },
+      "maxLevel": 5,
+      "cost": {
+        "base": 270000000000,
+        "growth": 1.9
+      },
+      "effects": [
+        {
+          "stat": "dupe.value",
+          "op": "mult",
+          "value": 1.1
+        }
+      ]
     }
   ]
 }
