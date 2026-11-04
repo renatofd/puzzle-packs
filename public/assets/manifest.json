@@ -64,7 +64,19 @@
     { "id": "upgrade-auto2", "file": "ui/upgrades/auto2.png", "size": "256x256", "use": "Ícone da melhoria auto2 na árvore.", "ready": true },
     { "id": "upgrade-value3", "file": "ui/upgrades/value3.png", "size": "256x256", "use": "Ícone da melhoria value3 na árvore.", "ready": true },
     { "id": "upgrade-luck3", "file": "ui/upgrades/luck3.png", "size": "256x256", "use": "Ícone da melhoria luck3 na árvore.", "ready": true },
-    { "id": "upgrade-cards3", "file": "ui/upgrades/cards3.png", "size": "256x256", "use": "Ícone da melhoria cards3 na árvore.", "ready": true }
+    { "id": "upgrade-cards3", "file": "ui/upgrades/cards3.png", "size": "256x256", "use": "Ícone da melhoria cards3 na árvore.", "ready": true },
+    { "id": "upgrade-speed2", "file": "ui/upgrades/speed2.png", "size": "256x256", "use": "Ícone da melhoria speed2 na árvore.", "ready": true },
+    { "id": "upgrade-auto3", "file": "ui/upgrades/auto3.png", "size": "256x256", "use": "Ícone da melhoria auto3 na árvore.", "ready": true },
+    { "id": "upgrade-value4", "file": "ui/upgrades/value4.png", "size": "256x256", "use": "Ícone da melhoria value4 na árvore.", "ready": true },
+    { "id": "upgrade-discount2", "file": "ui/upgrades/discount2.png", "size": "256x256", "use": "Ícone da melhoria discount2 na árvore.", "ready": true },
+    { "id": "upgrade-luck4", "file": "ui/upgrades/luck4.png", "size": "256x256", "use": "Ícone da melhoria luck4 na árvore.", "ready": true },
+    { "id": "upgrade-cards4", "file": "ui/upgrades/cards4.png", "size": "256x256", "use": "Ícone da melhoria cards4 na árvore.", "ready": true },
+    { "id": "upgrade-value5", "file": "ui/upgrades/value5.png", "size": "256x256", "use": "Ícone da melhoria value5 na árvore.", "ready": true },
+    { "id": "upgrade-discount3", "file": "ui/upgrades/discount3.png", "size": "256x256", "use": "Ícone da melhoria discount3 na árvore.", "ready": true },
+    { "id": "upgrade-luck5", "file": "ui/upgrades/luck5.png", "size": "256x256", "use": "Ícone da melhoria luck5 na árvore.", "ready": true },
+    { "id": "upgrade-cards5", "file": "ui/upgrades/cards5.png", "size": "256x256", "use": "Ícone da melhoria cards5 na árvore.", "ready": true },
+    { "id": "upgrade-auto4", "file": "ui/upgrades/auto4.png", "size": "256x256", "use": "Ícone da melhoria auto4 na árvore.", "ready": true },
+    { "id": "upgrade-value6", "file": "ui/upgrades/value6.png", "size": "256x256", "use": "Ícone da melhoria value6 na árvore.", "ready": true }
   ],
   "sounds": [
     { "id": "click", "file": "sfx/click.mp3", "volume": 0.5, "use": "Clique de botão", "ready": true },
