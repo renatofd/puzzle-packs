@@ -183,6 +183,14 @@ describe('Puzzle Packs: game events', () => {
     expect(events).toContain('tutorial/all/skip');
   });
 
+  it('marcos de tempo com a aba visível saem uma vez cada', () => {
+    const events: string[] = [];
+    const a = new Analytics((c, w, x) => events.push(`${c}/${w}/${x}`));
+    for (let s = 1; s <= 70; s++) a.elapsed(s);
+    a.elapsed(70);
+    expect(events).toEqual(['time/15s/reached', 'time/30s/reached', 'time/60s/reached']);
+  });
+
   it('jogador que volta: sessão returning e progresso atual', () => {
     const game = createGame(3);
     game.collection.openNext();

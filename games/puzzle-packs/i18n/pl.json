@@ -208,12 +208,12 @@
   "tut.skip": "Pomiń samouczek",
   "tut.rip": "Witaj! Przeciągnij palcem (lub myszą) po paczce, aby ją rozerwać. Dotknięcie też ją otwiera.",
   "tut.flip": "Każda karta to element układanki. Odwracają się same, ale możesz dotknąć, aby przyspieszyć.",
-  "tut.board": "Nowe elementy wskakują na planszę. Zbierz wszystkie, aby ukończyć obraz serii.",
-  "tut.dupes": "Powtórzone elementy zamieniają się w monety, a rzadkie są warte więcej. Wydawaj monety w sklepie i na ulepszenia.",
-  "tut.shop": "Możesz teraz kupić paczkę serii. Ma tylko karty z bieżącej serii, z większą szansą na brakujące elementy.",
+  "tut.board": "Nowe elementy trafiają na planszę. Ułóż obrazek!",
+  "tut.dupes": "Powtórki zamieniają się w monety.",
+  "tut.shop": "Kup paczkę serii: ma tylko karty z tej serii.",
   "tut.upgrades": "Masz dość monet na ulepszenie. Dotknij Ulepszenia.",
   "tut.tree": "Dotknij świecącego węzła, aby go kupić. Najedź na niego, aby zobaczyć, co robi, i przeciągnij tło, aby przesunąć drzewko.",
-  "tut.auto": "Seria ukończona! Auto-otwieracz odblokowany: sam otwiera paczki, nawet gdy gra jest zamknięta. Ulepszenia go przyspieszają.",
+  "tut.auto": "Seria ukończona! Teraz auto-otwieracz otwiera paczki za ciebie.",
   "tut.album": "Twój pierwszy obraz jest gotowy. Zajrzyj do Albumu.",
   "tut.albumView": "Tu są wszystkie serie i twoje postępy. Dotknij Zobacz obraz, aby zobaczyć całą ilustrację.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Za mało monet",
     "treeAffordable": "Dotknij, aby kupić",
     "treeMaxed": "Maks. poziom"
-  }
+  },
+  "toastGift": "Prezent: darmowa paczka serii!",
+  "toastGiftBody": "Jest następna w kolejce, z kartami nowej serii."
 }

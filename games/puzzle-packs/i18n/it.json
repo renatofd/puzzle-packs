@@ -208,12 +208,12 @@
   "tut.skip": "Salta il tutorial",
   "tut.rip": "Benvenuto! Trascina il dito (o il mouse) sul pacchetto per strapparlo. Anche un tocco lo apre.",
   "tut.flip": "Ogni carta è un pezzo del puzzle. Si girano da sole, ma puoi toccarle per fare prima.",
-  "tut.board": "I pezzi nuovi si incastrano sul tabellone. Raccoglili tutti per completare l'immagine della serie.",
-  "tut.dupes": "I pezzi doppi diventano monete, e quelli rari valgono di più. Spendi le monete nel negozio e nei potenziamenti.",
-  "tut.shop": "Ora puoi comprare un pacchetto serie. Ha solo carte della serie attuale, con più probabilità per i pezzi che ti mancano.",
+  "tut.board": "I pezzi nuovi vanno sul tabellone. Completa l'immagine!",
+  "tut.dupes": "I doppioni diventano monete.",
+  "tut.shop": "Compra un pacchetto serie: ha solo carte di questa serie.",
   "tut.upgrades": "Hai abbastanza monete per un potenziamento. Tocca Potenziamenti.",
   "tut.tree": "Tocca un nodo luminoso per comprarlo. Passaci sopra per vedere cosa fa e trascina lo sfondo per muovere l'albero.",
-  "tut.auto": "Serie completata! L'apri-automatico è sbloccato: apre pacchetti da solo, anche a gioco chiuso. I potenziamenti lo rendono più veloce.",
+  "tut.auto": "Serie completata! Ora l'apri-automatico apre pacchetti per te.",
   "tut.album": "La tua prima immagine è completa. Dai un'occhiata all'Album.",
   "tut.albumView": "Qui ci sono tutte le serie e i tuoi progressi. Tocca Vedi immagine per vedere l'illustrazione intera.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Monete insufficienti",
     "treeAffordable": "Tocca per comprare",
     "treeMaxed": "Livello massimo"
-  }
+  },
+  "toastGift": "Regalo: un pacchetto serie gratis!",
+  "toastGiftBody": "È il prossimo in fila, con carte della nuova serie."
 }

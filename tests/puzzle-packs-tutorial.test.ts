@@ -77,6 +77,11 @@ describe('Puzzle Packs: tutorial guiado', () => {
     expect(tutorial.isDone('dupes')).toBe(true);
   });
 
+  it('as duas primeiras dicas são só gesto, sem balão de texto', () => {
+    const quiet = TUTORIAL_STEPS.filter((s) => s.quiet).map((s) => s.id);
+    expect(quiet).toEqual(['rip', 'flip']);
+  });
+
   it('nada aparece com o menu aberto ou durante a coleta', () => {
     const { tutorial } = setup();
     expect(tutorial.active({ ...idle, blocked: true })).toBeNull();

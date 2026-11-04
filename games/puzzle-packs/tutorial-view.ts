@@ -110,7 +110,10 @@ export class TutorialOverlay extends Container {
     this.rect = null;
     this.screenKey = '';
     const on = !!step;
-    this.bubble.visible = this.dim.visible = this.ring.visible = this.arrow.visible = on;
+    this.ring.visible = this.arrow.visible = on;
+    // O jogo nunca escurece: no 2º playtest, 1 em cada 4 saía com uma dica na tela.
+    this.dim.visible = false;
+    this.bubble.visible = on && !step?.quiet;
     if (!step) return;
     const p = this.tutorial.progress();
     this.counter.text = t('tut.counter', p.done + 1, p.total);

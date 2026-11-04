@@ -116,6 +116,17 @@ describe('Puzzle Packs: economia', () => {
     expect(packs[Math.floor(packs.length * 0.9)]).toBeLessThanOrEqual(15);
   });
 
+  it('fechar a série 1 dá de presente um pacote da série nova, o próximo da fila', () => {
+    const { collection } = createGame(6);
+    let r = collection.openNext();
+    while (!r.completed.includes(0)) r = collection.openNext();
+    expect(collection.state.queue[0]).toBe('series');
+    expect(collection.nextPack()).toBe('series');
+    const gift = collection.openNext();
+    expect(gift.pack).toBe('series');
+    expect(gift.cards.every((c) => c.series === 1)).toBe(true);
+  });
+
   it('na série 2, o pacote básico traz sempre uma carta da série atual', () => {
     const { engine, collection } = createGame(4);
     completeSeries({ engine, collection }, 0);

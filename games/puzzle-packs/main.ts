@@ -214,7 +214,10 @@ async function main() {
     const i = SERIES.findIndex((s) => s.id === id);
     if (i < 0) return;
     toasts.push(t('toastSeries', t(`series.${id}`)), i < SERIES.length - 1 ? t('toastNextSeries') : '', COLORS.coins);
-    if (i === 0) toasts.push(t('toastAuto'), t('toastAutoBody'), COLORS.accent);
+    if (i === 0) {
+      toasts.push(t('toastAuto'), t('toastAutoBody'), COLORS.accent);
+      toasts.push(t('toastGift'), t('toastGiftBody'), COLORS.coins);
+    }
     // A série i + 1 virou a atual (já carregada); adianta a seguinte.
     void arts.load(i + 2);
   });
@@ -236,6 +239,11 @@ async function main() {
     void portal.cloudSave.save(saves.toString());
   };
   setInterval(persist, 10_000);
+  // Tempo com a aba visível (game events `time / <n>s / reached`).
+  let visibleSeconds = 0;
+  setInterval(() => {
+    if (document.visibilityState === 'visible') analytics.elapsed(++visibleSeconds);
+  }, 1000);
   window.addEventListener('beforeunload', () => saves.save());
   document.addEventListener('visibilitychange', () => {
     const hidden = document.visibilityState === 'hidden';

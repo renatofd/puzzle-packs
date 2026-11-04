@@ -208,12 +208,12 @@
   "tut.skip": "Passer le tutoriel",
   "tut.rip": "Bienvenue ! Fais glisser ton doigt (ou la souris) sur le paquet pour le déchirer. Une touche l'ouvre aussi.",
   "tut.flip": "Chaque carte est une pièce de puzzle. Elles se retournent toutes seules, mais tu peux toucher pour aller plus vite.",
-  "tut.board": "Les nouvelles pièces s'emboîtent sur le plateau. Récupère-les toutes pour compléter l'image de la série.",
-  "tut.dupes": "Les pièces en double deviennent des pièces de monnaie, et les rares valent plus. Dépense-les à la boutique et en améliorations.",
-  "tut.shop": "Tu peux acheter un paquet de série. Il ne contient que des cartes de la série en cours, avec plus de chances pour les pièces manquantes.",
+  "tut.board": "Les nouvelles pièces vont sur le plateau. Complète l'image !",
+  "tut.dupes": "Les doubles deviennent des pièces de monnaie.",
+  "tut.shop": "Achète un paquet de série : il n'a que des cartes de cette série.",
   "tut.upgrades": "Tu as assez de pièces pour une amélioration. Touche Améliorations.",
   "tut.tree": "Touche un nœud lumineux pour l'acheter. Survole-le pour voir son effet et fais glisser le fond pour déplacer l'arbre.",
-  "tut.auto": "Série terminée ! L'ouvreur auto est débloqué : il ouvre des paquets tout seul, même jeu fermé. Les améliorations le rendent plus rapide.",
+  "tut.auto": "Série terminée ! L'ouvreur auto ouvre maintenant des paquets pour toi.",
   "tut.album": "Ta première image est terminée. Va la voir dans l'Album.",
   "tut.albumView": "Toutes les séries et ta progression sont ici. Touche Voir l'image pour voir l'illustration entière.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Pas assez de pièces",
     "treeAffordable": "Touche pour acheter",
     "treeMaxed": "Niveau max"
-  }
+  },
+  "toastGift": "Cadeau : un paquet de série gratuit !",
+  "toastGiftBody": "C'est le prochain de la file, avec des cartes de la nouvelle série."
 }
