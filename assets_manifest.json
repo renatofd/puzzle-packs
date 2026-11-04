@@ -323,7 +323,7 @@
       "dest": "public/assets/ui/upgrades/cards3.png",
       "tool": "sprite-gen (Grok Imagine)",
       "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
-      "sha256": "8aa980da92dea07afc0e6d42f8531b6ee7b29c0e3e27b802dd7810772b6735ab"
+      "sha256": "27991d90cb31fa7c71fd7a0ec6a2220328450e17ac21a92cc5c8a5cd303aa5f5"
     },
     {
       "dest": "public/assets/series/series-7.jpg",
@@ -444,6 +444,78 @@
       "tool": "sprite-gen (Grok Imagine)",
       "note": "Ilustração do álbum, a pedido do Renato; JPEG 1024x1024.",
       "sha256": "3ddf7099e4d755c567347f33017ede315fceeec1656237decf63d216b858b9c4"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/speed2.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "eb2a6a149d02bc5be94701103d9ac81940c175b7ac02571d30ba8ea32295510b"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/auto3.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "46ad4f7e8ecbed32a86fc568ecaaa9560ffca17899d3ef71561608e45b687cf0"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/value4.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "b66a6ac62d43d2d3b782b4dc4e5acaa82a43f96b6020effc65401908d72790d8"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/discount2.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "186efe51b33b53e5c00df7fc68d9fc88bff9cdcd541cf0f5cfb193a819ce7534"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/luck4.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "dc4461e9fab956ac016262f1127b81be0c02b4d39585c64ec3be0c5ae7084dd9"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/cards4.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "e8176012195ec8823b314036906f06ea512304ee93eeb55e787d5c3461c48dee"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/value5.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "c713f5aff50db4a8f9f267035303579233d89e1ecaa555288f4bd946a3218094"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/discount3.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "987a5291246caccf65306742d0978c75884a6fb2a3963267aeaf17a4e7bb6853"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/luck5.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "3b4bdd846d70cb779b5111046666bd9f7e8d8b29c764a6f27ea58058bc71d77c"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/cards5.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "d9bc0fab2697123d8527561462b8ba2e7b77ac51575235906642db140c3690a3"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/auto4.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "dc06ec3f0659544a6a5881899fae9af49682ca0b55d32b26bb8aaf08a2e0d21c"
+    },
+    {
+      "dest": "public/assets/ui/upgrades/value6.png",
+      "tool": "sprite-gen (Grok Imagine)",
+      "note": "Ícone da árvore de melhorias, a pedido do Renato; redimensionado para 256x256.",
+      "sha256": "ac917a7a3b0d38e85f1ada0fde76174d20ae08f4442d9e1c83bce6575eb64014"
     }
   ]
 }
