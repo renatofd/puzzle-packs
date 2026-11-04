@@ -208,12 +208,12 @@
   "tut.skip": "Lewati tutorial",
   "tut.rip": "Selamat datang! Seret jarimu (atau mouse) di atas paket untuk merobeknya. Mengetuk juga bisa membukanya.",
   "tut.flip": "Setiap kartu adalah kepingan puzzle. Kartu terbalik sendiri, tapi kamu bisa mengetuk agar lebih cepat.",
-  "tut.board": "Kepingan baru terpasang di papan. Kumpulkan semuanya untuk melengkapi gambar seri.",
-  "tut.dupes": "Kepingan duplikat jadi koin, dan yang langka lebih berharga. Belanjakan koin di toko dan untuk peningkatan.",
-  "tut.shop": "Sekarang kamu bisa membeli Paket Seri. Isinya hanya kartu dari seri saat ini, dengan peluang lebih besar untuk kepingan yang kurang.",
+  "tut.board": "Kepingan baru masuk ke papan. Lengkapi gambarnya!",
+  "tut.dupes": "Kartu duplikat jadi koin.",
+  "tut.shop": "Beli Paket Seri: isinya hanya kartu dari seri ini.",
   "tut.upgrades": "Koinmu cukup untuk peningkatan. Ketuk Peningkatan.",
   "tut.tree": "Ketuk simpul yang menyala untuk membelinya. Arahkan kursor untuk melihat efeknya, dan seret latar untuk menggeser pohon.",
-  "tut.auto": "Seri selesai! Pembuka otomatis terbuka: ia membuka paket sendiri, bahkan saat game ditutup. Peningkatan membuatnya lebih cepat.",
+  "tut.auto": "Seri selesai! Sekarang pembuka otomatis membuka paket untukmu.",
   "tut.album": "Gambar pertamamu sudah lengkap. Lihat di Album.",
   "tut.albumView": "Semua seri dan progresmu ada di sini. Ketuk Lihat gambar untuk melihat ilustrasi utuh.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Koin tidak cukup",
     "treeAffordable": "Ketuk untuk membeli",
     "treeMaxed": "Level maks"
-  }
+  },
+  "toastGift": "Hadiah: Paket Seri gratis!",
+  "toastGiftBody": "Paket ini berikutnya di antrean, berisi kartu seri baru."
 }

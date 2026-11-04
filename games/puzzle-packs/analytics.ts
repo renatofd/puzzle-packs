@@ -28,6 +28,9 @@ export type MeasureSink = (category: string, what: string, action: string) => vo
 /** Marcos de contagem (pacotes abertos, peças novas, repetidas). */
 export const MILESTONES = [1, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000];
 
+/** Marcos de tempo com a aba visível, em segundos (`time / 60s / reached`). */
+export const TIME_MARKS = [15, 30, 60, 90, 120, 180, 240, 300, 420, 600, 900, 1200, 1800];
+
 /** Maior marco atingido por `n` (0 se nenhum). */
 export function milestone(n: number): number {
   let m = 0;
@@ -132,6 +135,11 @@ export class Analytics {
   }
 
   // ---------------------------------------------------------- chamadas da tela
+
+  /** Segundos com a aba visível desde que a página abriu: manda cada marco de `TIME_MARKS` cruzado. */
+  elapsed(seconds: number): void {
+    for (const m of TIME_MARKS) if (seconds >= m) this.track('time', `${m}s`, 'reached');
+  }
 
   /** Troca de tela (`album`, `upgrades`, `menu`, `language`, `image`). */
   screen(name: string): void {

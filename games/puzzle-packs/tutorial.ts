@@ -34,6 +34,8 @@ export interface TutorialStep {
   id: string;
   scene: TutorialScene;
   target?: TutorialTarget;
+  /** Só destaque e seta, sem balão de texto (os gestos dos primeiros segundos). */
+  quiet?: boolean;
   /** Passo informativo: termina no botão OK (ou na ação de `on`, se houver). */
   ack?: boolean;
   /** Ação que conclui o passo (passos sem `ack`). */
@@ -46,8 +48,8 @@ const state = (g: Game) => g.collection.state;
 
 /** Os passos, na ordem em que o jogador costuma encontrá-los. */
 export const TUTORIAL_STEPS: TutorialStep[] = [
-  { id: 'rip', scene: 'main', target: 'pack', on: ['rip'], when: (_g, ui) => ui.idle },
-  { id: 'flip', scene: 'main', target: 'stage', on: ['revealed'], when: (_g, ui) => !!ui.revealing },
+  { id: 'rip', scene: 'main', target: 'pack', quiet: true, on: ['rip'], when: (_g, ui) => ui.idle },
+  { id: 'flip', scene: 'main', target: 'stage', quiet: true, on: ['revealed'], when: (_g, ui) => !!ui.revealing },
   { id: 'board', scene: 'main', target: 'board', ack: true, on: ['rip'], when: (g, ui) => ui.idle && g.collection.state.newPieces > 0 },
   { id: 'dupes', scene: 'main', target: 'coins', ack: true, on: ['rip'], when: (g, ui) => ui.idle && state(g).dupes > 0 },
   { id: 'shop', scene: 'main', target: 'shop', on: ['buy'], when: (g, ui) => ui.idle && g.collection.canBuy('series') },

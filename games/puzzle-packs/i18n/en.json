@@ -208,12 +208,12 @@
   "tut.skip": "Skip tutorial",
   "tut.rip": "Welcome! Drag your finger (or mouse) across the pack to rip it open. A tap opens it too.",
   "tut.flip": "Every card is a puzzle piece. They flip on their own, but you can tap to flip them faster.",
-  "tut.board": "New pieces snap into the board. Collect them all to complete the series picture.",
-  "tut.dupes": "Duplicate pieces turn into coins, and rares are worth more. Spend coins in the shop and on upgrades.",
-  "tut.shop": "You can buy a Series Pack now. It only has cards from the current series, with better odds for the pieces you're missing.",
+  "tut.board": "New pieces fill the board. Complete the picture!",
+  "tut.dupes": "Duplicates turn into coins.",
+  "tut.shop": "Buy a Series Pack: it only has cards from this series.",
   "tut.upgrades": "You have enough coins for an upgrade. Tap Upgrades.",
   "tut.tree": "Tap a glowing node to buy it. Hover over it to see what it does, and drag the background to move the tree.",
-  "tut.auto": "Series complete! The auto-opener is unlocked: it opens packs by itself, even while the game is closed. Upgrades make it faster.",
+  "tut.auto": "Series complete! The auto-opener now opens packs for you.",
   "tut.album": "Your first picture is complete. Take a look in the Album.",
   "tut.albumView": "Every series and its progress lives here. Tap View image to see the whole illustration.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Not enough coins",
     "treeAffordable": "Tap to buy",
     "treeMaxed": "Max level"
-  }
+  },
+  "toastGift": "Gift: a free Series Pack!",
+  "toastGiftBody": "It is next in line, with cards from the new series."
 }

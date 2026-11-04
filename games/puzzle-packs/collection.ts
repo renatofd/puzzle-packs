@@ -263,6 +263,8 @@ export class CollectionModule implements GameModule {
       if (!wasComplete[i] && this.isComplete(i)) {
         completed.push(i);
         st.completedAt[s.id] = this.engine.state.time.played;
+        // Presente ao fechar a 1ª série: um pacote da série nova é o próximo da fila.
+        if (i === 0 && SERIES.length > 1) st.queue.unshift('series');
       }
     });
     const result: PackResult = { pack: id, source, cards, completed, coins: cards.reduce((a, c) => a + c.coins, 0) };

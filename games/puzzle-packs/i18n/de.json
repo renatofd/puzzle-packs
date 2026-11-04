@@ -208,12 +208,12 @@
   "tut.skip": "Tutorial überspringen",
   "tut.rip": "Willkommen! Zieh den Finger (oder die Maus) über das Pack, um es aufzureißen. Tippen öffnet es auch.",
   "tut.flip": "Jede Karte ist ein Puzzleteil. Sie drehen sich von selbst um, aber du kannst tippen, um es zu beschleunigen.",
-  "tut.board": "Neue Teile rasten auf dem Brett ein. Sammle alle, um das Bild der Serie zu vervollständigen.",
-  "tut.dupes": "Doppelte Teile werden zu Münzen, seltene sind mehr wert. Gib Münzen im Shop und für Upgrades aus.",
-  "tut.shop": "Du kannst jetzt ein Serien-Pack kaufen. Es enthält nur Karten der aktuellen Serie, mit besseren Chancen auf fehlende Teile.",
+  "tut.board": "Neue Teile kommen aufs Brett. Vervollständige das Bild!",
+  "tut.dupes": "Doppelte werden zu Münzen.",
+  "tut.shop": "Kauf ein Serien-Pack: Es hat nur Karten dieser Serie.",
   "tut.upgrades": "Du hast genug Münzen für ein Upgrade. Tippe auf Upgrades.",
   "tut.tree": "Tippe auf einen leuchtenden Knoten, um ihn zu kaufen. Fahre darüber, um zu sehen, was er macht, und zieh den Hintergrund, um den Baum zu bewegen.",
-  "tut.auto": "Serie abgeschlossen! Der Auto-Öffner ist freigeschaltet: Er öffnet Packs von selbst, auch wenn das Spiel geschlossen ist. Upgrades machen ihn schneller.",
+  "tut.auto": "Serie abgeschlossen! Jetzt öffnet der Auto-Öffner Packs für dich.",
   "tut.album": "Dein erstes Bild ist fertig. Schau es dir im Album an.",
   "tut.albumView": "Hier sind alle Serien und dein Fortschritt. Tippe auf Bild ansehen, um die ganze Illustration zu sehen.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Nicht genug Münzen",
     "treeAffordable": "Tippe zum Kaufen",
     "treeMaxed": "Maximale Stufe"
-  }
+  },
+  "toastGift": "Geschenk: ein Serien-Pack gratis!",
+  "toastGiftBody": "Es ist als Nächstes dran, mit Karten der neuen Serie."
 }

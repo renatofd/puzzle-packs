@@ -208,12 +208,12 @@
   "tut.skip": "Bỏ qua hướng dẫn",
   "tut.rip": "Chào mừng! Kéo ngón tay (hoặc chuột) qua gói để xé. Chạm cũng mở được.",
   "tut.flip": "Mỗi thẻ là một mảnh ghép. Thẻ tự lật, nhưng bạn có thể chạm để lật nhanh hơn.",
-  "tut.board": "Mảnh mới sẽ khớp vào bảng. Thu thập đủ để hoàn thành bức tranh của bộ.",
-  "tut.dupes": "Mảnh trùng sẽ đổi thành xu, mảnh hiếm có giá trị cao hơn. Tiêu xu ở cửa hàng và cho nâng cấp.",
-  "tut.shop": "Giờ bạn có thể mua Gói bộ sưu tập. Gói chỉ có thẻ của bộ hiện tại, tỉ lệ cao hơn cho các mảnh còn thiếu.",
+  "tut.board": "Mảnh mới sẽ vào bảng. Hãy hoàn thành bức tranh!",
+  "tut.dupes": "Mảnh trùng sẽ đổi thành xu.",
+  "tut.shop": "Mua Gói bộ sưu tập: gói chỉ có thẻ của bộ này.",
   "tut.upgrades": "Bạn đủ xu để nâng cấp. Chạm vào Nâng cấp.",
   "tut.tree": "Chạm vào nút đang sáng để mua. Di chuột lên để xem tác dụng, và kéo nền để di chuyển cây.",
-  "tut.auto": "Hoàn thành bộ! Máy mở tự động đã mở khóa: nó tự mở gói, kể cả khi trò chơi đã đóng. Nâng cấp giúp nó nhanh hơn.",
+  "tut.auto": "Hoàn thành bộ! Giờ máy mở tự động sẽ mở gói giúp bạn.",
   "tut.album": "Bức tranh đầu tiên của bạn đã hoàn thành. Hãy xem trong Album.",
   "tut.albumView": "Tất cả các bộ và tiến độ của bạn ở đây. Chạm Xem ảnh để xem toàn bộ tranh.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Không đủ xu",
     "treeAffordable": "Chạm để mua",
     "treeMaxed": "Cấp tối đa"
-  }
+  },
+  "toastGift": "Quà tặng: một Gói bộ sưu tập miễn phí!",
+  "toastGiftBody": "Gói này là gói tiếp theo, với thẻ của bộ mới."
 }

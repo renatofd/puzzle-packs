@@ -208,12 +208,12 @@
   "tut.skip": "Tutorial overslaan",
   "tut.rip": "Welkom! Sleep je vinger (of muis) over het pakje om het open te scheuren. Tikken opent het ook.",
   "tut.flip": "Elke kaart is een puzzelstukje. Ze draaien vanzelf om, maar je kunt tikken om het sneller te doen.",
-  "tut.board": "Nieuwe stukjes klikken vast op het bord. Verzamel ze allemaal om de afbeelding van de serie te voltooien.",
-  "tut.dupes": "Dubbele stukjes worden munten, en zeldzame zijn meer waard. Geef munten uit in de winkel en aan upgrades.",
-  "tut.shop": "Je kunt nu een seriepakje kopen. Het heeft alleen kaarten uit de huidige serie, met meer kans op de stukjes die je mist.",
+  "tut.board": "Nieuwe stukjes gaan op het bord. Maak de afbeelding af!",
+  "tut.dupes": "Dubbele stukjes worden munten.",
+  "tut.shop": "Koop een seriepakje: er zitten alleen kaarten van deze serie in.",
   "tut.upgrades": "Je hebt genoeg munten voor een upgrade. Tik op Upgrades.",
   "tut.tree": "Tik op een oplichtend knooppunt om het te kopen. Beweeg erover om te zien wat het doet en sleep de achtergrond om de boom te verplaatsen.",
-  "tut.auto": "Serie voltooid! De auto-opener is ontgrendeld: hij opent zelf pakjes, ook als het spel dicht is. Upgrades maken hem sneller.",
+  "tut.auto": "Serie voltooid! Nu opent de auto-opener pakjes voor je.",
   "tut.album": "Je eerste afbeelding is klaar. Bekijk hem in het Album.",
   "tut.albumView": "Hier staan alle series en je voortgang. Tik op Bekijk afbeelding om de hele illustratie te zien.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Niet genoeg munten",
     "treeAffordable": "Tik om te kopen",
     "treeMaxed": "Max. niveau"
-  }
+  },
+  "toastGift": "Cadeau: een gratis seriepakje!",
+  "toastGiftBody": "Het is de volgende in de rij, met kaarten van de nieuwe serie."
 }

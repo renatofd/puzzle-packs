@@ -208,12 +208,12 @@
   "tut.skip": "Saltar tutorial",
   "tut.rip": "¡Bienvenido! Desliza el dedo (o el ratón) sobre el sobre para rasgarlo. Un toque también lo abre.",
   "tut.flip": "Cada carta es una pieza del rompecabezas. Se voltean solas, pero puedes tocar para voltearlas más rápido.",
-  "tut.board": "Las piezas nuevas encajan en el tablero. Reúnelas todas para completar la imagen de la serie.",
-  "tut.dupes": "Las piezas repetidas se convierten en monedas, y las raras valen más. Usa las monedas en la tienda y en las mejoras.",
-  "tut.shop": "Ya puedes comprar un Sobre de la Serie. Solo trae cartas de la serie actual, con más probabilidad de las piezas que te faltan.",
+  "tut.board": "Las piezas nuevas van al tablero. ¡Completa la imagen!",
+  "tut.dupes": "Las repetidas se convierten en monedas.",
+  "tut.shop": "Compra un Sobre de la Serie: solo trae cartas de esta serie.",
   "tut.upgrades": "Tienes monedas para una mejora. Toca Mejoras.",
   "tut.tree": "Toca un nodo iluminado para comprarlo. Pasa el ratón por encima para ver qué hace y arrastra el fondo para mover el árbol.",
-  "tut.auto": "¡Serie completa! Se desbloqueó el abridor automático: abre sobres solo, incluso con el juego cerrado. Las mejoras lo hacen más rápido.",
+  "tut.auto": "¡Serie completa! Ahora el abridor automático abre sobres por ti.",
   "tut.album": "Tu primera imagen está completa. Mírala en el Álbum.",
   "tut.albumView": "Aquí están todas las series y el progreso de cada una. Toca Ver imagen para ver la ilustración entera.",
   "kit": {
@@ -260,5 +260,7 @@
     "treeAvailable": "Monedas insuficientes",
     "treeAffordable": "Toca para comprar",
     "treeMaxed": "Nivel máximo"
-  }
+  },
+  "toastGift": "¡Regalo: un Sobre de la Serie gratis!",
+  "toastGiftBody": "Es el siguiente en la fila, con cartas de la nueva serie."
 }

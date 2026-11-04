@@ -52,6 +52,7 @@ Cada trio `category / what / action` sai no máximo uma vez por sessão (o Poki 
 | category | what | action | quando |
 | --- | --- | --- | --- |
 | `session` | `new` / `returning` | `start` | ao abrir o jogo |
+| `time` | `15s`, `30s`, `60s`, `90s`, `120s`, `180s`, `240s`, `300s`, `420s`, `600s`, `900s`, `1200s`, `1800s` | `reached` | segundos com a aba visível desde que a página abriu |
 | `session` | `offline` | `return` | voltou com ganhos offline (mais de 1 min) |
 | `progress` | `series-<n>`, `packs-<marco>` | `resume` | onde está o jogador que volta |
 | `pack` | `basic`, `series`, `premium` | `open` / `open-auto` | abriu pacote na mão / pelo auto-abridor |
